@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="GranjaControl.BLL/GranjaControl.BLL.csproj" />
+  <Project Path="GranjaControl.DAL/GranjaControl.DAL.csproj" />
+  <Project Path="GranjaControl.Entitys/GranjaControl.Entitys.csproj" />
+  <Project Path="GranjaControl.UI/GranjaControl.UI.csproj" />
+</Solution>

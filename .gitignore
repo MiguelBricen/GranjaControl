@@ -1,0 +1,27 @@
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Archivos generados
+**/bin/
+**/obj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa]rtifacts/
+
+# Archivos temporales
+*.tmp
+*.log
+
+# Configuraciones locales y secretos
+.env
+.env.*
+!.env.example
+secrets.json
+appsettings.Local.json
