@@ -283,6 +283,16 @@ namespace GranjaControl.UI.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Empty__2_ {
+            get {
+                object obj = ResourceManager.GetObject("Empty (2)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap granjacontrol_panel_base {
             get {
                 object obj = ResourceManager.GetObject("granjacontrol_panel_base", resourceCulture);

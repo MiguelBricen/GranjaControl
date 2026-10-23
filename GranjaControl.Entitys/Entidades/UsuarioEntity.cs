@@ -21,11 +21,11 @@ namespace GranjaControl.Entitys.Entidades
         {
             CambiarNombreCompleto(nombreCompleto);
             CambiarNombreUsuario(nombreUsuario);
-            CambiarCorreoElectronico(correoElectronico);
-            CambiarIdRol(idRol);
+            CambiarCorreo(correoElectronico);
+            CambiarRol(idRol);
             Activo = true;
-
         }
+
         #endregion
 
         #region Métodos
@@ -35,38 +35,40 @@ namespace GranjaControl.Entitys.Entidades
             Id = id;
         }
 
-        public void CambiarNombreCompleto(string nombreCompleto)
+        public void CambiarNombreCompleto(string nombre)
         {
-            if (string.IsNullOrWhiteSpace(nombreCompleto))
-                throw new ArgumentException("El nombre completo no puede estar vacío.");
-            NombreCompleto = nombreCompleto;
+            if (string.IsNullOrWhiteSpace(nombre))
+                throw new Exception("Debe especificar el nombre completo del usuario.");
+
+            NombreCompleto = nombre.Trim();
         }
 
-        public void CambiarNombreUsuario(string nombreUsuario)
+        public void CambiarNombreUsuario(string usuario)
         {
-            if (string.IsNullOrWhiteSpace(nombreUsuario))
-                throw new ArgumentException("El nombre de usuario no puede estar vacío.");
-            NombreUsuario = nombreUsuario;
+            if (string.IsNullOrWhiteSpace(usuario))
+                throw new Exception("Debe especificar el nombre de usuario.");
+
+            NombreUsuario = usuario.Trim();
         }
 
-        public void CambiarCorreoElectronico(string correoElectronico)
+        public void CambiarCorreo(string correo)
         {
-            if (string.IsNullOrWhiteSpace(correoElectronico))
-                throw new ArgumentException("El correo electrónico no puede estar vacío.");
-            CorreoElectronico = correoElectronico;
+            if (string.IsNullOrWhiteSpace(correo))
+                throw new Exception("Debe especificar el correo electrónico.");
+
+            CorreoElectronico = correo.Trim();
         }
 
-        public void CambiarIdRol(int idRol)
+        public void CambiarRol(int idRol)
         {
             if (idRol <= 0)
-                throw new ArgumentException("El ID del rol debe ser un número positivo.");
+                throw new Exception("Debe seleccionarl un rol.");
+
             IdRol = idRol;
         }
 
         public void CambiarNombreRol(string nombreRol)
         {
-            if (string.IsNullOrWhiteSpace(nombreRol))
-                throw new ArgumentException("El nombre del rol no puede estar vacío.");
             NombreRol = nombreRol.Trim();
         }
 
@@ -74,6 +76,7 @@ namespace GranjaControl.Entitys.Entidades
         {
             Activo = activo;
         }
+
         #endregion
     }
 }

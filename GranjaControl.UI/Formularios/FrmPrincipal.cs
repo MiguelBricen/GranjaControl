@@ -1,4 +1,5 @@
 ﻿using GranjaControl.UI.Formularios.Formularios_derivados.Roles;
+using GranjaControl.UI.Formularios.Formularios_derivados.Usuarios;
 using GranjaControl.UI.Formularios_derivados;
 using GranjaControl.UI.Helpers;
 using GranjaControl.UI.Utilidades;
@@ -116,5 +117,14 @@ namespace GranjaControl.UI.Formularios
         {
             NavegacionHelper.AbrirFormulario(new FrmRolesListado(), pnlContenedor, ref formularioActivo, btnRoles);
         }
+
+        private void btnUsuarios_Click(object sender, EventArgs e)
+        {
+            NavegacionHelper.AbrirFormulario(new FrmUsuarioListado(), pnlContenedor, ref formularioActivo, btnUsuarios);
+        }
     }
 }
+
+        
+    
+

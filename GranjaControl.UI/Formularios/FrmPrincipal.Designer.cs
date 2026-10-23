@@ -175,6 +175,7 @@
             btnUsuarios.TextAlign = ContentAlignment.MiddleRight;
             btnUsuarios.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnUsuarios.UseVisualStyleBackColor = false;
+            btnUsuarios.Click += btnUsuarios_Click;
             // 
             // pnlSidebar
             // 

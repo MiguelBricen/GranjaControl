@@ -32,6 +32,7 @@
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             pnlContenido = new Panel();
+            picEmpty = new PictureBox();
             btnVolver = new Button();
             label1 = new Label();
             lblTitulo = new Label();
@@ -53,6 +54,7 @@
             btnNuevo = new Button();
             dgvListado = new DataGridView();
             pnlContenido.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)picEmpty).BeginInit();
             ((System.ComponentModel.ISupportInitialize)iconTitulo).BeginInit();
             ((System.ComponentModel.ISupportInitialize)picLinea).BeginInit();
             pnlBuscar.SuspendLayout();
@@ -64,6 +66,7 @@
             // pnlContenido
             // 
             pnlContenido.BackColor = Color.FromArgb(226, 239, 228);
+            pnlContenido.Controls.Add(picEmpty);
             pnlContenido.Controls.Add(btnVolver);
             pnlContenido.Controls.Add(label1);
             pnlContenido.Controls.Add(lblTitulo);
@@ -80,6 +83,19 @@
             pnlContenido.Name = "pnlContenido";
             pnlContenido.Size = new Size(1000, 630);
             pnlContenido.TabIndex = 3;
+            // 
+            // picEmpty
+            // 
+            picEmpty.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            picEmpty.BackColor = Color.FromArgb(245, 247, 245);
+            picEmpty.Image = Properties.Resources.Empty__2_;
+            picEmpty.Location = new Point(12, 213);
+            picEmpty.Name = "picEmpty";
+            picEmpty.Size = new Size(976, 302);
+            picEmpty.SizeMode = PictureBoxSizeMode.CenterImage;
+            picEmpty.TabIndex = 17;
+            picEmpty.TabStop = false;
+            picEmpty.Visible = false;
             // 
             // btnVolver
             // 
@@ -427,6 +443,7 @@
             Shown += FrmBaseListadoGalpon_Shown;
             pnlContenido.ResumeLayout(false);
             pnlContenido.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)picEmpty).EndInit();
             ((System.ComponentModel.ISupportInitialize)iconTitulo).EndInit();
             ((System.ComponentModel.ISupportInitialize)picLinea).EndInit();
             pnlBuscar.ResumeLayout(false);
@@ -460,5 +477,6 @@
         public FontAwesome.Sharp.IconPictureBox iconTitulo;
         private PictureBox picLinea;
         private Button btnVolver;
+        private PictureBox picEmpty;
     }
 }

@@ -130,6 +130,9 @@
   <data name="SonidoOk" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SonidoOk.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="IconConfirmacion50" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconConfirmacion50.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="IconError50" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconError50.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -154,14 +157,14 @@
   <data name="IconPeligro50" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconPeligro50.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="granjacontrol_panel_base" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\granjacontrol_panel_base.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="01_minimizar (2)" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\01_minimizar (2).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="SonidoConfirmar" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SonidoConfirmar.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="02_cerrar (2)" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\02_cerrar (2).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SonidoWarning" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SonidoWarning.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="02_cerrar1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\02_cerrar1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -190,14 +193,14 @@
   <data name="07_agregar" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\07_agregar.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="30_salir" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\30_salir.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="25_volver" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\25_volver.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="06_nuevo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\06_nuevo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="02_cerrar (2)" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\02_cerrar (2).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="30_salir" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\30_salir.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="17_configuracion" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\17_configuracion.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -205,11 +208,11 @@
   <data name="picFondo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\picFondo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="SonidoWarning" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SonidoWarning.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="granjacontrol_panel_base" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\granjacontrol_panel_base.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="IconConfirmacion50" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\IconConfirmacion50.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="SonidoConfirmar" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SonidoConfirmar.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="03_guardar" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\03_guardar.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -220,7 +223,7 @@
   <data name="SonidoError" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SonidoError.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="25_volver" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\25_volver.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Empty (2)" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Empty (2).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
