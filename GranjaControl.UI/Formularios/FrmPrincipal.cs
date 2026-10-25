@@ -122,6 +122,11 @@ namespace GranjaControl.UI.Formularios
         {
             NavegacionHelper.AbrirFormulario(new FrmUsuarioListado(), pnlContenedor, ref formularioActivo, btnUsuarios);
         }
+
+        private void FrmPrincipal_Load(object sender, EventArgs e)
+        {
+            SesionHelper.CargarDatosSesion(toolUsuario, toolRol);
+        }
     }
 }
 

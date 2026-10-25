@@ -161,5 +161,39 @@ namespace GranjaControl.DAL
                 throw SqlErrorHelper.TraducirError(ex);
             }
         }
+
+        public async Task<UsuarioEntity> AutenticarAsync(string nombreUsuario, string claveUsuario)
+        {
+            try
+            {
+                using SqlConnection cn = Conexion.ObtenerConexion();
+                using SqlCommand cmd = new("sp_AutenticarUsuario2", cn);
+
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@nombreUsuario", nombreUsuario);
+                cmd.Parameters.AddWithValue("@claveUsuario", claveUsuario);
+                await cn.OpenAsync();
+
+                using SqlDataReader dr = await cmd.ExecuteReaderAsync();
+
+                if (!await dr.ReadAsync())
+                    throw new Exception("Usuario o contraseña incorrectos");
+
+                UsuarioEntity usuario = new();
+
+                usuario.AsignarId(Convert.ToInt32(dr["idUsuario"]));
+                usuario.CambiarNombreCompleto(dr["nombreCompleto"].ToString()!);
+                usuario.CambiarNombreUsuario(dr["nombreUsuario"].ToString()!);
+                usuario.CambiarRol(Convert.ToInt32(dr["idRol"].ToString()));
+                usuario.CambiarNombreRol(dr["nombreRol"].ToString()!);
+                usuario.CambiarEstado(Convert.ToBoolean(dr["activo"]));
+
+                return usuario;
+            }
+            catch (SqlException ex)
+            {
+                throw SqlErrorHelper.TraducirError(ex);
+            }
+        }
     }
 }

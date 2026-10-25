@@ -99,8 +99,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Usuarios
 
             dgvListado.DefaultCellStyle.WrapMode = DataGridViewTriState.False;
 
-            //if (dgvListado.Columns.Count == 0)
-              //  return;
+            if (dgvListado.Columns.Count == 0)
+                return;
 
             // Columnas ocultas
             dgvListado.Columns["Id"]!.Visible = false;

@@ -1,5 +1,6 @@
 using GranjaControl.DAL.Common;
 using GranjaControl.UI.Formularios;
+using GranjaControl.UI.Formularios.Seguridad;
 using GranjaControl.UI.Formularios_derivados;
 
 namespace GranjaControl.UI
@@ -48,7 +49,7 @@ namespace GranjaControl.UI
                 $"TrustServerCertificate=True;";
 
 
-            Application.Run(new FrmPrincipal());
+            Application.Run(new FrmInicioSesion());
 
         }
     }

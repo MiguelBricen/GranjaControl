@@ -59,6 +59,7 @@
             toolUsuario = new ToolStripStatusLabel();
             toolRol = new ToolStripStatusLabel();
             pnlContenedor = new Panel();
+            picFondo = new PictureBox();
             pnlMovimiento.SuspendLayout();
             pnlSeguridad.SuspendLayout();
             pnlSidebar.SuspendLayout();
@@ -72,6 +73,8 @@
             panel2.SuspendLayout();
             panel1.SuspendLayout();
             statusStrip1.SuspendLayout();
+            pnlContenedor.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)picFondo).BeginInit();
             SuspendLayout();
             // 
             // pnlMovimiento
@@ -548,7 +551,7 @@
             toolUsuario.ForeColor = Color.White;
             toolUsuario.Name = "toolUsuario";
             toolUsuario.Padding = new Padding(8, 6, 8, 6);
-            toolUsuario.Size = new Size(154, 34);
+            toolUsuario.Size = new Size(300, 34);
             toolUsuario.Text = "Usuario:";
             // 
             // toolRol
@@ -559,16 +562,29 @@
             toolRol.ForeColor = Color.White;
             toolRol.Name = "toolRol";
             toolRol.Padding = new Padding(8, 6, 8, 6);
-            toolRol.Size = new Size(154, 34);
+            toolRol.Size = new Size(200, 34);
             toolRol.Text = "Rol:";
             // 
             // pnlContenedor
             // 
+            pnlContenedor.Controls.Add(picFondo);
             pnlContenedor.Dock = DockStyle.Fill;
             pnlContenedor.Location = new Point(226, 44);
             pnlContenedor.Name = "pnlContenedor";
             pnlContenedor.Size = new Size(1054, 636);
             pnlContenedor.TabIndex = 4;
+            // 
+            // picFondo
+            // 
+            picFondo.BackColor = Color.White;
+            picFondo.Dock = DockStyle.Fill;
+            picFondo.Image = Properties.Resources.picFondo;
+            picFondo.Location = new Point(0, 0);
+            picFondo.Name = "picFondo";
+            picFondo.Size = new Size(1054, 636);
+            picFondo.SizeMode = PictureBoxSizeMode.StretchImage;
+            picFondo.TabIndex = 0;
+            picFondo.TabStop = false;
             // 
             // FrmPrincipal
             // 
@@ -588,6 +604,7 @@
             Text = "FrmPrincipal";
             WindowState = FormWindowState.Maximized;
             FormClosing += FrmPrincipal_FormClosing;
+            Load += FrmPrincipal_Load;
             pnlMovimiento.ResumeLayout(false);
             pnlSeguridad.ResumeLayout(false);
             pnlSidebar.ResumeLayout(false);
@@ -602,6 +619,8 @@
             panel1.ResumeLayout(false);
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
+            pnlContenedor.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)picFondo).EndInit();
             ResumeLayout(false);
         }
 
@@ -638,5 +657,6 @@
         private PictureBox picDif4;
         private PictureBox picDif3;
         private PictureBox picDif2;
+        private PictureBox picFondo;
     }
 }

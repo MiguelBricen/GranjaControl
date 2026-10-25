@@ -11,6 +11,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Usuarios
         private readonly RolBll _rolBll;
         private readonly int? _idUsuario;
 
+        private readonly bool _esAutoregistro;
         private UsuarioEntity? _usuario;
 
         private bool EsEdicion => _idUsuario.HasValue;
@@ -44,6 +45,19 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Usuarios
             lblDescripcion.Text = "Complete la información del usuario.";
         }
 
+        // Constructor para auto registro desde el login
+        public FrmUsuarioRegistro(UsuarioBll usuarioBll, RolBll rolBll, bool esAutoregistro)
+        {
+            InitializeComponent();
+
+            _usuarioBll = usuarioBll;
+            _rolBll = rolBll;
+
+            _esAutoregistro = esAutoregistro;
+
+            lblTitulo.Text = "Crear cuenta";
+            lblDescripcion.Text = "Complete la información para crear su cuenta.";
+        }
         #endregion
 
         #region Métodos
@@ -108,6 +122,12 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Usuarios
             if (!ValidationHelper.EmailValido(txtCorreo, errorIcon))
                 valido = false;
 
+            if (!_esAutoregistro && cboRoles.SelectedIndex < 0)
+            {
+                errorIcon.SetError(cboRoles, "Seleccione un rol.");
+                valido = false;
+            }
+
             if (!EsEdicion)
             {
                 if (!ValidationHelper.Requerido(txtPassword, errorIcon, "Ingrese la contraseña."))
@@ -130,6 +150,51 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Usuarios
         {
             await CargarRolesAsync();
 
+
+            /*if (_esAutoregistro)
+            {
+                // Buscar el rol
+                foreach (RolEntity rol in cboRoles.Items)
+                {
+                    if (rol.NombreRol.Equals("Usuario", StringComparison.OrdinalIgnoreCase))
+                    {
+                        cboRoles.SelectedValue = rol.Id;
+                        break;
+                    }
+                }
+            }*/
+
+            if (_esAutoregistro)
+            {
+                RolEntity? rolUsuario = cboRoles.Items
+                    .Cast<RolEntity>()
+                    .FirstOrDefault(r =>
+                        r.NombreRol.Equals(
+                            "Usuario",
+                            StringComparison.OrdinalIgnoreCase));
+
+                if (rolUsuario == null)
+                {
+                    MessageBox.Show(
+                        "No existe un rol Usuario activo. Contacte al administrador.",
+                        "Atención",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    btnGuardar.Enabled = false;
+                    return;
+                }
+
+                cboRoles.SelectedValue = rolUsuario.Id;
+            }
+
+            label3.Visible = false;
+            pnlRolUsuario.Visible = false;
+            cboRoles.Visible = false;
+
+            label5.Location = new Point(16, 230);
+            pnlPassword.Location = new Point(157, 230);
+
             if (EsEdicion)
                 await CargarDatosAsync();
         }
@@ -140,7 +205,9 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Usuarios
 
             try
             {
-                string usuarioApp = UsuarioSesion.NombreUsuario;
+                string usuarioApp = _esAutoregistro
+                                    ? "Autoregistro"
+                                    : UsuarioSesion.NombreUsuario;
 
                 if (!EsEdicion)
                 {
