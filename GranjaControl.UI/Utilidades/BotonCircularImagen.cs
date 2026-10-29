@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Drawing.Drawing2D;
 
+
 namespace GranjaControl.UI.Utilidades
 {
     public class BotonCircularImagen : Control

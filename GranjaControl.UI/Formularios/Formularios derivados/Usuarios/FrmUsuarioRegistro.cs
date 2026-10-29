@@ -166,37 +166,44 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Usuarios
 
             if (_esAutoregistro)
             {
+                // Asignar automáticamente el rol Usuario.
+
                 RolEntity? rolUsuario = cboRoles.Items
                     .Cast<RolEntity>()
                     .FirstOrDefault(r =>
-                        r.NombreRol.Equals(
-                            "Usuario",
-                            StringComparison.OrdinalIgnoreCase));
+                        r.NombreRol.Equals("Usuario", StringComparison.OrdinalIgnoreCase));
 
                 if (rolUsuario == null)
                 {
-                    MessageBox.Show(
-                        "No existe un rol Usuario activo. Contacte al administrador.",
-                        "Atención",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
+                    MessageBox.Show("No existe un rol Usuario activo. Contacte al administrador.", "Atención",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                     btnGuardar.Enabled = false;
                     return;
                 }
 
                 cboRoles.SelectedValue = rolUsuario.Id;
+
+                // Ocultar el rol solamente durante el autorregistro.
+                label3.Visible = false;
+                pnlRolUsuario.Visible = false;
+                cboRoles.Visible = false;
+
+                // Ajustar la posición de la contraseña.
+                label5.Location = new Point(16, 230);
+                pnlPassword.Location = new Point(157, 230);
             }
-
-            label3.Visible = false;
-            pnlRolUsuario.Visible = false;
-            cboRoles.Visible = false;
-
-            label5.Location = new Point(16, 230);
-            pnlPassword.Location = new Point(157, 230);
+            else
+            {
+                // Mostrar el rol al registrar o editar desde el sistema.
+                label3.Visible = true;
+                pnlRolUsuario.Visible = true;
+                cboRoles.Visible = true;
+            }
 
             if (EsEdicion)
                 await CargarDatosAsync();
+
         }
         private async void btnGuardar_Click(object sender, EventArgs e)
         {
