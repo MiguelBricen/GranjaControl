@@ -173,7 +173,7 @@
             txtUsuario.Location = new Point(44, 10);
             txtUsuario.Name = "txtUsuario";
             txtUsuario.PlaceholderText = "Ingrese su usuario";
-            txtUsuario.Size = new Size(219, 20);
+            txtUsuario.Size = new Size(251, 20);
             txtUsuario.TabIndex = 0;
             // 
             // pnlClave
@@ -208,7 +208,7 @@
             txtClave.Name = "txtClave";
             txtClave.PasswordChar = '*';
             txtClave.PlaceholderText = "Ingrese su contraseña";
-            txtClave.Size = new Size(219, 20);
+            txtClave.Size = new Size(251, 20);
             txtClave.TabIndex = 0;
             // 
             // btnCerrar
@@ -232,7 +232,6 @@
             btnIconoCentral.Name = "btnIconoCentral";
             btnIconoCentral.Size = new Size(100, 88);
             btnIconoCentral.TabIndex = 4;
-            btnIconoCentral.Text = "botonCircularImagen1";
             // 
             // errorIcon
             // 
