@@ -200,6 +200,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Usuarios
         }
         private async void btnGuardar_Click(object sender, EventArgs e)
         {
+            
             if (!ValidarControles())
                 return;
 
