@@ -34,6 +34,9 @@
             pnlSeguridad = new Panel();
             btnRoles = new FontAwesome.Sharp.IconButton();
             btnUsuarios = new FontAwesome.Sharp.IconButton();
+            pnlCatalogos = new Panel();
+            btnProveedores = new FontAwesome.Sharp.IconButton();
+            btnGalpones = new FontAwesome.Sharp.IconButton();
             pnlSidebar = new Panel();
             picDif7 = new PictureBox();
             picDif6 = new PictureBox();
@@ -62,6 +65,7 @@
             picFondo = new PictureBox();
             pnlMovimiento.SuspendLayout();
             pnlSeguridad.SuspendLayout();
+            pnlCatalogos.SuspendLayout();
             pnlSidebar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picDif7).BeginInit();
             ((System.ComponentModel.ISupportInitialize)picDif6).BeginInit();
@@ -180,9 +184,73 @@
             btnUsuarios.UseVisualStyleBackColor = false;
             btnUsuarios.Click += btnUsuarios_Click;
             // 
+            // pnlCatalogos
+            // 
+            pnlCatalogos.BackColor = Color.FromArgb(23, 61, 43);
+            pnlCatalogos.Controls.Add(btnProveedores);
+            pnlCatalogos.Controls.Add(btnGalpones);
+            pnlCatalogos.Location = new Point(0, 330);
+            pnlCatalogos.Name = "pnlCatalogos";
+            pnlCatalogos.Size = new Size(226, 106);
+            pnlCatalogos.TabIndex = 5;
+            pnlCatalogos.Visible = false;
+            // 
+            // btnProveedores
+            // 
+            btnProveedores.BackColor = Color.FromArgb(23, 61, 43);
+            btnProveedores.Cursor = Cursors.Hand;
+            btnProveedores.FlatAppearance.BorderColor = Color.FromArgb(220, 225, 216);
+            btnProveedores.FlatAppearance.BorderSize = 0;
+            btnProveedores.FlatAppearance.MouseOverBackColor = Color.FromArgb(62, 94, 69);
+            btnProveedores.FlatStyle = FlatStyle.Flat;
+            btnProveedores.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold);
+            btnProveedores.ForeColor = Color.White;
+            btnProveedores.IconChar = FontAwesome.Sharp.IconChar.Truck;
+            btnProveedores.IconColor = Color.White;
+            btnProveedores.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnProveedores.IconSize = 30;
+            btnProveedores.ImageAlign = ContentAlignment.MiddleLeft;
+            btnProveedores.Location = new Point(2, 53);
+            btnProveedores.Name = "btnProveedores";
+            btnProveedores.Padding = new Padding(5, 0, 0, 0);
+            btnProveedores.Size = new Size(225, 50);
+            btnProveedores.TabIndex = 18;
+            btnProveedores.Text = "Proveedores";
+            btnProveedores.TextAlign = ContentAlignment.MiddleRight;
+            btnProveedores.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnProveedores.UseVisualStyleBackColor = false;
+            btnProveedores.Click += btnProveedores_Click;
+            // 
+            // btnGalpones
+            // 
+            btnGalpones.BackColor = Color.FromArgb(23, 61, 43);
+            btnGalpones.Cursor = Cursors.Hand;
+            btnGalpones.FlatAppearance.BorderColor = Color.FromArgb(220, 225, 216);
+            btnGalpones.FlatAppearance.BorderSize = 0;
+            btnGalpones.FlatAppearance.MouseOverBackColor = Color.FromArgb(62, 94, 69);
+            btnGalpones.FlatStyle = FlatStyle.Flat;
+            btnGalpones.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold);
+            btnGalpones.ForeColor = Color.White;
+            btnGalpones.IconChar = FontAwesome.Sharp.IconChar.Warehouse;
+            btnGalpones.IconColor = Color.White;
+            btnGalpones.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnGalpones.IconSize = 30;
+            btnGalpones.ImageAlign = ContentAlignment.MiddleLeft;
+            btnGalpones.Location = new Point(2, 3);
+            btnGalpones.Name = "btnGalpones";
+            btnGalpones.Padding = new Padding(5, 0, 0, 0);
+            btnGalpones.Size = new Size(225, 50);
+            btnGalpones.TabIndex = 17;
+            btnGalpones.Text = "Galpones";
+            btnGalpones.TextAlign = ContentAlignment.MiddleRight;
+            btnGalpones.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnGalpones.UseVisualStyleBackColor = false;
+            btnGalpones.Click += btnGalpones_Click;
+            // 
             // pnlSidebar
             // 
             pnlSidebar.BackColor = Color.FromArgb(23, 61, 43);
+            pnlSidebar.Controls.Add(pnlCatalogos);
             pnlSidebar.Controls.Add(pnlSeguridad);
             pnlSidebar.Controls.Add(picDif7);
             pnlSidebar.Controls.Add(picDif6);
@@ -607,6 +675,7 @@
             Load += FrmPrincipal_Load;
             pnlMovimiento.ResumeLayout(false);
             pnlSeguridad.ResumeLayout(false);
+            pnlCatalogos.ResumeLayout(false);
             pnlSidebar.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)picDif7).EndInit();
             ((System.ComponentModel.ISupportInitialize)picDif6).EndInit();
@@ -650,6 +719,9 @@
         private Panel pnlSeguridad;
         private FontAwesome.Sharp.IconButton btnRoles;
         private FontAwesome.Sharp.IconButton btnUsuarios;
+        private Panel pnlCatalogos;
+        private FontAwesome.Sharp.IconButton btnGalpones;
+        private FontAwesome.Sharp.IconButton btnProveedores;
         private PictureBox picDif;
         private PictureBox picDif7;
         private PictureBox picDif6;

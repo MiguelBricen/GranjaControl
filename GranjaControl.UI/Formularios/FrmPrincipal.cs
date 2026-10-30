@@ -1,5 +1,6 @@
 ﻿using GranjaControl.UI.Formularios.Formularios_derivados.Roles;
 using GranjaControl.UI.Formularios.Formularios_derivados.Usuarios;
+using GranjaControl.UI.Formularios.Formularios_derivados.Proveedores;
 using GranjaControl.UI.Formularios_derivados;
 using GranjaControl.UI.Helpers;
 using GranjaControl.UI.Utilidades;
@@ -61,10 +62,44 @@ namespace GranjaControl.UI.Formularios
 
         private void btnCatalogos_Click(object sender, EventArgs e)
         {
-            NavegacionHelper.AbrirFormulario(new FrmGalponListado(), pnlContenedor, ref formularioActivo, btnCatalogos);
+            _catalogosAbierto = !_catalogosAbierto;
+
+            if (_catalogosAbierto && _seguridadAbierto)
+            {
+                _seguridadAbierto = false;
+                pnlSeguridad.Visible = false;
+                btnSeguridad.BackColor = Color.FromArgb(23, 61, 43);
+            }
+
+            btnCatalogos.BackColor = _catalogosAbierto
+                ? Color.FromArgb(73, 111, 82)
+                : Color.FromArgb(23, 61, 43);
+
+            AjustarMenuSidebar();
+
+            pnlCatalogos.Visible = _catalogosAbierto;
+        }
+
+        private void btnGalpones_Click(object sender, EventArgs e)
+        {
+            NavegacionHelper.AbrirFormulario(
+                new FrmGalponListado(),
+                pnlContenedor,
+                ref formularioActivo,
+                btnGalpones);
+        }
+
+        private void btnProveedores_Click(object sender, EventArgs e)
+        {
+            NavegacionHelper.AbrirFormulario(
+                new FrmProveedorListado(),
+                pnlContenedor,
+                ref formularioActivo,
+                btnProveedores);
         }
 
         private bool _seguridadAbierto = false;
+        private bool _catalogosAbierto = false;
         private readonly Dictionary<Control, int> _posicionesOriginales = new();
 
         private void GuardarPosicionesMenu()
@@ -91,6 +126,13 @@ namespace GranjaControl.UI.Formularios
 
             _seguridadAbierto = !_seguridadAbierto;
 
+            if (_seguridadAbierto && _catalogosAbierto)
+            {
+                _catalogosAbierto = false;
+                pnlCatalogos.Visible = false;
+                btnCatalogos.BackColor = Color.FromArgb(23, 61, 43);
+            }
+
             pnlSeguridad.Visible = _seguridadAbierto;
             pnlSeguridad.Size = new Size(226, 106);
 
@@ -105,11 +147,23 @@ namespace GranjaControl.UI.Formularios
 
         private void AjustarMenuSidebar()
         {
+            int desplazamientoSeguridad = _seguridadAbierto ? 108 : 0;
+            int desplazamientoCatalogos = _catalogosAbierto ? 108 : 0;
+
             foreach (var elemento in _posicionesOriginales)
             {
-                elemento.Key.Top = elemento.Value +
-                    (_seguridadAbierto ? 108 : 0);
+                int desplazamiento = desplazamientoSeguridad;
+
+                if (elemento.Key != btnCatalogos &&
+                    elemento.Key != picDif3)
+                {
+                    desplazamiento += desplazamientoCatalogos;
+                }
+
+                elemento.Key.Top = elemento.Value + desplazamiento;
             }
+
+            pnlCatalogos.Top = btnCatalogos.Top + 50;
         }
 
 

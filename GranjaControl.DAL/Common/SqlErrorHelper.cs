@@ -30,6 +30,11 @@ namespace GranjaControl.DAL.Common
                 52001 => new Exception("La categoría ya existe."),
                 52002 => new Exception("La categoría no existe o está inactiva."),
 
+                // Proveedores
+                52009 => new Exception("El proveedor ya existe."),
+                52010 => new Exception("El tipo de proveedor no es válido."),
+                52011 => new Exception("El proveedor no existe."),
+
                 // Tickets
                 53001 => new Exception("El usuario solicitante no existe."),
                 53002 => new Exception("El ticket no existe."),
