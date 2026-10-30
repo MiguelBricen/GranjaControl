@@ -437,6 +437,7 @@
             btnProduccion.TextAlign = ContentAlignment.MiddleRight;
             btnProduccion.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnProduccion.UseVisualStyleBackColor = false;
+            btnProduccion.Click += btnProduccion_Click;
             // 
             // btnCompras
             // 

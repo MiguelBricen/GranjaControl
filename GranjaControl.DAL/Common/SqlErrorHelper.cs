@@ -35,6 +35,15 @@ namespace GranjaControl.DAL.Common
                 52010 => new Exception("El tipo de proveedor no es válido."),
                 52011 => new Exception("El proveedor no existe."),
 
+                // Lotes
+                52012 => new Exception("El código del lote ya existe."),
+                52013 => new Exception("El galpón seleccionado no existe o está inactivo."),
+                52014 => new Exception("El proveedor seleccionado no puede suministrar pollitos o está inactivo."),
+                52015 => new Exception("La cantidad inicial de pollitos debe ser mayor que cero."),
+                52016 => new Exception("El costo por pollito no puede ser negativo."),
+                52017 => new Exception("El lote no existe."),
+                52018 => new Exception("El estado del lote no es válido."),
+
                 // Tickets
                 53001 => new Exception("El usuario solicitante no existe."),
                 53002 => new Exception("El ticket no existe."),

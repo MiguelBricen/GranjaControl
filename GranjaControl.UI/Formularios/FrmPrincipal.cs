@@ -1,6 +1,7 @@
 ﻿using GranjaControl.UI.Formularios.Formularios_derivados.Roles;
 using GranjaControl.UI.Formularios.Formularios_derivados.Usuarios;
 using GranjaControl.UI.Formularios.Formularios_derivados.Proveedores;
+using GranjaControl.UI.Formularios.Formularios_derivados.Lotes;
 using GranjaControl.UI.Formularios_derivados;
 using GranjaControl.UI.Helpers;
 using GranjaControl.UI.Utilidades;
@@ -96,6 +97,15 @@ namespace GranjaControl.UI.Formularios
                 pnlContenedor,
                 ref formularioActivo,
                 btnProveedores);
+        }
+
+        private void btnProduccion_Click(object sender, EventArgs e)
+        {
+            NavegacionHelper.AbrirFormulario(
+                new FrmLoteListado(),
+                pnlContenedor,
+                ref formularioActivo,
+                btnProduccion);
         }
 
         private bool _seguridadAbierto = false;
