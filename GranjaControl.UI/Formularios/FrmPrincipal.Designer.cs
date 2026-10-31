@@ -639,6 +639,7 @@
             btnInicio.TextAlign = ContentAlignment.MiddleRight;
             btnInicio.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnInicio.UseVisualStyleBackColor = false;
+            btnInicio.Click += btnInicio_Click;
             // 
             // btnReportes
             // 
@@ -664,6 +665,7 @@
             btnReportes.TextAlign = ContentAlignment.MiddleRight;
             btnReportes.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnReportes.UseVisualStyleBackColor = false;
+            btnReportes.Click += btnReportes_Click;
             // 
             // btnComercializacion
             // 

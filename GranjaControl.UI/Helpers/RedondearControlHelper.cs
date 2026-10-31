@@ -12,6 +12,16 @@ namespace GranjaControl.UI.Helpers
         /// <param name="radio">Radio de las esquinas.</param>
         public static void RedondearControl(Control control, int radio)
         {
+            if (control.Width <= 0 || control.Height <= 0)
+                return;
+
+            radio = Math.Min(
+                radio,
+                Math.Min(control.Width, control.Height) / 2);
+
+            if (radio <= 0)
+                return;
+
             GraphicsPath ruta = new GraphicsPath();
 
             ruta.AddArc(0, 0, radio, radio, 180, 90);
@@ -23,6 +33,16 @@ namespace GranjaControl.UI.Helpers
 
             control.Region?.Dispose();
             control.Region = new Region(ruta);
+        }
+
+        public static void RedondearControlAlCambiarTamano(
+            Control control,
+            int radio)
+        {
+            control.SizeChanged += (_, _) =>
+                RedondearControl(control, radio);
+
+            RedondearControl(control, radio);
         }
     }
 }

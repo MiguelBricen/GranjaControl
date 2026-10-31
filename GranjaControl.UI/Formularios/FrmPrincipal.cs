@@ -10,6 +10,7 @@ using GranjaControl.UI.Formularios.Formularios_derivados.Clientes;
 using GranjaControl.UI.Formularios.Formularios_derivados.Compras;
 using GranjaControl.UI.Formularios.Formularios_derivados.Tarifas;
 using GranjaControl.UI.Formularios.Formularios_derivados.Ventas;
+using GranjaControl.UI.Formularios.Formularios_derivados.Reportes;
 using GranjaControl.UI.Formularios_derivados;
 using GranjaControl.UI.Helpers;
 using GranjaControl.UI.Utilidades;
@@ -47,6 +48,35 @@ namespace GranjaControl.UI.Formularios
         private void btnCerrar_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void btnInicio_Click(object sender, EventArgs e)
+        {
+            AbrirDashboard();
+        }
+
+        private void btnReportes_Click(object sender, EventArgs e)
+        {
+            CerrarSubmenusPrincipales();
+            CerrarComercializacion();
+
+            NavegacionHelper.AbrirFormulario(
+                new FrmReportes(),
+                pnlContenedor,
+                ref formularioActivo,
+                btnReportes);
+        }
+
+        private void AbrirDashboard()
+        {
+            CerrarSubmenusPrincipales();
+            CerrarComercializacion();
+
+            NavegacionHelper.AbrirFormulario(
+                new FrmDashboard(),
+                pnlContenedor,
+                ref formularioActivo,
+                btnInicio);
         }
 
         private void btnMinimizar_Click(object sender, EventArgs e)
@@ -399,6 +429,7 @@ namespace GranjaControl.UI.Formularios
         private void FrmPrincipal_Load(object sender, EventArgs e)
         {
             SesionHelper.CargarDatosSesion(toolUsuario, toolRol);
+            AbrirDashboard();
         }
     }
 }
