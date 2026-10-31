@@ -60,6 +60,13 @@ namespace GranjaControl.DAL.Common
                 52027 => new Exception("La vitamina ya existe."),
                 52028 => new Exception("La vitamina no existe."),
 
+                // Vitaminización
+                52029 => new Exception("El lote no existe o está cancelado."),
+                52030 => new Exception("La vitamina no existe o está inactiva."),
+                52031 => new Exception("La cantidad de vitamina debe ser mayor que cero."),
+                52032 => new Exception("La unidad de medida no es válida."),
+                52033 => new Exception("El registro de aplicación de vitamina no existe."),
+
                 // Mortalidades
                 52034 => new Exception("El lote no existe o está cancelado."),
                 52035 => new Exception("La cantidad de mortalidad debe ser mayor que cero."),

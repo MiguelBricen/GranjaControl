@@ -5,6 +5,7 @@ using GranjaControl.UI.Formularios.Formularios_derivados.Lotes;
 using GranjaControl.UI.Formularios.Formularios_derivados.Alimentos;
 using GranjaControl.UI.Formularios.Formularios_derivados.Mortalidades;
 using GranjaControl.UI.Formularios.Formularios_derivados.Vitaminas;
+using GranjaControl.UI.Formularios.Formularios_derivados.Vitaminizaciones;
 using GranjaControl.UI.Formularios.Formularios_derivados.Clientes;
 using GranjaControl.UI.Formularios_derivados;
 using GranjaControl.UI.Helpers;
@@ -197,6 +198,15 @@ namespace GranjaControl.UI.Formularios
                 btnMortalidades);
         }
 
+        private void btnVitaminizacion_Click(object sender, EventArgs e)
+        {
+            NavegacionHelper.AbrirFormulario(
+                new FrmVitaminizacionListado(),
+                pnlContenedor,
+                ref formularioActivo,
+                btnVitaminizacion);
+        }
+
         private bool _seguridadAbierto = false;
         private bool _catalogosAbierto = false;
         private bool _produccionAbierto = false;
@@ -259,7 +269,7 @@ namespace GranjaControl.UI.Formularios
         {
             int desplazamientoSeguridad = _seguridadAbierto ? 108 : 0;
             int desplazamientoCatalogos = _catalogosAbierto ? 265 : 0;
-            int desplazamientoProduccion = _produccionAbierto ? 158 : 0;
+            int desplazamientoProduccion = _produccionAbierto ? 208 : 0;
 
             foreach (var elemento in _posicionesOriginales)
             {

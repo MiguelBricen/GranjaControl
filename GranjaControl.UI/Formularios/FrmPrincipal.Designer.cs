@@ -35,6 +35,7 @@
             btnRoles = new FontAwesome.Sharp.IconButton();
             btnUsuarios = new FontAwesome.Sharp.IconButton();
             pnlProduccion = new Panel();
+            btnVitaminizacion = new FontAwesome.Sharp.IconButton();
             btnMortalidades = new FontAwesome.Sharp.IconButton();
             btnAlimentacion = new FontAwesome.Sharp.IconButton();
             btnLotes = new FontAwesome.Sharp.IconButton();
@@ -209,12 +210,13 @@
             // pnlProduccion
             // 
             pnlProduccion.BackColor = Color.FromArgb(23, 61, 43);
+            pnlProduccion.Controls.Add(btnVitaminizacion);
             pnlProduccion.Controls.Add(btnMortalidades);
             pnlProduccion.Controls.Add(btnAlimentacion);
             pnlProduccion.Controls.Add(btnLotes);
             pnlProduccion.Location = new Point(0, 440);
             pnlProduccion.Name = "pnlProduccion";
-            pnlProduccion.Size = new Size(226, 156);
+            pnlProduccion.Size = new Size(226, 206);
             pnlProduccion.TabIndex = 6;
             pnlProduccion.Visible = false;
             // 
@@ -295,6 +297,32 @@
             btnMortalidades.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnMortalidades.UseVisualStyleBackColor = false;
             btnMortalidades.Click += btnMortalidades_Click;
+            //
+            // btnVitaminizacion
+            //
+            btnVitaminizacion.BackColor = Color.FromArgb(23, 61, 43);
+            btnVitaminizacion.Cursor = Cursors.Hand;
+            btnVitaminizacion.FlatAppearance.BorderColor = Color.FromArgb(220, 225, 216);
+            btnVitaminizacion.FlatAppearance.BorderSize = 0;
+            btnVitaminizacion.FlatAppearance.MouseOverBackColor = Color.FromArgb(62, 94, 69);
+            btnVitaminizacion.FlatStyle = FlatStyle.Flat;
+            btnVitaminizacion.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold);
+            btnVitaminizacion.ForeColor = Color.White;
+            btnVitaminizacion.IconChar = FontAwesome.Sharp.IconChar.Syringe;
+            btnVitaminizacion.IconColor = Color.White;
+            btnVitaminizacion.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnVitaminizacion.IconSize = 30;
+            btnVitaminizacion.ImageAlign = ContentAlignment.MiddleLeft;
+            btnVitaminizacion.Location = new Point(2, 153);
+            btnVitaminizacion.Name = "btnVitaminizacion";
+            btnVitaminizacion.Padding = new Padding(5, 0, 0, 0);
+            btnVitaminizacion.Size = new Size(225, 50);
+            btnVitaminizacion.TabIndex = 20;
+            btnVitaminizacion.Text = "Vitaminización";
+            btnVitaminizacion.TextAlign = ContentAlignment.MiddleRight;
+            btnVitaminizacion.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnVitaminizacion.UseVisualStyleBackColor = false;
+            btnVitaminizacion.Click += btnVitaminizacion_Click;
             //
             // btnClientes
             //
@@ -912,6 +940,7 @@
         private FontAwesome.Sharp.IconButton btnLotes;
         private FontAwesome.Sharp.IconButton btnAlimentacion;
         private FontAwesome.Sharp.IconButton btnMortalidades;
+        private FontAwesome.Sharp.IconButton btnVitaminizacion;
         private PictureBox picDif;
         private PictureBox picDif7;
         private PictureBox picDif6;
