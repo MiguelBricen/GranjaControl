@@ -39,6 +39,7 @@
             btnLotes = new FontAwesome.Sharp.IconButton();
             pnlCatalogos = new Panel();
             btnAlimentos = new FontAwesome.Sharp.IconButton();
+            btnVitaminas = new FontAwesome.Sharp.IconButton();
             btnProveedores = new FontAwesome.Sharp.IconButton();
             btnGalpones = new FontAwesome.Sharp.IconButton();
             pnlSidebar = new Panel();
@@ -192,12 +193,13 @@
             // pnlCatalogos
             // 
             pnlCatalogos.BackColor = Color.FromArgb(23, 61, 43);
+            pnlCatalogos.Controls.Add(btnVitaminas);
             pnlCatalogos.Controls.Add(btnAlimentos);
             pnlCatalogos.Controls.Add(btnProveedores);
             pnlCatalogos.Controls.Add(btnGalpones);
             pnlCatalogos.Location = new Point(0, 330);
             pnlCatalogos.Name = "pnlCatalogos";
-            pnlCatalogos.Size = new Size(226, 159);
+            pnlCatalogos.Size = new Size(226, 212);
             pnlCatalogos.TabIndex = 5;
             pnlCatalogos.Visible = false;
             // 
@@ -289,6 +291,32 @@
             btnAlimentos.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnAlimentos.UseVisualStyleBackColor = false;
             btnAlimentos.Click += btnAlimentos_Click;
+            //
+            // btnVitaminas
+            //
+            btnVitaminas.BackColor = Color.FromArgb(23, 61, 43);
+            btnVitaminas.Cursor = Cursors.Hand;
+            btnVitaminas.FlatAppearance.BorderColor = Color.FromArgb(220, 225, 216);
+            btnVitaminas.FlatAppearance.BorderSize = 0;
+            btnVitaminas.FlatAppearance.MouseOverBackColor = Color.FromArgb(62, 94, 69);
+            btnVitaminas.FlatStyle = FlatStyle.Flat;
+            btnVitaminas.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold);
+            btnVitaminas.ForeColor = Color.White;
+            btnVitaminas.IconChar = FontAwesome.Sharp.IconChar.Capsules;
+            btnVitaminas.IconColor = Color.White;
+            btnVitaminas.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnVitaminas.IconSize = 30;
+            btnVitaminas.ImageAlign = ContentAlignment.MiddleLeft;
+            btnVitaminas.Location = new Point(2, 153);
+            btnVitaminas.Name = "btnVitaminas";
+            btnVitaminas.Padding = new Padding(5, 0, 0, 0);
+            btnVitaminas.Size = new Size(225, 50);
+            btnVitaminas.TabIndex = 20;
+            btnVitaminas.Text = "Vitaminas";
+            btnVitaminas.TextAlign = ContentAlignment.MiddleRight;
+            btnVitaminas.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnVitaminas.UseVisualStyleBackColor = false;
+            btnVitaminas.Click += btnVitaminas_Click;
             // 
             // btnProveedores
             // 
@@ -821,6 +849,7 @@
         private FontAwesome.Sharp.IconButton btnGalpones;
         private FontAwesome.Sharp.IconButton btnProveedores;
         private FontAwesome.Sharp.IconButton btnAlimentos;
+        private FontAwesome.Sharp.IconButton btnVitaminas;
         private Panel pnlProduccion;
         private FontAwesome.Sharp.IconButton btnLotes;
         private FontAwesome.Sharp.IconButton btnAlimentacion;

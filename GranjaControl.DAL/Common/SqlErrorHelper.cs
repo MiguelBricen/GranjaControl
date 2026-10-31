@@ -56,6 +56,10 @@ namespace GranjaControl.DAL.Common
                 52025 => new Exception("La unidad de medida no es válida."),
                 52026 => new Exception("El registro de alimentación no existe."),
 
+                // Vitaminas
+                52027 => new Exception("La vitamina ya existe."),
+                52028 => new Exception("La vitamina no existe."),
+
                 // Tickets
                 53001 => new Exception("El usuario solicitante no existe."),
                 53002 => new Exception("El ticket no existe."),
