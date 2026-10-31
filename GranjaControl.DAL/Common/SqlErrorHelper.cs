@@ -60,6 +60,13 @@ namespace GranjaControl.DAL.Common
                 52027 => new Exception("La vitamina ya existe."),
                 52028 => new Exception("La vitamina no existe."),
 
+                // Mortalidades
+                52034 => new Exception("El lote no existe o está cancelado."),
+                52035 => new Exception("La cantidad de mortalidad debe ser mayor que cero."),
+                52036 => new Exception("La causa de mortalidad es obligatoria."),
+                52037 => new Exception("La cantidad de mortalidad supera la cantidad disponible del lote."),
+                52038 => new Exception("El registro de mortalidad no existe."),
+
                 // Clientes
                 52045 => new Exception("El nombre del cliente es obligatorio."),
                 52046 => new Exception("El tipo de cliente no es válido."),

@@ -35,6 +35,7 @@
             btnRoles = new FontAwesome.Sharp.IconButton();
             btnUsuarios = new FontAwesome.Sharp.IconButton();
             pnlProduccion = new Panel();
+            btnMortalidades = new FontAwesome.Sharp.IconButton();
             btnAlimentacion = new FontAwesome.Sharp.IconButton();
             btnLotes = new FontAwesome.Sharp.IconButton();
             pnlCatalogos = new Panel();
@@ -208,11 +209,12 @@
             // pnlProduccion
             // 
             pnlProduccion.BackColor = Color.FromArgb(23, 61, 43);
+            pnlProduccion.Controls.Add(btnMortalidades);
             pnlProduccion.Controls.Add(btnAlimentacion);
             pnlProduccion.Controls.Add(btnLotes);
             pnlProduccion.Location = new Point(0, 440);
             pnlProduccion.Name = "pnlProduccion";
-            pnlProduccion.Size = new Size(226, 106);
+            pnlProduccion.Size = new Size(226, 156);
             pnlProduccion.TabIndex = 6;
             pnlProduccion.Visible = false;
             // 
@@ -267,6 +269,32 @@
             btnAlimentacion.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnAlimentacion.UseVisualStyleBackColor = false;
             btnAlimentacion.Click += btnAlimentacion_Click;
+            // 
+            // btnMortalidades
+            // 
+            btnMortalidades.BackColor = Color.FromArgb(23, 61, 43);
+            btnMortalidades.Cursor = Cursors.Hand;
+            btnMortalidades.FlatAppearance.BorderColor = Color.FromArgb(220, 225, 216);
+            btnMortalidades.FlatAppearance.BorderSize = 0;
+            btnMortalidades.FlatAppearance.MouseOverBackColor = Color.FromArgb(62, 94, 69);
+            btnMortalidades.FlatStyle = FlatStyle.Flat;
+            btnMortalidades.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold);
+            btnMortalidades.ForeColor = Color.White;
+            btnMortalidades.IconChar = FontAwesome.Sharp.IconChar.SkullCrossbones;
+            btnMortalidades.IconColor = Color.White;
+            btnMortalidades.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnMortalidades.IconSize = 30;
+            btnMortalidades.ImageAlign = ContentAlignment.MiddleLeft;
+            btnMortalidades.Location = new Point(2, 103);
+            btnMortalidades.Name = "btnMortalidades";
+            btnMortalidades.Padding = new Padding(5, 0, 0, 0);
+            btnMortalidades.Size = new Size(225, 50);
+            btnMortalidades.TabIndex = 19;
+            btnMortalidades.Text = "Mortalidades";
+            btnMortalidades.TextAlign = ContentAlignment.MiddleRight;
+            btnMortalidades.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnMortalidades.UseVisualStyleBackColor = false;
+            btnMortalidades.Click += btnMortalidades_Click;
             //
             // btnClientes
             //
@@ -883,6 +911,7 @@
         private Panel pnlProduccion;
         private FontAwesome.Sharp.IconButton btnLotes;
         private FontAwesome.Sharp.IconButton btnAlimentacion;
+        private FontAwesome.Sharp.IconButton btnMortalidades;
         private PictureBox picDif;
         private PictureBox picDif7;
         private PictureBox picDif6;
