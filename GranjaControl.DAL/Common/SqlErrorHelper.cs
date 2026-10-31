@@ -74,11 +74,23 @@ namespace GranjaControl.DAL.Common
                 52037 => new Exception("La cantidad de mortalidad supera la cantidad disponible del lote."),
                 52038 => new Exception("El registro de mortalidad no existe."),
 
+                // Compras de alimentos
+                52039 => new Exception("El número de compra ya existe."),
+                52040 => new Exception("El proveedor seleccionado no puede suministrar alimento o está inactivo."),
+                52041 => new Exception("La compra de alimento no existe."),
+                52042 => new Exception("La cantidad de alimento debe ser mayor que cero."),
+                52043 => new Exception("El costo unitario no puede ser negativo."),
+                52044 => new Exception("El detalle de compra no existe."),
+
                 // Clientes
                 52045 => new Exception("El nombre del cliente es obligatorio."),
                 52046 => new Exception("El tipo de cliente no es válido."),
                 52047 => new Exception("Ya existe un cliente con ese nombre."),
                 52048 => new Exception("El cliente no existe."),
+                52049 => new Exception("El precio por libra debe ser mayor que cero."),
+                52050 => new Exception("La fecha fin no puede ser anterior a la fecha inicio."),
+                52051 => new Exception("El período de la tarifa se cruza con otra tarifa existente."),
+                52052 => new Exception("La tarifa de pollo no existe."),
 
                 // Tickets
                 53001 => new Exception("El usuario solicitante no existe."),

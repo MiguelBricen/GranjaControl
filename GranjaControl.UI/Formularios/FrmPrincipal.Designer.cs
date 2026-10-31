@@ -621,6 +621,7 @@
             btnComercializacion.TextAlign = ContentAlignment.MiddleRight;
             btnComercializacion.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnComercializacion.UseVisualStyleBackColor = false;
+            btnComercializacion.Click += btnComercializacion_Click;
             // 
             // btnProduccion
             // 
@@ -672,6 +673,7 @@
             btnCompras.TextAlign = ContentAlignment.MiddleRight;
             btnCompras.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnCompras.UseVisualStyleBackColor = false;
+            btnCompras.Click += btnCompras_Click;
             // 
             // btnSeguridad
             // 

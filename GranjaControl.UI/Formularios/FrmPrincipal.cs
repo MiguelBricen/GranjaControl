@@ -7,6 +7,8 @@ using GranjaControl.UI.Formularios.Formularios_derivados.Mortalidades;
 using GranjaControl.UI.Formularios.Formularios_derivados.Vitaminas;
 using GranjaControl.UI.Formularios.Formularios_derivados.Vitaminizaciones;
 using GranjaControl.UI.Formularios.Formularios_derivados.Clientes;
+using GranjaControl.UI.Formularios.Formularios_derivados.Compras;
+using GranjaControl.UI.Formularios.Formularios_derivados.Tarifas;
 using GranjaControl.UI.Formularios_derivados;
 using GranjaControl.UI.Helpers;
 using GranjaControl.UI.Utilidades;
@@ -205,6 +207,24 @@ namespace GranjaControl.UI.Formularios
                 pnlContenedor,
                 ref formularioActivo,
                 btnVitaminizacion);
+        }
+
+        private void btnCompras_Click(object sender, EventArgs e)
+        {
+            NavegacionHelper.AbrirFormulario(
+                new FrmCompraAlimentoListado(),
+                pnlContenedor,
+                ref formularioActivo,
+                btnCompras);
+        }
+
+        private void btnComercializacion_Click(object sender, EventArgs e)
+        {
+            NavegacionHelper.AbrirFormulario(
+                new FrmTarifaListado(),
+                pnlContenedor,
+                ref formularioActivo,
+                btnComercializacion);
         }
 
         private bool _seguridadAbierto = false;
