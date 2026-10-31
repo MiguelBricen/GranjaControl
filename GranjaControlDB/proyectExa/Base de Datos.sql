@@ -311,16 +311,18 @@ GO
 CREATE TABLE tblVentas
 (
 	id INT IDENTITY(1,1) NOT NULL,
-	numeroVenta NVARCHAR(25) NOT NULL,
+	numeroVenta NVARCHAR(50) NOT NULL,
 	idCliente INT NOT NULL,
 	fechaVenta DATETIME NOT NULL DEFAULT GETDATE(),
-	observacion NVARCHAR(250) NULL,
+	observacion NVARCHAR(500) NULL,
+	estado NVARCHAR(15) NOT NULL DEFAULT 'Registrada',
 
 	CONSTRAINT PK_tblVentas PRIMARY KEY (id),
 
 	CONSTRAINT UQ_tblVentas_numeroVenta UNIQUE (numeroVenta),
 
-	CONSTRAINT FK_tblVentas_tblClientes FOREIGN KEY (idCliente) REFERENCES tblClientes(id)
+	CONSTRAINT FK_tblVentas_tblClientes FOREIGN KEY (idCliente) REFERENCES tblClientes(id),
+	CONSTRAINT CK_tblVentas_estado CHECK(estado IN ('Registrada', 'Anulada'))
 );
 GO
 
@@ -334,6 +336,7 @@ CREATE TABLE tblDetalleVentas
 	id INT IDENTITY(1,1) NOT NULL,
 	idVenta INT NOT NULL,
 	idLote INT NOT NULL,
+	cantidadPollos INT NOT NULL DEFAULT 1,
 	pesoLibras DECIMAL(10,2) NOT NULL,
 	precioPorLibra DECIMAL(10,2) NOT NULL,
 
@@ -342,6 +345,7 @@ CREATE TABLE tblDetalleVentas
 	CONSTRAINT FK_tblDetalleVentas_tblVentas FOREIGN KEY (idVenta) REFERENCES tblVentas(id),
 	CONSTRAINT FK_tblDetalleVentas_tblLotes FOREIGN KEY (idLote) REFERENCES tblLotes(id),
 
+	CONSTRAINT CK_tblDetalleVentas_cantidadPollos CHECK(cantidadPollos > 0),
 	CONSTRAINT CK_tblDetalleVentas_pesoLibras CHECK(pesoLibras > 0),
 	CONSTRAINT CK_tblDetalleVentas_precioPorLibra CHECK(precioPorLibra > 0)
 );

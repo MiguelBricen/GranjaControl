@@ -18,9 +18,10 @@ BEGIN
         c.nombreCliente,
         v.fechaVenta,
         v.observacion,
-        COUNT(d.id) AS cantidadPollos,
-        SUM(d.pesoLibras) AS pesoTotalLibras,
-        SUM(d.pesoLibras * d.precioPorLibra) AS totalVenta
+        v.estado,
+        ISNULL(SUM(d.cantidadPollos), 0) AS cantidadPollos,
+        ISNULL(SUM(d.pesoLibras), 0) AS pesoTotalLibras,
+        ISNULL(SUM(d.pesoLibras * d.precioPorLibra), 0) AS totalVenta
     FROM tblVentas v
     INNER JOIN tblClientes c
         ON c.id = v.idCliente
@@ -28,13 +29,15 @@ BEGIN
         ON d.idVenta = v.id
     WHERE v.numeroVenta LIKE '%' + @buscar + '%'
        OR c.nombreCliente LIKE '%' + @buscar + '%'
+       OR v.estado LIKE '%' + @buscar + '%'
     GROUP BY
         v.id,
         v.numeroVenta,
         v.idCliente,
         c.nombreCliente,
         v.fechaVenta,
-        v.observacion
+        v.observacion,
+        v.estado
     ORDER BY v.fechaVenta DESC, v.id DESC
     OFFSET (@pagina - 1) * @tamPagina ROWS
     FETCH NEXT @tamPagina ROWS ONLY;
@@ -55,7 +58,8 @@ BEGIN
     INNER JOIN tblClientes c
         ON c.id = v.idCliente
     WHERE v.numeroVenta LIKE '%' + @buscar + '%'
-       OR c.nombreCliente LIKE '%' + @buscar + '%';
+       OR c.nombreCliente LIKE '%' + @buscar + '%'
+       OR v.estado LIKE '%' + @buscar + '%';
 END
 GO
 
@@ -73,7 +77,8 @@ BEGIN
         c.nombreCliente,
         v.fechaVenta,
         v.observacion,
-        COUNT(d.id) AS cantidadPollos,
+        v.estado,
+        ISNULL(SUM(d.cantidadPollos), 0) AS cantidadPollos,
         ISNULL(SUM(d.pesoLibras), 0) AS pesoTotalLibras,
         ISNULL(SUM(d.pesoLibras * d.precioPorLibra), 0) AS totalVenta
     FROM tblVentas v
@@ -88,16 +93,17 @@ BEGIN
         v.idCliente,
         c.nombreCliente,
         v.fechaVenta,
-        v.observacion;
+        v.observacion,
+        v.estado;
 END
 GO
 
 
 CREATE OR ALTER PROCEDURE sp_AgregarVenta
-    @numeroVenta NVARCHAR(25),
+    @numeroVenta NVARCHAR(50),
     @idCliente INT,
     @fechaVenta DATETIME = NULL,
-    @observacion NVARCHAR(250) = NULL,
+    @observacion NVARCHAR(500) = NULL,
     @usuarioApp NVARCHAR(25)
 AS
 BEGIN
@@ -149,14 +155,16 @@ BEGIN
             numeroVenta,
             idCliente,
             fechaVenta,
-            observacion
+            observacion,
+            estado
         )
         VALUES
         (
             @numeroVenta,
             @idCliente,
             @fechaVenta,
-            @observacion
+            @observacion,
+            'Registrada'
         );
 
         COMMIT;
@@ -187,10 +195,10 @@ GO
 
 CREATE OR ALTER PROCEDURE sp_ActualizarVenta
     @Id INT,
-    @numeroVenta NVARCHAR(25),
+    @numeroVenta NVARCHAR(50),
     @idCliente INT,
     @fechaVenta DATETIME,
-    @observacion NVARCHAR(250) = NULL,
+    @observacion NVARCHAR(500) = NULL,
     @usuarioApp NVARCHAR(25)
 AS
 BEGIN
@@ -200,7 +208,8 @@ BEGIN
         @mensajeError NVARCHAR(MAX),
         @numeroError INT,
         @procedimiento NVARCHAR(150),
-        @lineaError INT;
+        @lineaError INT,
+        @estado NVARCHAR(15);
 
     BEGIN TRY
         BEGIN TRANSACTION;
@@ -208,14 +217,18 @@ BEGIN
         SET @numeroVenta = TRIM(@numeroVenta);
         SET @observacion = NULLIF(TRIM(ISNULL(@observacion, '')), '');
 
-        IF NOT EXISTS
-        (
-            SELECT 1
-            FROM tblVentas
-            WHERE id = @Id
-        )
+        SELECT @estado = estado
+        FROM tblVentas
+        WHERE id = @Id;
+
+        IF @estado IS NULL
         BEGIN
             THROW 52056, 'La venta no existe.', 1;
+        END;
+
+        IF @estado = 'Anulada'
+        BEGIN
+            THROW 52065, 'La venta está anulada y no puede modificarse.', 1;
         END;
 
         IF @numeroVenta = ''
@@ -275,3 +288,61 @@ BEGIN
 END
 GO
 
+
+CREATE OR ALTER PROCEDURE sp_AnularVenta
+    @Id INT,
+    @usuarioApp NVARCHAR(25)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE
+        @mensajeError NVARCHAR(MAX),
+        @numeroError INT,
+        @procedimiento NVARCHAR(150),
+        @lineaError INT,
+        @estado NVARCHAR(15);
+
+    BEGIN TRY
+        BEGIN TRANSACTION;
+
+        SELECT @estado = estado
+        FROM tblVentas
+        WHERE id = @Id;
+
+        IF @estado IS NULL
+        BEGIN
+            THROW 52056, 'La venta no existe.', 1;
+        END;
+
+        IF @estado = 'Anulada'
+        BEGIN
+            THROW 52066, 'La venta ya está anulada.', 1;
+        END;
+
+        UPDATE tblVentas
+        SET estado = 'Anulada'
+        WHERE id = @Id;
+
+        COMMIT;
+    END TRY
+    BEGIN CATCH
+        IF @@TRANCOUNT > 0
+            ROLLBACK;
+
+        SET @mensajeError = ERROR_MESSAGE();
+        SET @numeroError = ERROR_NUMBER();
+        SET @procedimiento = ERROR_PROCEDURE();
+        SET @lineaError = ERROR_LINE();
+
+        EXEC sp_LogErrores_Insertar
+            @mensajeError,
+            @numeroError,
+            @procedimiento,
+            @usuarioApp,
+            @lineaError;
+
+        THROW;
+    END CATCH
+END
+GO

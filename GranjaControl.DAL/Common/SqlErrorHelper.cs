@@ -92,6 +92,22 @@ namespace GranjaControl.DAL.Common
                 52051 => new Exception("El período de la tarifa se cruza con otra tarifa existente."),
                 52052 => new Exception("La tarifa de pollo no existe."),
 
+                // Ventas
+                52053 => new Exception("El número de venta es obligatorio."),
+                52054 => new Exception("Ya existe una venta con ese número."),
+                52055 => new Exception("El cliente no existe o está inactivo."),
+                52056 => new Exception("La venta no existe."),
+                52057 => new Exception("El lote no existe."),
+                52058 => new Exception("El peso total en libras debe ser mayor que cero."),
+                52059 => new Exception("El lote no existe o está cancelado."),
+                52060 => new Exception("El lote no tiene pollos disponibles para la venta."),
+                52061 => new Exception("No existe una tarifa vigente para la fecha de la venta."),
+                52062 => new Exception("El detalle de venta no existe."),
+                52063 => new Exception("La cantidad de pollos debe ser mayor que cero."),
+                52064 => new Exception("La cantidad de pollos supera la disponibilidad del lote."),
+                52065 => new Exception("La venta está anulada y no puede modificarse."),
+                52066 => new Exception("La venta ya está anulada."),
+
                 // Tickets
                 53001 => new Exception("El usuario solicitante no existe."),
                 53002 => new Exception("El ticket no existe."),

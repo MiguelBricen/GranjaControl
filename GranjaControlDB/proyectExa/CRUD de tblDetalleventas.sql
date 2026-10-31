@@ -10,12 +10,16 @@ BEGIN
     SELECT
         d.id,
         d.idVenta,
+        v.numeroVenta,
         d.idLote,
         l.codigoLote,
+        d.cantidadPollos,
         d.pesoLibras,
         d.precioPorLibra,
         d.pesoLibras * d.precioPorLibra AS subtotal
     FROM tblDetalleVentas d
+    INNER JOIN tblVentas v
+        ON v.id = d.idVenta
     INNER JOIN tblLotes l
         ON l.id = d.idLote
     WHERE d.idVenta = @idVenta
@@ -33,12 +37,16 @@ BEGIN
     SELECT
         d.id,
         d.idVenta,
+        v.numeroVenta,
         d.idLote,
         l.codigoLote,
+        d.cantidadPollos,
         d.pesoLibras,
         d.precioPorLibra,
         d.pesoLibras * d.precioPorLibra AS subtotal
     FROM tblDetalleVentas d
+    INNER JOIN tblVentas v
+        ON v.id = d.idVenta
     INNER JOIN tblLotes l
         ON l.id = d.idLote
     WHERE d.id = @Id;
@@ -49,6 +57,7 @@ GO
 CREATE OR ALTER PROCEDURE sp_AgregarDetalleVenta
     @idVenta INT,
     @idLote INT,
+    @cantidadPollos INT,
     @pesoLibras DECIMAL(10,2),
     @usuarioApp NVARCHAR(25)
 AS
@@ -61,6 +70,7 @@ BEGIN
         @procedimiento NVARCHAR(150),
         @lineaError INT,
         @fechaVenta DATETIME,
+        @estadoVenta NVARCHAR(15),
         @precioPorLibra DECIMAL(10,2),
         @cantidadInicial INT,
         @totalMortalidades INT,
@@ -70,14 +80,20 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
-        IF NOT EXISTS
-        (
-            SELECT 1
-            FROM tblVentas
-            WHERE id = @idVenta
-        )
+        SELECT
+            @fechaVenta = fechaVenta,
+            @estadoVenta = estado
+        FROM tblVentas
+        WHERE id = @idVenta;
+
+        IF @fechaVenta IS NULL
         BEGIN
             THROW 52056, 'La venta no existe.', 1;
+        END;
+
+        IF @estadoVenta = 'Anulada'
+        BEGIN
+            THROW 52065, 'La venta está anulada y no puede modificarse.', 1;
         END;
 
         IF NOT EXISTS
@@ -90,15 +106,15 @@ BEGIN
             THROW 52057, 'El lote no existe.', 1;
         END;
 
-        IF @pesoLibras <= 0
+        IF @cantidadPollos <= 0
         BEGIN
-            THROW 52058, 'El peso del pollo debe ser mayor que cero.', 1;
+            THROW 52063, 'La cantidad de pollos debe ser mayor que cero.', 1;
         END;
 
-        SELECT
-            @fechaVenta = fechaVenta
-        FROM tblVentas
-        WHERE id = @idVenta;
+        IF @pesoLibras <= 0
+        BEGIN
+            THROW 52058, 'El peso total en libras debe ser mayor que cero.', 1;
+        END;
 
         SELECT
             @cantidadInicial = cantidadInicial
@@ -117,9 +133,12 @@ BEGIN
         WHERE idLote = @idLote;
 
         SELECT
-            @totalVendidos = COUNT(*)
-        FROM tblDetalleVentas
-        WHERE idLote = @idLote;
+            @totalVendidos = ISNULL(SUM(d.cantidadPollos), 0)
+        FROM tblDetalleVentas d
+        INNER JOIN tblVentas v
+            ON v.id = d.idVenta
+        WHERE d.idLote = @idLote
+          AND v.estado <> 'Anulada';
 
         SET @disponibles =
             @cantidadInicial
@@ -129,6 +148,11 @@ BEGIN
         IF @disponibles <= 0
         BEGIN
             THROW 52060, 'El lote no tiene pollos disponibles para la venta.', 1;
+        END;
+
+        IF @cantidadPollos > @disponibles
+        BEGIN
+            THROW 52064, 'La cantidad de pollos supera la disponibilidad del lote.', 1;
         END;
 
         SELECT TOP 1
@@ -148,6 +172,7 @@ BEGIN
         (
             idVenta,
             idLote,
+            cantidadPollos,
             pesoLibras,
             precioPorLibra
         )
@@ -155,6 +180,7 @@ BEGIN
         (
             @idVenta,
             @idLote,
+            @cantidadPollos,
             @pesoLibras,
             @precioPorLibra
         );
@@ -191,6 +217,7 @@ CREATE OR ALTER PROCEDURE sp_ActualizarDetalleVenta
     @Id INT,
     @idVenta INT,
     @idLote INT,
+    @cantidadPollos INT,
     @pesoLibras DECIMAL(10,2),
     @usuarioApp NVARCHAR(25)
 AS
@@ -207,29 +234,48 @@ BEGIN
         @totalVendidos INT,
         @disponibles INT,
         @precioPorLibra DECIMAL(10,2),
-        @fechaVenta DATETIME;
+        @fechaVenta DATETIME,
+        @estadoVenta NVARCHAR(15),
+        @idVentaAnterior INT;
 
     BEGIN TRY
         BEGIN TRANSACTION;
 
-        IF NOT EXISTS
-        (
-            SELECT 1
-            FROM tblDetalleVentas
-            WHERE id = @Id
-        )
+        SELECT
+            @idVentaAnterior = idVenta
+        FROM tblDetalleVentas
+        WHERE id = @Id;
+
+        IF @idVentaAnterior IS NULL
         BEGIN
             THROW 52062, 'El detalle de venta no existe.', 1;
         END;
 
-        IF NOT EXISTS
+        IF EXISTS
         (
             SELECT 1
             FROM tblVentas
-            WHERE id = @idVenta
+            WHERE id = @idVentaAnterior
+              AND estado = 'Anulada'
         )
         BEGIN
+            THROW 52065, 'La venta está anulada y no puede modificarse.', 1;
+        END;
+
+        SELECT
+            @fechaVenta = fechaVenta,
+            @estadoVenta = estado
+        FROM tblVentas
+        WHERE id = @idVenta;
+
+        IF @fechaVenta IS NULL
+        BEGIN
             THROW 52056, 'La venta no existe.', 1;
+        END;
+
+        IF @estadoVenta = 'Anulada'
+        BEGIN
+            THROW 52065, 'La venta está anulada y no puede modificarse.', 1;
         END;
 
         IF NOT EXISTS
@@ -243,15 +289,15 @@ BEGIN
             THROW 52059, 'El lote no existe o está cancelado.', 1;
         END;
 
-        IF @pesoLibras <= 0
+        IF @cantidadPollos <= 0
         BEGIN
-            THROW 52058, 'El peso del pollo debe ser mayor que cero.', 1;
+            THROW 52063, 'La cantidad de pollos debe ser mayor que cero.', 1;
         END;
 
-        SELECT
-            @fechaVenta = fechaVenta
-        FROM tblVentas
-        WHERE id = @idVenta;
+        IF @pesoLibras <= 0
+        BEGIN
+            THROW 52058, 'El peso total en libras debe ser mayor que cero.', 1;
+        END;
 
         SELECT
             @cantidadInicial = cantidadInicial
@@ -264,10 +310,13 @@ BEGIN
         WHERE idLote = @idLote;
 
         SELECT
-            @totalVendidos = COUNT(*)
-        FROM tblDetalleVentas
-        WHERE idLote = @idLote
-          AND id <> @Id;
+            @totalVendidos = ISNULL(SUM(d.cantidadPollos), 0)
+        FROM tblDetalleVentas d
+        INNER JOIN tblVentas v
+            ON v.id = d.idVenta
+        WHERE d.idLote = @idLote
+          AND d.id <> @Id
+          AND v.estado <> 'Anulada';
 
         SET @disponibles =
             @cantidadInicial
@@ -277,6 +326,11 @@ BEGIN
         IF @disponibles <= 0
         BEGIN
             THROW 52060, 'El lote no tiene pollos disponibles para la venta.', 1;
+        END;
+
+        IF @cantidadPollos > @disponibles
+        BEGIN
+            THROW 52064, 'La cantidad de pollos supera la disponibilidad del lote.', 1;
         END;
 
         SELECT TOP 1
@@ -296,6 +350,7 @@ BEGIN
         SET
             idVenta = @idVenta,
             idLote = @idLote,
+            cantidadPollos = @cantidadPollos,
             pesoLibras = @pesoLibras,
             precioPorLibra = @precioPorLibra
         WHERE id = @Id;
@@ -335,19 +390,31 @@ BEGIN
         @mensajeError NVARCHAR(MAX),
         @numeroError INT,
         @procedimiento NVARCHAR(150),
-        @lineaError INT;
+        @lineaError INT,
+        @idVenta INT;
 
     BEGIN TRY
         BEGIN TRANSACTION;
 
-        IF NOT EXISTS
-        (
-            SELECT 1
-            FROM tblDetalleVentas
-            WHERE id = @Id
-        )
+        SELECT
+            @idVenta = idVenta
+        FROM tblDetalleVentas
+        WHERE id = @Id;
+
+        IF @idVenta IS NULL
         BEGIN
             THROW 52062, 'El detalle de venta no existe.', 1;
+        END;
+
+        IF EXISTS
+        (
+            SELECT 1
+            FROM tblVentas
+            WHERE id = @idVenta
+              AND estado = 'Anulada'
+        )
+        BEGIN
+            THROW 52065, 'La venta está anulada y no puede modificarse.', 1;
         END;
 
         DELETE FROM tblDetalleVentas

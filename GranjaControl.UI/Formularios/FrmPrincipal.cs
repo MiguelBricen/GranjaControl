@@ -9,6 +9,7 @@ using GranjaControl.UI.Formularios.Formularios_derivados.Vitaminizaciones;
 using GranjaControl.UI.Formularios.Formularios_derivados.Clientes;
 using GranjaControl.UI.Formularios.Formularios_derivados.Compras;
 using GranjaControl.UI.Formularios.Formularios_derivados.Tarifas;
+using GranjaControl.UI.Formularios.Formularios_derivados.Ventas;
 using GranjaControl.UI.Formularios_derivados;
 using GranjaControl.UI.Helpers;
 using GranjaControl.UI.Utilidades;
@@ -87,6 +88,8 @@ namespace GranjaControl.UI.Formularios
                     pnlProduccion.Visible = false;
                     btnProduccion.BackColor = Color.FromArgb(23, 61, 43);
                 }
+
+                CerrarComercializacion();
             }
 
             btnCatalogos.BackColor = _catalogosAbierto
@@ -162,6 +165,8 @@ namespace GranjaControl.UI.Formularios
                     pnlSeguridad.Visible = false;
                     btnSeguridad.BackColor = Color.FromArgb(23, 61, 43);
                 }
+
+                CerrarComercializacion();
             }
 
             btnProduccion.BackColor = _produccionAbierto
@@ -220,6 +225,24 @@ namespace GranjaControl.UI.Formularios
 
         private void btnComercializacion_Click(object sender, EventArgs e)
         {
+            _comercializacionAbierto = !_comercializacionAbierto;
+
+            if (_comercializacionAbierto)
+            {
+                CerrarSubmenusPrincipales();
+            }
+
+            btnComercializacion.BackColor = _comercializacionAbierto
+                ? Color.FromArgb(73, 111, 82)
+                : Color.FromArgb(23, 61, 43);
+
+            AjustarMenuSidebar();
+
+            pnlComercializacion.Visible = _comercializacionAbierto;
+        }
+
+        private void btnTarifas_Click(object sender, EventArgs e)
+        {
             NavegacionHelper.AbrirFormulario(
                 new FrmTarifaListado(),
                 pnlContenedor,
@@ -227,7 +250,32 @@ namespace GranjaControl.UI.Formularios
                 btnComercializacion);
         }
 
+        private void btnVentas_Click(object sender, EventArgs e)
+        {
+            NavegacionHelper.AbrirFormulario(
+                new FrmVentaListado(),
+                pnlContenedor,
+                ref formularioActivo,
+                btnComercializacion);
+        }
+
+        private void CerrarSubmenusPrincipales()
+        {
+            _seguridadAbierto = false;
+            pnlSeguridad.Visible = false;
+            btnSeguridad.BackColor = Color.FromArgb(23, 61, 43);
+
+            _catalogosAbierto = false;
+            pnlCatalogos.Visible = false;
+            btnCatalogos.BackColor = Color.FromArgb(23, 61, 43);
+
+            _produccionAbierto = false;
+            pnlProduccion.Visible = false;
+            btnProduccion.BackColor = Color.FromArgb(23, 61, 43);
+        }
+
         private bool _seguridadAbierto = false;
+        private bool _comercializacionAbierto = false;
         private bool _catalogosAbierto = false;
         private bool _produccionAbierto = false;
         private readonly Dictionary<Control, int> _posicionesOriginales = new();
@@ -271,6 +319,8 @@ namespace GranjaControl.UI.Formularios
                     pnlProduccion.Visible = false;
                     btnProduccion.BackColor = Color.FromArgb(23, 61, 43);
                 }
+
+                CerrarComercializacion();
             }
 
             pnlSeguridad.Visible = _seguridadAbierto;
@@ -285,11 +335,23 @@ namespace GranjaControl.UI.Formularios
 
         }
 
+        private void CerrarComercializacion()
+        {
+            if (!_comercializacionAbierto)
+                return;
+
+            _comercializacionAbierto = false;
+            pnlComercializacion.Visible = false;
+            btnComercializacion.BackColor = Color.FromArgb(23, 61, 43);
+        }
+
         private void AjustarMenuSidebar()
         {
             int desplazamientoSeguridad = _seguridadAbierto ? 108 : 0;
             int desplazamientoCatalogos = _catalogosAbierto ? 265 : 0;
             int desplazamientoProduccion = _produccionAbierto ? 208 : 0;
+            int desplazamientoComercializacion =
+                _comercializacionAbierto ? 106 : 0;
 
             foreach (var elemento in _posicionesOriginales)
             {
@@ -309,11 +371,18 @@ namespace GranjaControl.UI.Formularios
                     desplazamiento += desplazamientoProduccion;
                 }
 
+                if (elemento.Value >
+                    _posicionesOriginales[btnComercializacion])
+                {
+                    desplazamiento += desplazamientoComercializacion;
+                }
+
                 elemento.Key.Top = elemento.Value + desplazamiento;
             }
 
             pnlCatalogos.Top = btnCatalogos.Top + 50;
             pnlProduccion.Top = btnProduccion.Top + 50;
+            pnlComercializacion.Top = btnComercializacion.Top + 50;
         }
 
 
