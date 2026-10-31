@@ -2,12 +2,18 @@
 using GranjaControl.DAL;
 using GranjaControl.UI.Formularios_base;
 using GranjaControl.UI.Seguridad;
+using GranjaControl.UI.Utilidades;
 
 namespace GranjaControl.UI.Formularios.Formularios_derivados.Roles
 {
     public partial class FrmRolesListado : FrmBaseListado
     {
+        protected override bool PuedeCrear => RolesSistema.PuedeGestionarRoles();
+        protected override bool PuedeEditar => RolesSistema.PuedeGestionarRoles();
+        protected override bool PuedeEliminar => RolesSistema.PuedeGestionarRoles();
+
         private readonly RolBll _rolBll;
+        private readonly Mensajes mensajes = new();
         public FrmRolesListado()
         {
             InitializeComponent();
@@ -34,7 +40,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Roles
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Atención", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                mensajes.MensajeError(ex.Message);
             }
         }
 
@@ -137,7 +143,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Roles
 
             if (id == null)
             {
-                MessageBox.Show("Debe seleccionar un registro", "Información", MessageBoxButtons.OK);
+                mensajes.MensajeInformacion("Debe seleccionar un registro.");
                 return;
             }
 
@@ -145,7 +151,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Roles
 
             string accion = activo ? "desactivar" : "activar";
 
-            DialogResult respuesta = MessageBox.Show($"¿Desea {accion} este registro?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult respuesta = mensajes.MensajeConfirmacion(
+                $"¿Desea {accion} este registro?");
 
             if (respuesta != DialogResult.Yes)
                 return;
@@ -157,7 +164,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Roles
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                mensajes.MensajeError(ex.Message);
             }
         }
     }

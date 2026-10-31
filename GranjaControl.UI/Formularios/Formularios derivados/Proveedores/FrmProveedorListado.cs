@@ -8,6 +8,10 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Proveedores
 {
     public partial class FrmProveedorListado : FrmBaseListado
     {
+        protected override bool PuedeCrear => RolesSistema.PuedeAdministrarCatalogos();
+        protected override bool PuedeEditar => RolesSistema.PuedeAdministrarCatalogos();
+        protected override bool PuedeEliminar => RolesSistema.PuedeAdministrarCatalogos();
+
         private readonly ProveedorBLL _proveedorBLL;
         private readonly Mensajes mensajes = new();
 

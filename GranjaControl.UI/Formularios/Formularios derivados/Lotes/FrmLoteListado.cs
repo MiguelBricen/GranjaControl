@@ -1,12 +1,17 @@
 using GranjaControl.BLL;
 using GranjaControl.DAL;
 using GranjaControl.UI.Formularios_base;
+using GranjaControl.UI.Seguridad;
 using GranjaControl.UI.Utilidades;
 
 namespace GranjaControl.UI.Formularios.Formularios_derivados.Lotes
 {
     public partial class FrmLoteListado : FrmBaseListado
     {
+        protected override bool PuedeCrear => RolesSistema.PuedeGestionarLotes();
+        protected override bool PuedeEditar => RolesSistema.PuedeGestionarLotes();
+        protected override bool PuedeEliminar => RolesSistema.PuedeGestionarLotes();
+
         private readonly LoteBLL _loteBLL;
         private readonly GalponBLL _galponBLL;
         private readonly ProveedorBLL _proveedorBLL;

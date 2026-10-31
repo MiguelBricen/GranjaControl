@@ -8,6 +8,10 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Clientes
 {
     public partial class FrmClienteListado : FrmBaseListado
     {
+        protected override bool PuedeCrear => RolesSistema.PuedeAdministrarCatalogos();
+        protected override bool PuedeEditar => RolesSistema.PuedeAdministrarCatalogos();
+        protected override bool PuedeEliminar => RolesSistema.PuedeAdministrarCatalogos();
+
         private readonly ClienteBLL _clienteBLL;
         private readonly Mensajes mensajes = new();
 

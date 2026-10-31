@@ -1,6 +1,7 @@
 using GranjaControl.BLL;
 using GranjaControl.DAL;
 using GranjaControl.UI.Formularios_base;
+using GranjaControl.UI.Seguridad;
 using GranjaControl.UI.Utilidades;
 
 namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
@@ -13,6 +14,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
         private readonly Mensajes mensajes = new();
 
         protected override bool MostrarBotonTerciario => false;
+        protected override bool PuedeCrear => RolesSistema.PuedeAccederCompras();
+        protected override bool PuedeEditar => RolesSistema.PuedeAccederCompras();
 
         public FrmCompraAlimentoListado()
         {

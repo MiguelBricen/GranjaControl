@@ -3,6 +3,7 @@ using GranjaControl.DAL;
 using GranjaControl.Entitys.Dto;
 using GranjaControl.Entitys.Entidades;
 using GranjaControl.UI.Helpers;
+using GranjaControl.UI.Seguridad;
 using GranjaControl.UI.Utilidades;
 
 namespace GranjaControl.UI.Formularios.Formularios_derivados.Reportes
@@ -50,9 +51,18 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Reportes
 
         private void ConfigurarPestanas()
         {
-            tabVentas.Controls.Add(ConstruirPaginaVentas());
             tabProduccion.Controls.Add(ConstruirPaginaProduccion());
-            tabCompras.Controls.Add(ConstruirPaginaCompras());
+
+            if (RolesSistema.PuedeConsultarReportesComerciales())
+            {
+                tabVentas.Controls.Add(ConstruirPaginaVentas());
+                tabCompras.Controls.Add(ConstruirPaginaCompras());
+                return;
+            }
+
+            tabReportes.TabPages.Remove(tabVentas);
+            tabReportes.TabPages.Remove(tabCompras);
+            tabReportes.SelectedTab = tabProduccion;
         }
 
         private Control ConstruirPaginaVentas()
@@ -739,13 +749,21 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Reportes
         private async void FrmReportes_Load(object sender, EventArgs e)
         {
             await CargarFiltrosAsync();
-            await CargarVentasAsync();
+
+            if (RolesSistema.PuedeConsultarReportesComerciales())
+                await CargarVentasAsync();
+            else
+                await CargarProduccionAsync();
         }
 
         private async Task CargarFiltrosAsync()
         {
-            await CargarClientesAsync();
             await CargarGalponesAsync();
+
+            if (!RolesSistema.PuedeConsultarReportesComerciales())
+                return;
+
+            await CargarClientesAsync();
             await CargarProveedoresAsync();
         }
 
@@ -1167,17 +1185,26 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Reportes
 
         private void FrmReportes_Shown(object sender, EventArgs e)
         {
-            RedondearControlHelper.RedondearControlAlCambiarTamano(
-                _dgvVentas,
-                10);
+            if (_dgvVentas is not null)
+            {
+                RedondearControlHelper.RedondearControlAlCambiarTamano(
+                    _dgvVentas,
+                    10);
+            }
 
-            RedondearControlHelper.RedondearControlAlCambiarTamano(
-                _dgvProduccion,
-                10);
+            if (_dgvProduccion is not null)
+            {
+                RedondearControlHelper.RedondearControlAlCambiarTamano(
+                    _dgvProduccion,
+                    10);
+            }
 
-            RedondearControlHelper.RedondearControlAlCambiarTamano(
-                _dgvCompras,
-                10);
+            if (_dgvCompras is not null)
+            {
+                RedondearControlHelper.RedondearControlAlCambiarTamano(
+                    _dgvCompras,
+                    10);
+            }
         }
 
         private sealed class OpcionFiltro

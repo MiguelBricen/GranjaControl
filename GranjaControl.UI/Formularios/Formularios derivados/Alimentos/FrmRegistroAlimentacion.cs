@@ -210,6 +210,13 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Alimentos
             object sender,
             EventArgs e)
         {
+            bool permitido = EsEdicion
+                ? RolesSistema.PuedeEditarProduccion()
+                : RolesSistema.PuedeRegistrarProduccion();
+
+            if (!RolesSistema.Autorizar(this, permitido))
+                return;
+
             try
             {
                 await CargarCombosAsync();

@@ -42,6 +42,9 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Lotes
             object sender,
             EventArgs e)
         {
+            if (!RolesSistema.Autorizar(this, RolesSistema.PuedeGestionarLotes()))
+                return;
+
             CargarEstados();
 
             lblEstadoActual.Text =

@@ -8,6 +8,10 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Alimentos
 {
     public partial class FrmAlimentoListado : FrmBaseListado
     {
+        protected override bool PuedeCrear => RolesSistema.PuedeAdministrarCatalogos();
+        protected override bool PuedeEditar => RolesSistema.PuedeAdministrarCatalogos();
+        protected override bool PuedeEliminar => RolesSistema.PuedeAdministrarCatalogos();
+
         private readonly AlimentoBLL _alimentoBLL;
         private readonly Mensajes mensajes = new();
 

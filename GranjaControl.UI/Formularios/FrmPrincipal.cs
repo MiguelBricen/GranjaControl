@@ -13,6 +13,7 @@ using GranjaControl.UI.Formularios.Formularios_derivados.Ventas;
 using GranjaControl.UI.Formularios.Formularios_derivados.Reportes;
 using GranjaControl.UI.Formularios_derivados;
 using GranjaControl.UI.Helpers;
+using GranjaControl.UI.Seguridad;
 using GranjaControl.UI.Utilidades;
 
 namespace GranjaControl.UI.Formularios
@@ -26,7 +27,7 @@ namespace GranjaControl.UI.Formularios
         public FrmPrincipal()
         {
             InitializeComponent();
-            GuardarPosicionesMenu();
+            ConfigurarMenuPorRol();
         }
 
         #region Sidebar
@@ -246,6 +247,13 @@ namespace GranjaControl.UI.Formularios
 
         private void btnCompras_Click(object sender, EventArgs e)
         {
+            if (!VerificarPermiso(
+                RolesSistema.PuedeAccederCompras(),
+                "No tiene permisos para acceder a las compras."))
+            {
+                return;
+            }
+
             NavegacionHelper.AbrirFormulario(
                 new FrmCompraAlimentoListado(),
                 pnlContenedor,
@@ -255,6 +263,13 @@ namespace GranjaControl.UI.Formularios
 
         private void btnComercializacion_Click(object sender, EventArgs e)
         {
+            if (!VerificarPermiso(
+                RolesSistema.PuedeAccederComercializacion(),
+                "No tiene permisos para acceder a la comercialización."))
+            {
+                return;
+            }
+
             _comercializacionAbierto = !_comercializacionAbierto;
 
             if (_comercializacionAbierto)
@@ -273,6 +288,13 @@ namespace GranjaControl.UI.Formularios
 
         private void btnTarifas_Click(object sender, EventArgs e)
         {
+            if (!VerificarPermiso(
+                RolesSistema.PuedeAccederComercializacion(),
+                "No tiene permisos para acceder a las tarifas."))
+            {
+                return;
+            }
+
             NavegacionHelper.AbrirFormulario(
                 new FrmTarifaListado(),
                 pnlContenedor,
@@ -282,6 +304,13 @@ namespace GranjaControl.UI.Formularios
 
         private void btnVentas_Click(object sender, EventArgs e)
         {
+            if (!VerificarPermiso(
+                RolesSistema.PuedeAccederComercializacion(),
+                "No tiene permisos para acceder a las ventas."))
+            {
+                return;
+            }
+
             NavegacionHelper.AbrirFormulario(
                 new FrmVentaListado(),
                 pnlContenedor,
@@ -302,35 +331,46 @@ namespace GranjaControl.UI.Formularios
             _produccionAbierto = false;
             pnlProduccion.Visible = false;
             btnProduccion.BackColor = Color.FromArgb(23, 61, 43);
+
+            AjustarMenuSidebar();
         }
 
         private bool _seguridadAbierto = false;
         private bool _comercializacionAbierto = false;
         private bool _catalogosAbierto = false;
         private bool _produccionAbierto = false;
-        private readonly Dictionary<Control, int> _posicionesOriginales = new();
 
-        private void GuardarPosicionesMenu()
+        private void ConfigurarMenuPorRol()
         {
-            _posicionesOriginales.Clear();
+            bool esAdministrador = RolesSistema.EsAdministrador();
 
-            Control[] controlesMenu =
-            {
-                btnCatalogos, picDif3,
-                btnProduccion, picDif4,
-                btnCompras, picDif5,
-                btnComercializacion, picDif6,
-                btnReportes, picDif7
-            };
+            btnSeguridad.Visible = esAdministrador;
+            picDif2.Visible = esAdministrador;
+            pnlSeguridad.Visible = false;
 
-            foreach (Control control in controlesMenu)
-            {
-                _posicionesOriginales[control] = control.Top;
-            }
+            btnCompras.Visible = esAdministrador;
+            picDif5.Visible = esAdministrador;
+
+            btnComercializacion.Visible = esAdministrador;
+            picDif6.Visible = esAdministrador;
+            pnlComercializacion.Visible = false;
+
+            _seguridadAbierto = false;
+            _comercializacionAbierto = false;
+            _catalogosAbierto = false;
+            _produccionAbierto = false;
+
+            AjustarMenuSidebar();
         }
 
         private void btnSeguridad_Click(object sender, EventArgs e)
         {
+            if (!VerificarPermiso(
+                RolesSistema.PuedeAccederSeguridad(),
+                "No tiene permisos para acceder a la seguridad."))
+            {
+                return;
+            }
 
             _seguridadAbierto = !_seguridadAbierto;
 
@@ -373,61 +413,102 @@ namespace GranjaControl.UI.Formularios
             _comercializacionAbierto = false;
             pnlComercializacion.Visible = false;
             btnComercializacion.BackColor = Color.FromArgb(23, 61, 43);
+
+            AjustarMenuSidebar();
         }
 
         private void AjustarMenuSidebar()
         {
-            int desplazamientoSeguridad = _seguridadAbierto ? 108 : 0;
-            int desplazamientoCatalogos = _catalogosAbierto ? 265 : 0;
-            int desplazamientoProduccion = _produccionAbierto ? 208 : 0;
-            int desplazamientoComercializacion =
-                _comercializacionAbierto ? 106 : 0;
+            int posicion = 166;
 
-            foreach (var elemento in _posicionesOriginales)
+            AjustarElementoMenu(btnInicio, picDif, null, false, ref posicion);
+            AjustarElementoMenu(btnSeguridad, picDif2, pnlSeguridad, _seguridadAbierto, ref posicion);
+            AjustarElementoMenu(btnCatalogos, picDif3, pnlCatalogos, _catalogosAbierto, ref posicion);
+            AjustarElementoMenu(btnProduccion, picDif4, pnlProduccion, _produccionAbierto, ref posicion);
+            AjustarElementoMenu(btnCompras, picDif5, null, false, ref posicion);
+            AjustarElementoMenu(btnComercializacion, picDif6, pnlComercializacion, _comercializacionAbierto, ref posicion);
+            AjustarElementoMenu(btnReportes, picDif7, null, false, ref posicion);
+        }
+
+        private static void AjustarElementoMenu(
+            Control boton,
+            Control separador,
+            Panel? panel,
+            bool submenuAbierto,
+            ref int posicion)
+        {
+            if (!boton.Visible)
             {
-                int desplazamiento = desplazamientoSeguridad;
+                separador.Visible = false;
 
-                if (elemento.Key != btnCatalogos &&
-                    elemento.Key != picDif3)
-                {
-                    desplazamiento += desplazamientoCatalogos;
-                }
+                if (panel != null)
+                    panel.Visible = false;
 
-                if (elemento.Key != btnCatalogos &&
-                    elemento.Key != picDif3 &&
-                    elemento.Key != btnProduccion &&
-                    elemento.Key != picDif4)
-                {
-                    desplazamiento += desplazamientoProduccion;
-                }
-
-                if (elemento.Value >
-                    _posicionesOriginales[btnComercializacion])
-                {
-                    desplazamiento += desplazamientoComercializacion;
-                }
-
-                elemento.Key.Top = elemento.Value + desplazamiento;
+                return;
             }
 
-            pnlCatalogos.Top = btnCatalogos.Top + 50;
-            pnlProduccion.Top = btnProduccion.Top + 50;
-            pnlComercializacion.Top = btnComercializacion.Top + 50;
+            separador.Visible = true;
+            separador.Top = posicion;
+            boton.Top = posicion;
+
+            if (panel == null)
+            {
+                posicion += 56;
+                return;
+            }
+
+            panel.Top = posicion + 56;
+            panel.Visible = submenuAbierto;
+
+            posicion = submenuAbierto
+                ? panel.Top + panel.Height + 6
+                : posicion + 56;
         }
 
 
         private void btnRoles_Click(object sender, EventArgs e)
         {
+            if (!VerificarPermiso(
+                RolesSistema.PuedeGestionarRoles(),
+                "No tiene permisos para gestionar roles."))
+            {
+                return;
+            }
+
             NavegacionHelper.AbrirFormulario(new FrmRolesListado(), pnlContenedor, ref formularioActivo, btnRoles);
         }
 
         private void btnUsuarios_Click(object sender, EventArgs e)
         {
+            if (!VerificarPermiso(
+                RolesSistema.PuedeGestionarUsuarios(),
+                "No tiene permisos para gestionar usuarios."))
+            {
+                return;
+            }
+
             NavegacionHelper.AbrirFormulario(new FrmUsuarioListado(), pnlContenedor, ref formularioActivo, btnUsuarios);
+        }
+
+        private bool VerificarPermiso(bool permitido, string mensaje)
+        {
+            if (permitido)
+                return true;
+
+            mensajes.MensajeError(mensaje);
+            return false;
         }
 
         private void FrmPrincipal_Load(object sender, EventArgs e)
         {
+            if (!RolesSistema.TieneAccesoAlSistema())
+            {
+                _cerrandoSesion = true;
+                DialogResult = DialogResult.Retry;
+                Close();
+                return;
+            }
+
             SesionHelper.CargarDatosSesion(toolUsuario, toolRol);
             AbrirDashboard();
         }

@@ -1,5 +1,6 @@
 ﻿using GranjaControl.UI.Formularios;
 using GranjaControl.UI.Seguridad;
+using GranjaControl.UI.Utilidades;
 
 namespace GranjaControl.UI.Helpers
 {
@@ -16,7 +17,8 @@ namespace GranjaControl.UI.Helpers
         /// </summary>
         public static bool CerrarSesion(Form formularioActual)
         {
-            DialogResult respuesta = MessageBox.Show("¿Desea cerrar la sesión actual?", "Cerrar sesión", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            Mensajes mensajes = new();
+            DialogResult respuesta = mensajes.MensajeConfirmacion("¿Desea cerrar la sesión actual?");
 
             if (respuesta != DialogResult.Yes)
                 return false;

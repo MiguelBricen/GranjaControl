@@ -8,6 +8,10 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
 {
     public partial class FrmVentaListado : FrmBaseListado
     {
+        protected override bool PuedeCrear => RolesSistema.PuedeAccederComercializacion();
+        protected override bool PuedeEditar => RolesSistema.PuedeAccederComercializacion();
+        protected override bool PuedeEliminar => RolesSistema.PuedeAccederComercializacion();
+
         private readonly VentaBLL _ventaBLL;
         private readonly ClienteBLL _clienteBLL;
         private readonly LoteBLL _loteBLL;

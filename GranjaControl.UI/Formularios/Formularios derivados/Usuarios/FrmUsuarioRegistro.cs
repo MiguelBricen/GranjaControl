@@ -2,6 +2,7 @@
 using GranjaControl.Entitys.Entidades;
 using GranjaControl.UI.Helpers;
 using GranjaControl.UI.Seguridad;
+using GranjaControl.UI.Utilidades;
 
 namespace GranjaControl.UI.Formularios.Formularios_derivados.Usuarios
 {
@@ -12,6 +13,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Usuarios
         private readonly int? _idUsuario;
 
         private readonly bool _esAutoregistro;
+        private readonly Mensajes mensajes = new();
+        private int? _idRolAutoregistro;
         private UsuarioEntity? _usuario;
 
         private bool EsEdicion => _idUsuario.HasValue;
@@ -83,7 +86,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Usuarios
 
                 if (_usuario is null)
                 {
-                    MessageBox.Show("No se encontró el usuario.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    mensajes.MensajeInformacion("No se encontró el usuario.");
                     DialogResult = DialogResult.Cancel;
 
                     Close();
@@ -97,7 +100,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Usuarios
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                mensajes.MensajeError(ex.Message);
             }
         }
 
@@ -148,21 +151,13 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Usuarios
         #region Eventos
         private async void FrmUsuarioRegistro_Load(object sender, EventArgs e)
         {
-            await CargarRolesAsync();
-
-
-            /*if (_esAutoregistro)
+            if (!_esAutoregistro &&
+                !RolesSistema.Autorizar(this, RolesSistema.PuedeGestionarUsuarios()))
             {
-                // Buscar el rol
-                foreach (RolEntity rol in cboRoles.Items)
-                {
-                    if (rol.NombreRol.Equals("Usuario", StringComparison.OrdinalIgnoreCase))
-                    {
-                        cboRoles.SelectedValue = rol.Id;
-                        break;
-                    }
-                }
-            }*/
+                return;
+            }
+
+            await CargarRolesAsync();
 
             if (_esAutoregistro)
             {
@@ -175,13 +170,14 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Usuarios
 
                 if (rolUsuario == null)
                 {
-                    MessageBox.Show("No existe un rol Usuario activo. Contacte al administrador.", "Atención",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    mensajes.MensajeError(
+                        "No existe un rol Usuario activo. Contacte al administrador.");
 
                     btnGuardar.Enabled = false;
                     return;
                 }
 
+                _idRolAutoregistro = rolUsuario.Id;
                 cboRoles.SelectedValue = rolUsuario.Id;
 
                 // Ocultar el rol solamente durante el autorregistro.
@@ -216,6 +212,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Usuarios
                                     ? "Autoregistro"
                                     : UsuarioSesion.NombreUsuario;
 
+                int idRol = ObtenerIdRol();
+
                 if (!EsEdicion)
                 {
                     UsuarioEntity nuevoUsuario = new();
@@ -223,7 +221,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Usuarios
                     nuevoUsuario.CambiarNombreCompleto(txtNombre.Text);
                     nuevoUsuario.CambiarNombreUsuario(txtUsuario.Text);
                     nuevoUsuario.CambiarCorreo(txtCorreo.Text);
-                    nuevoUsuario.CambiarRol(Convert.ToInt32(cboRoles.SelectedValue));
+                    nuevoUsuario.CambiarRol(idRol);
 
                     await _usuarioBll.AgregarAsync(nuevoUsuario, txtPassword.Text, usuarioApp);
                 }
@@ -234,24 +232,43 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Usuarios
                     usuarioEditado.AsignarId(_idUsuario!.Value);
                     usuarioEditado.CambiarNombreCompleto(txtNombre.Text);
                     usuarioEditado.CambiarCorreo(txtCorreo.Text);
-                    usuarioEditado.CambiarRol(Convert.ToInt32(cboRoles.SelectedValue));
+                    usuarioEditado.CambiarRol(idRol);
 
                     await _usuarioBll.ActualizarAsync(usuarioEditado, usuarioApp);
                 }
 
-                MessageBox.Show("Registro guardado correctamente.", "Información", MessageBoxButtons.OK);
+                mensajes.MensajeOk("Registro guardado correctamente.");
 
                 DialogResult = DialogResult.OK;
                 Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    ex.ToString(),
-                    "Error de diagnóstico",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                mensajes.MensajeError(
+                    $"No se pudo guardar el usuario: {ex.Message}");
             }
+        }
+
+        private int ObtenerIdRol()
+        {
+            if (_esAutoregistro)
+            {
+                if (!_idRolAutoregistro.HasValue)
+                {
+                    throw new InvalidOperationException(
+                        "No se pudo determinar el rol Usuario para el autoregistro.");
+                }
+
+                return _idRolAutoregistro.Value;
+            }
+
+            if (cboRoles.SelectedValue is null)
+            {
+                throw new InvalidOperationException(
+                    "Debe seleccionar un rol.");
+            }
+
+            return Convert.ToInt32(cboRoles.SelectedValue);
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)

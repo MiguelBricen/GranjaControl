@@ -8,6 +8,10 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Vitaminas
 {
     public partial class FrmVitaminaListado : FrmBaseListado
     {
+        protected override bool PuedeCrear => RolesSistema.PuedeAdministrarCatalogos();
+        protected override bool PuedeEditar => RolesSistema.PuedeAdministrarCatalogos();
+        protected override bool PuedeEliminar => RolesSistema.PuedeAdministrarCatalogos();
+
         private readonly VitaminaBLL _vitaminaBLL;
         private readonly Mensajes mensajes = new();
 

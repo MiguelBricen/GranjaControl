@@ -1,11 +1,14 @@
 ﻿using GranjaControl.BLL.Common;
 using GranjaControl.DAL.Common;
 using GranjaControl.Entitys.Entidades;
+using GranjaControl.UI.Utilidades;
 
 namespace GranjaControl.UI
 {
     public partial class FrmConfigurarConexion : Form
     {
+        private readonly Mensajes mensajes = new();
+
         public FrmConfigurarConexion()
         {
             InitializeComponent();
@@ -68,8 +71,7 @@ namespace GranjaControl.UI
 
             if (ok)
             {
-                MessageBox.Show("Conexión exitosa", "Información",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                mensajes.MensajeOk("Conexión exitosa.");
 
                 btnGuardar.Enabled = true;
                 txtServidor.Enabled = false;
@@ -80,8 +82,7 @@ namespace GranjaControl.UI
             }
             else
             {
-                MessageBox.Show("Error al conectar a la base de datos", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                mensajes.MensajeError("Error al conectar a la base de datos.");
 
                 btnGuardar.Enabled = false;
             }
@@ -104,14 +105,12 @@ namespace GranjaControl.UI
             if (!resultado)
             {
 
-                MessageBox.Show("Error al guardar la configuración", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                mensajes.MensajeError("Error al guardar la configuración.");
 
             }
             else
             {
-                MessageBox.Show("Configuración guardada correctamente", "Información",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                mensajes.MensajeOk("Configuración guardada correctamente.");
                 this.DialogResult = DialogResult.OK;
                 this.Close();
 

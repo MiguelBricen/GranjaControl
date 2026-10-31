@@ -8,6 +8,10 @@ namespace GranjaControl.UI.Formularios_derivados
 {
     public partial class FrmGalponListado : FrmBaseListado
     {
+        protected override bool PuedeCrear => RolesSistema.PuedeAdministrarCatalogos();
+        protected override bool PuedeEditar => RolesSistema.PuedeAdministrarCatalogos();
+        protected override bool PuedeEliminar => RolesSistema.PuedeAdministrarCatalogos();
+
         private readonly GalponBLL _galponBLL;
         private readonly Mensajes mensajes = new();
 
@@ -219,7 +223,7 @@ namespace GranjaControl.UI.Formularios_derivados
             catch (Exception ex)
             {
        
-                MessageBox.Show(ex.Message, "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                mensajes.MensajeError(ex.Message);
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using System.Drawing.Imaging;
+using GranjaControl.UI.Utilidades;
 
 namespace GranjaControl.UI.Helpers
 {
@@ -200,11 +201,8 @@ namespace GranjaControl.UI.Helpers
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    $"Error inesperado: {ex.Message}",
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                Mensajes mensajes = new();
+                mensajes.MensajeError($"Error inesperado: {ex.Message}");
             }
         }
 

@@ -7,14 +7,17 @@ namespace GranjaControl.UI.Seguridad
     public class UsuarioSesion
     {
 
-        public static int IdUsuario { get; set; } = 1;
-        public static string NombreCompleto { get; set; } = "Administrador del Sistema";
+        public static bool Autenticado { get; private set; }
 
-        public static string NombreUsuario { get; set; } = "admin";
+        public static int IdUsuario { get; private set; }
 
-        public static int IdRol { get; set; } = 1;
+        public static string NombreCompleto { get; private set; } = string.Empty;
 
-        public static string NombreRol { get; set; } = "Administrador";
+        public static string NombreUsuario { get; private set; } = string.Empty;
+
+        public static int IdRol { get; private set; }
+
+        public static string NombreRol { get; private set; } = string.Empty;
 
 
         /// <summary>
@@ -27,6 +30,7 @@ namespace GranjaControl.UI.Seguridad
             NombreUsuario = usuario.NombreUsuario;
             IdRol = usuario.IdRol;
             NombreRol = usuario.NombreRol;
+            Autenticado = true;
         }
 
 
@@ -35,6 +39,7 @@ namespace GranjaControl.UI.Seguridad
         /// </summary>
         public static void CerrarSesion()
         {
+            Autenticado = false;
             IdUsuario = 0;
             NombreCompleto = string.Empty;
             NombreUsuario = string.Empty;

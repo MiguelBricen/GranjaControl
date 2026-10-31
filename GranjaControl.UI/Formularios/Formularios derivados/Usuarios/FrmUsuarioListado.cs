@@ -2,13 +2,19 @@
 using GranjaControl.DAL;
 using GranjaControl.UI.Formularios_base;
 using GranjaControl.UI.Seguridad;
+using GranjaControl.UI.Utilidades;
 
 namespace GranjaControl.UI.Formularios.Formularios_derivados.Usuarios
 {
     public partial class FrmUsuarioListado : FrmBaseListado
     {
+        protected override bool PuedeCrear => RolesSistema.PuedeGestionarUsuarios();
+        protected override bool PuedeEditar => RolesSistema.PuedeGestionarUsuarios();
+        protected override bool PuedeEliminar => RolesSistema.PuedeGestionarUsuarios();
+
         private readonly UsuarioBll _usuarioBll;
         private readonly RolBll _rolBll;
+        private readonly Mensajes mensajes = new();
         public FrmUsuarioListado()
         {
             InitializeComponent();
@@ -38,7 +44,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Usuarios
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Atención", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                mensajes.MensajeError(ex.Message);
             }
         }
 
@@ -147,7 +153,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Usuarios
 
             if (id == null)
             {
-                MessageBox.Show("Debe seleccionar un registro", "Información", MessageBoxButtons.OK);
+                mensajes.MensajeInformacion("Debe seleccionar un registro.");
                 return;
             }
 
@@ -155,7 +161,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Usuarios
 
             string accion = activo ? "desactivar" : "activar";
 
-            DialogResult respuesta = MessageBox.Show($"¿Desea {accion} este registro?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult respuesta = mensajes.MensajeConfirmacion(
+                $"¿Desea {accion} este registro?");
 
             if (respuesta != DialogResult.Yes)
                 return;
@@ -167,7 +174,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Usuarios
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                mensajes.MensajeError(ex.Message);
             }
         }
     }

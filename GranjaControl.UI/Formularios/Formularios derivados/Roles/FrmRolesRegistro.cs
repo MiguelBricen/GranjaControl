@@ -4,6 +4,7 @@ using GranjaControl.DAL;
 using GranjaControl.Entitys.Entidades;
 using GranjaControl.UI.Helpers;
 using GranjaControl.UI.Seguridad;
+using GranjaControl.UI.Utilidades;
 
 namespace GranjaControl.UI.Formularios.Formularios_derivados.Roles
 {
@@ -11,6 +12,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Roles
     {
         private readonly RolBll _rolBll;
         private readonly int? _idRol;
+        private readonly Mensajes mensajes = new();
         private RolEntity? _rol;
 
         private bool EsEdicion => _idRol.HasValue;
@@ -46,7 +48,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Roles
 
                 if (_rol is null)
                 {
-                    MessageBox.Show("No se encontró el rol.");
+                    mensajes.MensajeInformacion("No se encontró el rol.");
                     DialogResult = DialogResult.Cancel;
 
                     Close();
@@ -57,7 +59,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Roles
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Atención", MessageBoxButtons.OK);
+                mensajes.MensajeError(ex.Message);
             }
         }
 
@@ -78,6 +80,9 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Roles
         #region Evento al cargar el frm
         private async void FrmRolesRegistro_Load(object sender, EventArgs e)
         {
+            if (!RolesSistema.Autorizar(this, RolesSistema.PuedeGestionarRoles()))
+                return;
+
             if (EsEdicion)
                 await CargarDatosAsync();
         }
@@ -109,14 +114,14 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Roles
                     await _rolBll.ActualizarAsync(rolEditado, UsuarioSesion.NombreUsuario);
                 }
 
-                MessageBox.Show("Registro guardado correctamente.", "Información", MessageBoxButtons.OK);
+                mensajes.MensajeOk("Registro guardado correctamente.");
 
                 DialogResult = DialogResult.OK;
                 Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Atencíón", MessageBoxButtons.OK);
+                mensajes.MensajeError(ex.Message);
             }
         }
 

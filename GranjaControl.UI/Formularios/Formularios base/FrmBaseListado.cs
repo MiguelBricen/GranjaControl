@@ -30,6 +30,11 @@ namespace GranjaControl.UI.Formularios_base
         protected virtual bool MostrarBotonSecundario => true;
         protected virtual bool MostrarBotonTerciario => true;
 
+        // Controlar los permisos de las operaciones.
+        protected virtual bool PuedeCrear => true;
+        protected virtual bool PuedeEditar => true;
+        protected virtual bool PuedeEliminar => true;
+
         // Cargar los datos del listado.
         protected virtual Task MostrarDatosAsync(int pagina, int tamPagina, string? buscar = null)
         {
@@ -126,9 +131,9 @@ namespace GranjaControl.UI.Formularios_base
         }
         private async void FrmBaseListadoGalpon_Load(object sender, EventArgs e)
         {
-            btnNuevo.Visible = MostrarBotonPrincipal;
-            btnEditar.Visible = MostrarBotonSecundario;
-            btnEliminar.Visible = MostrarBotonTerciario;
+            btnNuevo.Visible = MostrarBotonPrincipal && PuedeCrear;
+            btnEditar.Visible = MostrarBotonSecundario && PuedeEditar;
+            btnEliminar.Visible = MostrarBotonTerciario && PuedeEliminar;
 
             GridDashboardHelper.Personalizar(dgvListado);
 
@@ -142,6 +147,12 @@ namespace GranjaControl.UI.Formularios_base
 
 
             EfectoBoton((Button)sender);
+
+            if (!PuedeCrear)
+            {
+                mensajes.MensajeError("No tiene permisos para crear registros.");
+                return;
+            }
 
             Form? frm = CrearFormularioAccionPrincipal();
 
@@ -162,6 +173,12 @@ namespace GranjaControl.UI.Formularios_base
         private async void btnEditar_Click(object sender, EventArgs e)
         {
             EfectoBoton((Button)sender);
+
+            if (!PuedeEditar)
+            {
+                mensajes.MensajeError("No tiene permisos para editar registros.");
+                return;
+            }
 
             int? id = ObtenerIdSeleccionado();
 
@@ -192,6 +209,12 @@ namespace GranjaControl.UI.Formularios_base
         private async void btnEliminar_Click(object sender, EventArgs e)
         {
             EfectoBoton((Button)sender);
+
+            if (!PuedeEliminar)
+            {
+                mensajes.MensajeError("No tiene permisos para cambiar el estado de los registros.");
+                return;
+            }
 
             await DesactivarAsync();
 

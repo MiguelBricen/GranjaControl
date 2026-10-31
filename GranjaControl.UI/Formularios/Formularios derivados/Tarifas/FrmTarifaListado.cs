@@ -8,6 +8,10 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Tarifas
 {
     public partial class FrmTarifaListado : FrmBaseListado
     {
+        protected override bool PuedeCrear => RolesSistema.PuedeAccederComercializacion();
+        protected override bool PuedeEditar => RolesSistema.PuedeAccederComercializacion();
+        protected override bool PuedeEliminar => RolesSistema.PuedeAccederComercializacion();
+
         private readonly TarifaPolloBLL _tarifaBLL;
         private readonly Mensajes mensajes = new();
 

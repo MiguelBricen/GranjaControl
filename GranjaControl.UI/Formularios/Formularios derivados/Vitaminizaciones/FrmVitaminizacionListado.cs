@@ -1,6 +1,7 @@
 using GranjaControl.BLL;
 using GranjaControl.DAL;
 using GranjaControl.UI.Formularios_base;
+using GranjaControl.UI.Seguridad;
 using GranjaControl.UI.Utilidades;
 
 namespace GranjaControl.UI.Formularios.Formularios_derivados.Vitaminizaciones
@@ -16,6 +17,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Vitaminizaciones
         private bool _cargandoFiltro;
 
         protected override bool MostrarBotonTerciario => false;
+        protected override bool PuedeCrear => RolesSistema.PuedeRegistrarProduccion();
+        protected override bool PuedeEditar => RolesSistema.PuedeEditarProduccion();
 
         public FrmVitaminizacionListado()
         {
