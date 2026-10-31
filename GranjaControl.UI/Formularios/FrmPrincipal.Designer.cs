@@ -34,7 +34,11 @@
             pnlSeguridad = new Panel();
             btnRoles = new FontAwesome.Sharp.IconButton();
             btnUsuarios = new FontAwesome.Sharp.IconButton();
+            pnlProduccion = new Panel();
+            btnAlimentacion = new FontAwesome.Sharp.IconButton();
+            btnLotes = new FontAwesome.Sharp.IconButton();
             pnlCatalogos = new Panel();
+            btnAlimentos = new FontAwesome.Sharp.IconButton();
             btnProveedores = new FontAwesome.Sharp.IconButton();
             btnGalpones = new FontAwesome.Sharp.IconButton();
             pnlSidebar = new Panel();
@@ -65,6 +69,7 @@
             picFondo = new PictureBox();
             pnlMovimiento.SuspendLayout();
             pnlSeguridad.SuspendLayout();
+            pnlProduccion.SuspendLayout();
             pnlCatalogos.SuspendLayout();
             pnlSidebar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picDif7).BeginInit();
@@ -187,13 +192,103 @@
             // pnlCatalogos
             // 
             pnlCatalogos.BackColor = Color.FromArgb(23, 61, 43);
+            pnlCatalogos.Controls.Add(btnAlimentos);
             pnlCatalogos.Controls.Add(btnProveedores);
             pnlCatalogos.Controls.Add(btnGalpones);
             pnlCatalogos.Location = new Point(0, 330);
             pnlCatalogos.Name = "pnlCatalogos";
-            pnlCatalogos.Size = new Size(226, 106);
+            pnlCatalogos.Size = new Size(226, 159);
             pnlCatalogos.TabIndex = 5;
             pnlCatalogos.Visible = false;
+            // 
+            // pnlProduccion
+            // 
+            pnlProduccion.BackColor = Color.FromArgb(23, 61, 43);
+            pnlProduccion.Controls.Add(btnAlimentacion);
+            pnlProduccion.Controls.Add(btnLotes);
+            pnlProduccion.Location = new Point(0, 440);
+            pnlProduccion.Name = "pnlProduccion";
+            pnlProduccion.Size = new Size(226, 106);
+            pnlProduccion.TabIndex = 6;
+            pnlProduccion.Visible = false;
+            // 
+            // btnLotes
+            // 
+            btnLotes.BackColor = Color.FromArgb(23, 61, 43);
+            btnLotes.Cursor = Cursors.Hand;
+            btnLotes.FlatAppearance.BorderColor = Color.FromArgb(220, 225, 216);
+            btnLotes.FlatAppearance.BorderSize = 0;
+            btnLotes.FlatAppearance.MouseOverBackColor = Color.FromArgb(62, 94, 69);
+            btnLotes.FlatStyle = FlatStyle.Flat;
+            btnLotes.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold);
+            btnLotes.ForeColor = Color.White;
+            btnLotes.IconChar = FontAwesome.Sharp.IconChar.ClipboardList;
+            btnLotes.IconColor = Color.White;
+            btnLotes.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnLotes.IconSize = 30;
+            btnLotes.ImageAlign = ContentAlignment.MiddleLeft;
+            btnLotes.Location = new Point(2, 3);
+            btnLotes.Name = "btnLotes";
+            btnLotes.Padding = new Padding(5, 0, 0, 0);
+            btnLotes.Size = new Size(225, 50);
+            btnLotes.TabIndex = 17;
+            btnLotes.Text = "Lotes";
+            btnLotes.TextAlign = ContentAlignment.MiddleRight;
+            btnLotes.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnLotes.UseVisualStyleBackColor = false;
+            btnLotes.Click += btnLotes_Click;
+            // 
+            // btnAlimentacion
+            // 
+            btnAlimentacion.BackColor = Color.FromArgb(23, 61, 43);
+            btnAlimentacion.Cursor = Cursors.Hand;
+            btnAlimentacion.FlatAppearance.BorderColor = Color.FromArgb(220, 225, 216);
+            btnAlimentacion.FlatAppearance.BorderSize = 0;
+            btnAlimentacion.FlatAppearance.MouseOverBackColor = Color.FromArgb(62, 94, 69);
+            btnAlimentacion.FlatStyle = FlatStyle.Flat;
+            btnAlimentacion.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold);
+            btnAlimentacion.ForeColor = Color.White;
+            btnAlimentacion.IconChar = FontAwesome.Sharp.IconChar.WheatAwn;
+            btnAlimentacion.IconColor = Color.White;
+            btnAlimentacion.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnAlimentacion.IconSize = 30;
+            btnAlimentacion.ImageAlign = ContentAlignment.MiddleLeft;
+            btnAlimentacion.Location = new Point(2, 53);
+            btnAlimentacion.Name = "btnAlimentacion";
+            btnAlimentacion.Padding = new Padding(5, 0, 0, 0);
+            btnAlimentacion.Size = new Size(225, 50);
+            btnAlimentacion.TabIndex = 18;
+            btnAlimentacion.Text = "Alimentación";
+            btnAlimentacion.TextAlign = ContentAlignment.MiddleRight;
+            btnAlimentacion.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnAlimentacion.UseVisualStyleBackColor = false;
+            btnAlimentacion.Click += btnAlimentacion_Click;
+            // 
+            // btnAlimentos
+            // 
+            btnAlimentos.BackColor = Color.FromArgb(23, 61, 43);
+            btnAlimentos.Cursor = Cursors.Hand;
+            btnAlimentos.FlatAppearance.BorderColor = Color.FromArgb(220, 225, 216);
+            btnAlimentos.FlatAppearance.BorderSize = 0;
+            btnAlimentos.FlatAppearance.MouseOverBackColor = Color.FromArgb(62, 94, 69);
+            btnAlimentos.FlatStyle = FlatStyle.Flat;
+            btnAlimentos.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold);
+            btnAlimentos.ForeColor = Color.White;
+            btnAlimentos.IconChar = FontAwesome.Sharp.IconChar.WheatAwn;
+            btnAlimentos.IconColor = Color.White;
+            btnAlimentos.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnAlimentos.IconSize = 30;
+            btnAlimentos.ImageAlign = ContentAlignment.MiddleLeft;
+            btnAlimentos.Location = new Point(2, 103);
+            btnAlimentos.Name = "btnAlimentos";
+            btnAlimentos.Padding = new Padding(5, 0, 0, 0);
+            btnAlimentos.Size = new Size(225, 50);
+            btnAlimentos.TabIndex = 19;
+            btnAlimentos.Text = "Alimentos";
+            btnAlimentos.TextAlign = ContentAlignment.MiddleRight;
+            btnAlimentos.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnAlimentos.UseVisualStyleBackColor = false;
+            btnAlimentos.Click += btnAlimentos_Click;
             // 
             // btnProveedores
             // 
@@ -250,6 +345,7 @@
             // pnlSidebar
             // 
             pnlSidebar.BackColor = Color.FromArgb(23, 61, 43);
+            pnlSidebar.Controls.Add(pnlProduccion);
             pnlSidebar.Controls.Add(pnlCatalogos);
             pnlSidebar.Controls.Add(pnlSeguridad);
             pnlSidebar.Controls.Add(picDif7);
@@ -676,6 +772,7 @@
             Load += FrmPrincipal_Load;
             pnlMovimiento.ResumeLayout(false);
             pnlSeguridad.ResumeLayout(false);
+            pnlProduccion.ResumeLayout(false);
             pnlCatalogos.ResumeLayout(false);
             pnlSidebar.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)picDif7).EndInit();
@@ -723,6 +820,10 @@
         private Panel pnlCatalogos;
         private FontAwesome.Sharp.IconButton btnGalpones;
         private FontAwesome.Sharp.IconButton btnProveedores;
+        private FontAwesome.Sharp.IconButton btnAlimentos;
+        private Panel pnlProduccion;
+        private FontAwesome.Sharp.IconButton btnLotes;
+        private FontAwesome.Sharp.IconButton btnAlimentacion;
         private PictureBox picDif;
         private PictureBox picDif7;
         private PictureBox picDif6;

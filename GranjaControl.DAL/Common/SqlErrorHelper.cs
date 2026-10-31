@@ -44,6 +44,18 @@ namespace GranjaControl.DAL.Common
                 52017 => new Exception("El lote no existe."),
                 52018 => new Exception("El estado del lote no es válido."),
 
+                // Alimentos
+                52019 => new Exception("El alimento ya existe."),
+                52020 => new Exception("El tipo de alimento no es válido."),
+                52021 => new Exception("El alimento no existe."),
+
+                // Alimentación
+                52022 => new Exception("El lote no existe o está cancelado."),
+                52023 => new Exception("El alimento no existe o está inactivo."),
+                52024 => new Exception("La cantidad de alimento debe ser mayor que cero."),
+                52025 => new Exception("La unidad de medida no es válida."),
+                52026 => new Exception("El registro de alimentación no existe."),
+
                 // Tickets
                 53001 => new Exception("El usuario solicitante no existe."),
                 53002 => new Exception("El ticket no existe."),
