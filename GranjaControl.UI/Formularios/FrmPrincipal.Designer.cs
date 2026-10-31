@@ -38,6 +38,7 @@
             btnAlimentacion = new FontAwesome.Sharp.IconButton();
             btnLotes = new FontAwesome.Sharp.IconButton();
             pnlCatalogos = new Panel();
+            btnClientes = new FontAwesome.Sharp.IconButton();
             btnAlimentos = new FontAwesome.Sharp.IconButton();
             btnVitaminas = new FontAwesome.Sharp.IconButton();
             btnProveedores = new FontAwesome.Sharp.IconButton();
@@ -193,13 +194,14 @@
             // pnlCatalogos
             // 
             pnlCatalogos.BackColor = Color.FromArgb(23, 61, 43);
+            pnlCatalogos.Controls.Add(btnClientes);
             pnlCatalogos.Controls.Add(btnVitaminas);
             pnlCatalogos.Controls.Add(btnAlimentos);
             pnlCatalogos.Controls.Add(btnProveedores);
             pnlCatalogos.Controls.Add(btnGalpones);
             pnlCatalogos.Location = new Point(0, 330);
             pnlCatalogos.Name = "pnlCatalogos";
-            pnlCatalogos.Size = new Size(226, 212);
+            pnlCatalogos.Size = new Size(226, 265);
             pnlCatalogos.TabIndex = 5;
             pnlCatalogos.Visible = false;
             // 
@@ -265,9 +267,35 @@
             btnAlimentacion.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnAlimentacion.UseVisualStyleBackColor = false;
             btnAlimentacion.Click += btnAlimentacion_Click;
-            // 
+            //
+            // btnClientes
+            //
+            btnClientes.BackColor = Color.FromArgb(23, 61, 43);
+            btnClientes.Cursor = Cursors.Hand;
+            btnClientes.FlatAppearance.BorderColor = Color.FromArgb(220, 225, 216);
+            btnClientes.FlatAppearance.BorderSize = 0;
+            btnClientes.FlatAppearance.MouseOverBackColor = Color.FromArgb(62, 94, 69);
+            btnClientes.FlatStyle = FlatStyle.Flat;
+            btnClientes.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold);
+            btnClientes.ForeColor = Color.White;
+            btnClientes.IconChar = FontAwesome.Sharp.IconChar.Users;
+            btnClientes.IconColor = Color.White;
+            btnClientes.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnClientes.IconSize = 30;
+            btnClientes.ImageAlign = ContentAlignment.MiddleLeft;
+            btnClientes.Location = new Point(2, 203);
+            btnClientes.Name = "btnClientes";
+            btnClientes.Padding = new Padding(5, 0, 0, 0);
+            btnClientes.Size = new Size(225, 50);
+            btnClientes.TabIndex = 21;
+            btnClientes.Text = "Clientes";
+            btnClientes.TextAlign = ContentAlignment.MiddleRight;
+            btnClientes.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnClientes.UseVisualStyleBackColor = false;
+            btnClientes.Click += btnClientes_Click;
+            //
             // btnAlimentos
-            // 
+            //
             btnAlimentos.BackColor = Color.FromArgb(23, 61, 43);
             btnAlimentos.Cursor = Cursors.Hand;
             btnAlimentos.FlatAppearance.BorderColor = Color.FromArgb(220, 225, 216);
@@ -372,6 +400,7 @@
             // 
             // pnlSidebar
             // 
+            pnlSidebar.AutoScroll = true;
             pnlSidebar.BackColor = Color.FromArgb(23, 61, 43);
             pnlSidebar.Controls.Add(pnlProduccion);
             pnlSidebar.Controls.Add(pnlCatalogos);
@@ -396,7 +425,7 @@
             pnlSidebar.Font = new Font("Microsoft Sans Serif", 8.25F);
             pnlSidebar.Location = new Point(0, 44);
             pnlSidebar.Name = "pnlSidebar";
-            pnlSidebar.Size = new Size(226, 676);
+            pnlSidebar.Size = new Size(248, 676);
             pnlSidebar.TabIndex = 0;
             // 
             // picDif7
@@ -762,9 +791,9 @@
             // 
             pnlContenedor.Controls.Add(picFondo);
             pnlContenedor.Dock = DockStyle.Fill;
-            pnlContenedor.Location = new Point(226, 44);
+            pnlContenedor.Location = new Point(248, 44);
             pnlContenedor.Name = "pnlContenedor";
-            pnlContenedor.Size = new Size(1054, 636);
+            pnlContenedor.Size = new Size(1032, 636);
             pnlContenedor.TabIndex = 4;
             // 
             // picFondo
@@ -848,6 +877,7 @@
         private Panel pnlCatalogos;
         private FontAwesome.Sharp.IconButton btnGalpones;
         private FontAwesome.Sharp.IconButton btnProveedores;
+        private FontAwesome.Sharp.IconButton btnClientes;
         private FontAwesome.Sharp.IconButton btnAlimentos;
         private FontAwesome.Sharp.IconButton btnVitaminas;
         private Panel pnlProduccion;

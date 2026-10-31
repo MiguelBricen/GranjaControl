@@ -60,6 +60,12 @@ namespace GranjaControl.DAL.Common
                 52027 => new Exception("La vitamina ya existe."),
                 52028 => new Exception("La vitamina no existe."),
 
+                // Clientes
+                52045 => new Exception("El nombre del cliente es obligatorio."),
+                52046 => new Exception("El tipo de cliente no es válido."),
+                52047 => new Exception("Ya existe un cliente con ese nombre."),
+                52048 => new Exception("El cliente no existe."),
+
                 // Tickets
                 53001 => new Exception("El usuario solicitante no existe."),
                 53002 => new Exception("El ticket no existe."),
