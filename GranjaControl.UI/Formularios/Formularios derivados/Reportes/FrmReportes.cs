@@ -393,7 +393,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Reportes
             filtros.Controls.Add(btnConsultar);
             filtros.Controls.Add(btnLimpiar);
 
-            TableLayoutPanel resumen = CrearTablaResumen(4);
+            TableLayoutPanel resumen = CrearTablaResumen(5);
 
             AgregarResumen(
                 resumen,
@@ -401,6 +401,13 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Reportes
                 "compras",
                 "Compras",
                 EstiloVisualHelper.Azul);
+
+            AgregarResumen(
+                resumen,
+                _resumenCompras,
+                "sacos",
+                "Sacos",
+                EstiloVisualHelper.Naranja);
 
             AgregarResumen(
                 resumen,
@@ -449,6 +456,13 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Reportes
 
             AgregarColumna(
                 _dgvCompras,
+                "CantidadSacos",
+                "Cantidad (sacos)",
+                DataGridViewAutoSizeColumnMode.AllCells,
+                DataGridViewContentAlignment.MiddleRight);
+
+            AgregarColumna(
+                _dgvCompras,
                 "Libras",
                 "Libras",
                 DataGridViewAutoSizeColumnMode.AllCells,
@@ -465,13 +479,6 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Reportes
                 _dgvCompras,
                 "CostoTotal",
                 "Costo total",
-                DataGridViewAutoSizeColumnMode.AllCells,
-                DataGridViewContentAlignment.MiddleRight);
-
-            AgregarColumna(
-                _dgvCompras,
-                "CantidadItems",
-                "Ítems",
                 DataGridViewAutoSizeColumnMode.AllCells,
                 DataGridViewContentAlignment.MiddleRight);
 
@@ -1029,6 +1036,9 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Reportes
             _resumenCompras["compras"].Text =
                 resumen.TotalCompras.ToString("N0");
 
+            _resumenCompras["sacos"].Text =
+                resumen.TotalCantidadSacos.ToString("N2");
+
             _resumenCompras["libras"].Text =
                 resumen.TotalLibras.ToString("N2");
 
@@ -1037,6 +1047,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Reportes
 
             _resumenCompras["costo"].Text =
                 resumen.CostoTotal.ToString("N2");
+
         }
 
         private void FormatearCeldaVenta(
@@ -1120,7 +1131,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Reportes
 
                 e.FormattingApplied = true;
             }
-            else if (columna is "Libras" or "Kilogramos" or "CostoTotal")
+            else if (columna is "CantidadSacos" or "Libras" or "Kilogramos" or "CostoTotal")
             {
                 e.Value = Convert.ToDecimal(e.Value).ToString("N2");
                 e.FormattingApplied = true;

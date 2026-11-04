@@ -227,6 +227,7 @@ namespace GranjaControl.DAL
             return new ReporteComprasResumenDto
             {
                 TotalCompras = Convert.ToInt32(dr["TotalCompras"]),
+                TotalCantidadSacos = Convert.ToDecimal(dr["TotalCantidadSacos"]),
                 TotalLibras = Convert.ToDecimal(dr["TotalLibras"]),
                 TotalKilogramos = Convert.ToDecimal(dr["TotalKilogramos"]),
                 CostoTotal = Convert.ToDecimal(dr["CostoTotal"])
@@ -241,10 +242,10 @@ namespace GranjaControl.DAL
                 NumeroCompra = dr["NumeroCompra"].ToString() ?? string.Empty,
                 NombreProveedor = dr["NombreProveedor"].ToString() ?? string.Empty,
                 FechaCompra = Convert.ToDateTime(dr["FechaCompra"]),
+                CantidadSacos = Convert.ToDecimal(dr["CantidadSacos"]),
                 Libras = Convert.ToDecimal(dr["Libras"]),
                 Kilogramos = Convert.ToDecimal(dr["Kilogramos"]),
-                CostoTotal = Convert.ToDecimal(dr["CostoTotal"]),
-                CantidadItems = Convert.ToInt32(dr["CantidadItems"])
+                CostoTotal = Convert.ToDecimal(dr["CostoTotal"])
             };
         }
     }

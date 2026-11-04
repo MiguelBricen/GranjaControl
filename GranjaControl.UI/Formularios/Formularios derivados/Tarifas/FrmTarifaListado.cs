@@ -22,8 +22,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Tarifas
             _tarifaBLL = new TarifaPolloBLL(new TarifaPolloDAL());
 
             lblTitulo.Text = "Listado de Tarifas de Pollo";
-            label1.Text =
-                "Consulte y administre los precios por libra.";
+            label1.Text = "Consulte y administre los precios por libra.";
 
             iconTitulo.IconChar = FontAwesome.Sharp.IconChar.SackDollar;
             iconTitulo.IconColor = Color.FromArgb(23, 61, 43);
@@ -31,16 +30,11 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Tarifas
             txtBuscar.Parent!.Visible = false;
         }
 
-        protected override async Task MostrarDatosAsync(
-            int pagina,
-            int tamPagina,
-            string? buscar = null)
+        protected override async Task MostrarDatosAsync(int pagina, int tamPagina, string? buscar = null)
         {
             try
             {
-                var resultado = await _tarifaBLL.MostrarAsync(
-                    pagina,
-                    tamPagina);
+                var resultado = await _tarifaBLL.MostrarAsync(pagina, tamPagina);
 
                 dgvListado.DataSource = null;
                 dgvListado.DataSource = resultado.Registros;
@@ -55,16 +49,13 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Tarifas
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError(
-                    $"Error al mostrar las tarifas: {ex.Message}");
+                mensajes.MensajeError($"Error al mostrar las tarifas: {ex.Message}");
             }
         }
 
         private void ConfigurarGrid()
         {
-            if (!dgvListado.Columns.Contains("Id"))
-                return;
-
+            // Configuracion general del GridView
             dgvListado.BorderStyle = BorderStyle.None;
             dgvListado.BackgroundColor = Color.White;
             dgvListado.GridColor = Color.FromArgb(220, 228, 222);
@@ -76,118 +67,97 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Tarifas
             dgvListado.AllowUserToDeleteRows = false;
             dgvListado.ReadOnly = true;
             dgvListado.MultiSelect = false;
-            dgvListado.SelectionMode =
-                DataGridViewSelectionMode.FullRowSelect;
+            dgvListado.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
-            dgvListado.AutoSizeColumnsMode =
-                DataGridViewAutoSizeColumnsMode.None;
+            dgvListado.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
 
             dgvListado.ColumnHeadersHeight = 42;
-            dgvListado.ColumnHeadersHeightSizeMode =
-                DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvListado.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
 
             dgvListado.RowTemplate.Height = 36;
-            dgvListado.CellBorderStyle =
-                DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvListado.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
 
-            dgvListado.ColumnHeadersDefaultCellStyle.BackColor =
-                Color.FromArgb(32, 76, 56);
 
-            dgvListado.ColumnHeadersDefaultCellStyle.ForeColor =
-                Color.White;
+            // Encabezados         
+            dgvListado.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(32, 76, 56);
 
-            dgvListado.ColumnHeadersDefaultCellStyle.SelectionBackColor =
-                Color.FromArgb(32, 76, 56);
+            dgvListado.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
 
-            dgvListado.ColumnHeadersDefaultCellStyle.SelectionForeColor =
-                Color.White;
+            dgvListado.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(32, 76, 56);
 
-            dgvListado.ColumnHeadersDefaultCellStyle.Font =
-                new Font("Segoe UI", 12, FontStyle.Bold);
+            dgvListado.ColumnHeadersDefaultCellStyle.SelectionForeColor = Color.White;
 
-            dgvListado.ColumnHeadersDefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleLeft;
+            dgvListado.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 12, FontStyle.Bold);
 
-            dgvListado.ColumnHeadersDefaultCellStyle.WrapMode =
-                DataGridViewTriState.False;
+            dgvListado.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
+            dgvListado.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
+
+            // Filas       
             dgvListado.DefaultCellStyle.BackColor = Color.White;
+
             dgvListado.DefaultCellStyle.ForeColor = Color.Black;
 
-            dgvListado.DefaultCellStyle.SelectionBackColor =
-                Color.FromArgb(226, 239, 228);
+            dgvListado.DefaultCellStyle.SelectionBackColor = Color.FromArgb(226, 239, 228);
 
-            dgvListado.DefaultCellStyle.SelectionForeColor =
-                Color.FromArgb(32, 76, 56);
+            dgvListado.DefaultCellStyle.SelectionForeColor = Color.FromArgb(32, 76, 56);
 
-            dgvListado.DefaultCellStyle.Font =
-                new Font("Segoe UI", 11, FontStyle.Bold);
+            dgvListado.DefaultCellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
 
-            dgvListado.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleLeft;
+            dgvListado.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
-            dgvListado.DefaultCellStyle.Padding =
-                new Padding(8, 0, 8, 0);
+            dgvListado.DefaultCellStyle.Padding = new Padding(8, 0, 8, 0);
 
-            dgvListado.DefaultCellStyle.WrapMode =
-                DataGridViewTriState.False;
+            dgvListado.DefaultCellStyle.WrapMode = DataGridViewTriState.False;
+
+            if (dgvListado.Columns.Count == 0)
+                return;
+
 
             dgvListado.Columns["Id"]!.Visible = false;
             dgvListado.Columns["Activo"]!.Visible = false;
 
-            dgvListado.Columns["PrecioPorLibra"]!.HeaderText =
-                "Precio por libra";
+            dgvListado.Columns["PrecioPorLibra"]!.HeaderText = "Precio por libra";
 
-            dgvListado.Columns["FechaInicio"]!.HeaderText =
-                "Fecha inicio";
+            dgvListado.Columns["FechaInicio"]!.HeaderText = "Fecha inicio";
 
-            dgvListado.Columns["FechaFin"]!.HeaderText =
-                "Fecha fin";
+            dgvListado.Columns["FechaFin"]!.HeaderText = "Fecha fin";
 
             dgvListado.Columns["Estado"]!.HeaderText = "Estado";
 
+
             dgvListado.Columns["PrecioPorLibra"]!.AutoSizeMode =
                 DataGridViewAutoSizeColumnMode.Fill;
-            dgvListado.Columns["PrecioPorLibra"]!.FillWeight = 30;
+
+            dgvListado.Columns["PrecioPorLibra"]!.DefaultCellStyle.Alignment =
+                DataGridViewContentAlignment.MiddleLeft;
 
             dgvListado.Columns["FechaInicio"]!.AutoSizeMode =
                 DataGridViewAutoSizeColumnMode.Fill;
-            dgvListado.Columns["FechaInicio"]!.FillWeight = 25;
-
-            dgvListado.Columns["FechaFin"]!.AutoSizeMode =
-                DataGridViewAutoSizeColumnMode.Fill;
-            dgvListado.Columns["FechaFin"]!.FillWeight = 25;
-
-            dgvListado.Columns["Estado"]!.AutoSizeMode =
-                DataGridViewAutoSizeColumnMode.AllCells;
-
-            dgvListado.Columns["PrecioPorLibra"]!.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleRight;
 
             dgvListado.Columns["FechaInicio"]!.DefaultCellStyle.Alignment =
                 DataGridViewContentAlignment.MiddleCenter;
 
+            dgvListado.Columns["FechaFin"]!.AutoSizeMode =
+                DataGridViewAutoSizeColumnMode.Fill;
+
             dgvListado.Columns["FechaFin"]!.DefaultCellStyle.Alignment =
                 DataGridViewContentAlignment.MiddleCenter;
+
+            dgvListado.Columns["Estado"]!.AutoSizeMode =
+                DataGridViewAutoSizeColumnMode.AllCells ;
 
             dgvListado.Columns["Estado"]!.DefaultCellStyle.Alignment =
                 DataGridViewContentAlignment.MiddleCenter;
 
-            dgvListado.Columns["PrecioPorLibra"]!.DisplayIndex = 0;
-            dgvListado.Columns["FechaInicio"]!.DisplayIndex = 1;
-            dgvListado.Columns["FechaFin"]!.DisplayIndex = 2;
-            dgvListado.Columns["Estado"]!.DisplayIndex = 3;
-
-            AjustarColumnas("Estado");
+            AjustarColumnas("FechaInicio", "FechaFin", "Estado");
         }
 
-        protected override void FormatearCelda(
-            DataGridViewCellFormattingEventArgs e)
+        protected override void FormatearCelda( DataGridViewCellFormattingEventArgs e)
         {
             string columna = dgvListado.Columns[e.ColumnIndex].Name;
 
-            if (columna == "FechaFin" &&
-                (e.Value is null || e.Value == DBNull.Value))
+            if (columna == "FechaFin" && (e.Value is null || e.Value == DBNull.Value))
             {
                 e.Value = "Sin fecha";
                 e.FormattingApplied = true;
@@ -205,9 +175,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Tarifas
             }
             else if (columna is "FechaInicio" or "FechaFin")
             {
-                e.Value = Convert.ToDateTime(e.Value)
-                    .ToString("dd/MM/yyyy");
-
+                e.Value = Convert.ToDateTime(e.Value).ToString("dd/MM/yyyy");
                 e.FormattingApplied = true;
             }
 
@@ -229,8 +197,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Tarifas
             if (dgvListado.CurrentRow == null)
                 return null;
 
-            return Convert.ToInt32(
-                dgvListado.CurrentRow.Cells["Id"].Value);
+            return Convert.ToInt32(dgvListado.CurrentRow.Cells["Id"].Value);
         }
 
         protected override async Task DesactivarAsync()
@@ -239,8 +206,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Tarifas
 
             if (id == null)
             {
-                mensajes.MensajeInformacion(
-                    "Seleccione una tarifa para cambiar su estado.");
+                mensajes.MensajeInformacion("Seleccione una tarifa para cambiar su estado.");
 
                 return;
             }
@@ -250,30 +216,22 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Tarifas
 
             string accion = activo ? "desactivar" : "activar";
 
-            DialogResult respuesta = mensajes.MensajeConfirmacion(
-                $"¿Desea {accion} esta tarifa?");
+            DialogResult respuesta = mensajes.MensajeConfirmacion($"¿Desea {accion} esta tarifa?");
 
             if (respuesta != DialogResult.Yes)
                 return;
 
             try
             {
-                await _tarifaBLL.CambiarEstadoAsync(
-                    id.Value,
-                    !activo,
-                    UsuarioSesion.NombreUsuario);
+                await _tarifaBLL.CambiarEstadoAsync(id.Value, !activo, UsuarioSesion.NombreUsuario);
 
-                mensajes.MensajeOk(
-                    $"Tarifa {(activo ? "desactivada" : "activada")} correctamente.");
+                mensajes.MensajeOk($"Tarifa {(activo ? "desactivada" : "activada")} correctamente.");
 
-                await MostrarDatosAsync(
-                    PaginaActual,
-                    TamPagina);
+                await MostrarDatosAsync(PaginaActual, TamPagina);
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError(
-                    $"No se pudo cambiar el estado: {ex.Message}");
+                mensajes.MensajeError($"No se pudo cambiar el estado: {ex.Message}");
             }
         }
     }

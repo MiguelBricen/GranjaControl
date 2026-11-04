@@ -135,14 +135,6 @@ namespace GranjaControl.BLL
                 throw new ArgumentException(
                     "La cantidad de alimento es demasiado alta.");
 
-            if (!DetalleCompraAlimentoEntity.UnidadesPermitidas.Contains(
-                    detalle.UnidadMedida,
-                    StringComparer.OrdinalIgnoreCase))
-            {
-                throw new ArgumentException(
-                    "La unidad de medida no es válida.");
-            }
-
             if (detalle.CostoUnitario < 0)
                 throw new ArgumentException(
                     "El costo unitario no puede ser negativo.");
@@ -150,6 +142,47 @@ namespace GranjaControl.BLL
             if (detalle.CostoUnitario > 99999999.99m)
                 throw new ArgumentException(
                     "El costo unitario es demasiado alto.");
+
+            if (detalle.EsPendienteRevision)
+            {
+                if (detalle.Id <= 0)
+                    throw new ArgumentException(
+                        "Los detalles nuevos deben registrarse por sacos con el peso de cada saco identificado.");
+
+                if (detalle.IdCompra != idCompra)
+                    throw new ArgumentException(
+                        "Uno de los detalles no pertenece a la compra seleccionada.");
+
+                if (!DetalleCompraAlimentoEntity.UnidadesPesoSacoPermitidas.Contains(
+                        detalle.UnidadMedida,
+                        StringComparer.OrdinalIgnoreCase) ||
+                    detalle.PesoPorSaco.HasValue ||
+                    detalle.UnidadPesoSaco is not null ||
+                    detalle.PesoTotalLibras.HasValue ||
+                    detalle.PesoTotalKilogramos.HasValue)
+                {
+                    throw new ArgumentException(
+                        "Un detalle histórico solo puede editarse conservando una unidad de peso y sin asignarle valores de saco.");
+                }
+
+                return;
+            }
+
+            if (!detalle.UnidadMedida.Equals(
+                    DetalleCompraAlimentoEntity.UnidadCompra,
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                throw new ArgumentException(
+                    "Las compras nuevas deben registrarse en sacos.");
+            }
+
+            if (!detalle.PesoPorSaco.HasValue ||
+                detalle.PesoPorSaco.Value <= 0 ||
+                string.IsNullOrWhiteSpace(detalle.UnidadPesoSaco))
+            {
+                throw new ArgumentException(
+                    "Debe indicar el peso y la unidad de cada saco.");
+            }
 
             if (idCompra <= 0 && detalle.Id > 0)
                 throw new ArgumentException(

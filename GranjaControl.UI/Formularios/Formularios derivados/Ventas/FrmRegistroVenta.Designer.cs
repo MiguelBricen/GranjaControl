@@ -18,6 +18,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmRegistroVenta));
             pnlSuperior = new Panel();
             lblDescripcion = new Label();
             btnCerrar = new Button();
@@ -102,7 +103,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             lblDescripcion.ForeColor = SystemColors.ControlDarkDark;
             lblDescripcion.Location = new Point(88, 38);
             lblDescripcion.Name = "lblDescripcion";
-            lblDescripcion.Size = new Size(422, 23);
+            lblDescripcion.Size = new Size(434, 23);
             lblDescripcion.TabIndex = 3;
             lblDescripcion.Text = "Registre el encabezado y los lotes incluidos en la venta.";
             // 
@@ -125,7 +126,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             lblTitulo.ForeColor = Color.Black;
             lblTitulo.Location = new Point(88, 6);
             lblTitulo.Name = "lblTitulo";
-            lblTitulo.Size = new Size(157, 31);
+            lblTitulo.Size = new Size(147, 31);
             lblTitulo.TabIndex = 1;
             lblTitulo.Text = "Nueva venta";
             // 
@@ -184,7 +185,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             labelNumero.ForeColor = Color.FromArgb(42, 52, 45);
             labelNumero.Location = new Point(24, 18);
             labelNumero.Name = "labelNumero";
-            labelNumero.Size = new Size(98, 25);
+            labelNumero.Size = new Size(117, 25);
             labelNumero.TabIndex = 0;
             labelNumero.Text = "N° de venta:";
             // 
@@ -206,7 +207,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             txtNumero.Location = new Point(8, 7);
             txtNumero.MaxLength = 50;
             txtNumero.Name = "txtNumero";
-            txtNumero.Size = new Size(234, 25);
+            txtNumero.Size = new Size(211, 24);
             txtNumero.TabIndex = 0;
             // 
             // labelFecha
@@ -236,7 +237,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             dtpFecha.Format = DateTimePickerFormat.Short;
             dtpFecha.Location = new Point(8, 6);
             dtpFecha.Name = "dtpFecha";
-            dtpFecha.Size = new Size(164, 31);
+            dtpFecha.Size = new Size(169, 31);
             dtpFecha.TabIndex = 0;
             dtpFecha.ValueChanged += dtpFecha_ValueChanged;
             // 
@@ -259,7 +260,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             labelCliente.ForeColor = Color.FromArgb(42, 52, 45);
             labelCliente.Location = new Point(24, 74);
             labelCliente.Name = "labelCliente";
-            labelCliente.Size = new Size(75, 25);
+            labelCliente.Size = new Size(76, 25);
             labelCliente.TabIndex = 5;
             labelCliente.Text = "Cliente:";
             // 
@@ -282,7 +283,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             cboCliente.FormattingEnabled = true;
             cboCliente.Location = new Point(8, 6);
             cboCliente.Name = "cboCliente";
-            cboCliente.Size = new Size(504, 28);
+            cboCliente.Size = new Size(476, 33);
             cboCliente.TabIndex = 0;
             // 
             // lblEstadoVenta
@@ -304,7 +305,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             labelObservacion.ForeColor = Color.FromArgb(42, 52, 45);
             labelObservacion.Location = new Point(24, 130);
             labelObservacion.Name = "labelObservacion";
-            labelObservacion.Size = new Size(126, 25);
+            labelObservacion.Size = new Size(124, 25);
             labelObservacion.TabIndex = 8;
             labelObservacion.Text = "Observación:";
             // 
@@ -328,7 +329,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             txtObservacion.Multiline = true;
             txtObservacion.Name = "txtObservacion";
             txtObservacion.ScrollBars = ScrollBars.Vertical;
-            txtObservacion.Size = new Size(504, 54);
+            txtObservacion.Size = new Size(509, 54);
             txtObservacion.TabIndex = 0;
             // 
             // lblDetalles
@@ -339,7 +340,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             lblDetalles.ForeColor = Color.Black;
             lblDetalles.Location = new Point(24, 208);
             lblDetalles.Name = "lblDetalles";
-            lblDetalles.Size = new Size(231, 31);
+            lblDetalles.Size = new Size(222, 31);
             lblDetalles.TabIndex = 10;
             lblDetalles.Text = "Detalles de la venta";
             // 
@@ -351,7 +352,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             lblDetalleDescripcion.ForeColor = SystemColors.ControlDarkDark;
             lblDetalleDescripcion.Location = new Point(25, 239);
             lblDetalleDescripcion.Name = "lblDetalleDescripcion";
-            lblDetalleDescripcion.Size = new Size(515, 21);
+            lblDetalleDescripcion.Size = new Size(475, 21);
             lblDetalleDescripcion.TabIndex = 11;
             lblDetalleDescripcion.Text = "Seleccione un lote, registre la cantidad de pollos y el peso total.";
             // 
@@ -363,7 +364,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             labelLoteDetalle.ForeColor = Color.FromArgb(42, 52, 45);
             labelLoteDetalle.Location = new Point(24, 268);
             labelLoteDetalle.Name = "labelLoteDetalle";
-            labelLoteDetalle.Size = new Size(40, 20);
+            labelLoteDetalle.Size = new Size(38, 20);
             labelLoteDetalle.TabIndex = 12;
             labelLoteDetalle.Text = "Lote";
             // 
@@ -386,7 +387,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             cboLoteDetalle.FormattingEnabled = true;
             cboLoteDetalle.Location = new Point(8, 6);
             cboLoteDetalle.Name = "cboLoteDetalle";
-            cboLoteDetalle.Size = new Size(274, 28);
+            cboLoteDetalle.Size = new Size(243, 31);
             cboLoteDetalle.TabIndex = 0;
             // 
             // labelCantidadPollos
@@ -397,7 +398,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             labelCantidadPollos.ForeColor = Color.FromArgb(42, 52, 45);
             labelCantidadPollos.Location = new Point(330, 268);
             labelCantidadPollos.Name = "labelCantidadPollos";
-            labelCantidadPollos.Size = new Size(75, 20);
+            labelCantidadPollos.Size = new Size(49, 20);
             labelCantidadPollos.TabIndex = 14;
             labelCantidadPollos.Text = "Pollos";
             // 
@@ -420,7 +421,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             numCantidadPollos.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
             numCantidadPollos.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numCantidadPollos.Name = "numCantidadPollos";
-            numCantidadPollos.Size = new Size(94, 26);
+            numCantidadPollos.Size = new Size(72, 26);
             numCantidadPollos.TabIndex = 0;
             numCantidadPollos.TextAlign = HorizontalAlignment.Right;
             numCantidadPollos.ThousandsSeparator = true;
@@ -432,11 +433,11 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             labelPesoLibras.BackColor = Color.Transparent;
             labelPesoLibras.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             labelPesoLibras.ForeColor = Color.FromArgb(42, 52, 45);
-            labelPesoLibras.Location = new Point(456, 268);
+            labelPesoLibras.Location = new Point(447, 268);
             labelPesoLibras.Name = "labelPesoLibras";
-            labelPesoLibras.Size = new Size(80, 20);
+            labelPesoLibras.Size = new Size(144, 20);
             labelPesoLibras.TabIndex = 16;
-            labelPesoLibras.Text = "Libras";
+            labelPesoLibras.Text = "Prom. por pollo (lb)";
             // 
             // pnlPesoLibras
             // 
@@ -458,7 +459,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             numPesoLibras.Location = new Point(8, 7);
             numPesoLibras.Maximum = new decimal(new int[] { 99999999, 0, 0, 131072 });
             numPesoLibras.Name = "numPesoLibras";
-            numPesoLibras.Size = new Size(104, 26);
+            numPesoLibras.Size = new Size(82, 26);
             numPesoLibras.TabIndex = 0;
             numPesoLibras.TextAlign = HorizontalAlignment.Right;
             numPesoLibras.ThousandsSeparator = true;
@@ -471,7 +472,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             labelPrecioDetalle.ForeColor = Color.FromArgb(42, 52, 45);
             labelPrecioDetalle.Location = new Point(592, 268);
             labelPrecioDetalle.Name = "labelPrecioDetalle";
-            labelPrecioDetalle.Size = new Size(113, 20);
+            labelPrecioDetalle.Size = new Size(115, 20);
             labelPrecioDetalle.TabIndex = 18;
             labelPrecioDetalle.Text = "Precio por libra";
             // 
@@ -504,7 +505,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             btnAgregarDetalle.FlatStyle = FlatStyle.Flat;
             btnAgregarDetalle.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnAgregarDetalle.ForeColor = Color.FromArgb(42, 52, 45);
-            btnAgregarDetalle.IconChar = FontAwesome.Sharp.IconChar.Plus;
+            btnAgregarDetalle.IconChar = FontAwesome.Sharp.IconChar.Add;
             btnAgregarDetalle.IconColor = Color.FromArgb(23, 61, 43);
             btnAgregarDetalle.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnAgregarDetalle.IconSize = 22;
@@ -568,12 +569,14 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             dgvDetalles.AllowUserToResizeRows = false;
             dgvDetalles.BackgroundColor = Color.White;
             dgvDetalles.BorderStyle = BorderStyle.None;
+            dgvDetalles.ColumnHeadersHeight = 29;
             dgvDetalles.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgvDetalles.Location = new Point(24, 392);
             dgvDetalles.MultiSelect = false;
             dgvDetalles.Name = "dgvDetalles";
             dgvDetalles.ReadOnly = true;
             dgvDetalles.RowHeadersVisible = false;
+            dgvDetalles.RowHeadersWidth = 51;
             dgvDetalles.RowTemplate.Height = 32;
             dgvDetalles.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvDetalles.Size = new Size(936, 146);
@@ -652,6 +655,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             // errorIcon
             // 
             errorIcon.ContainerControl = this;
+            errorIcon.Icon = (Icon)resources.GetObject("errorIcon.Icon");
             // 
             // FrmRegistroVenta
             // 
@@ -683,10 +687,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             pnlObservacion.PerformLayout();
             pnlLoteDetalle.ResumeLayout(false);
             pnlCantidadPollos.ResumeLayout(false);
-            pnlCantidadPollos.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numCantidadPollos).EndInit();
             pnlPesoLibras.ResumeLayout(false);
-            pnlPesoLibras.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numPesoLibras).EndInit();
             pnlPrecioDetalle.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvDetalles).EndInit();

@@ -363,8 +363,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             dgvDetalles.Columns["CodigoLote"]!.HeaderText = "Lote";
             dgvDetalles.Columns["CantidadPollos"]!.HeaderText = "Pollos";
             dgvDetalles.Columns["PesoLibras"]!.HeaderText = "Libras";
-            dgvDetalles.Columns["PrecioPorLibra"]!.HeaderText =
-                "Precio / libra";
+            dgvDetalles.Columns["PrecioPorLibra"]!.HeaderText = "Precio / libra";
 
             dgvDetalles.Columns["Subtotal"]!.HeaderText = "Subtotal";
 
@@ -385,22 +384,16 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
                 DataGridViewAutoSizeColumnMode.AllCells;
 
             dgvDetalles.Columns["CantidadPollos"]!.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleRight;
+                DataGridViewContentAlignment.MiddleCenter;
 
             dgvDetalles.Columns["PesoLibras"]!.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleRight;
+                DataGridViewContentAlignment.MiddleCenter;
 
             dgvDetalles.Columns["PrecioPorLibra"]!.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleRight;
+                DataGridViewContentAlignment.MiddleCenter;
 
             dgvDetalles.Columns["Subtotal"]!.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleRight;
-
-            dgvDetalles.Columns["CodigoLote"]!.DisplayIndex = 0;
-            dgvDetalles.Columns["CantidadPollos"]!.DisplayIndex = 1;
-            dgvDetalles.Columns["PesoLibras"]!.DisplayIndex = 2;
-            dgvDetalles.Columns["PrecioPorLibra"]!.DisplayIndex = 3;
-            dgvDetalles.Columns["Subtotal"]!.DisplayIndex = 4;
+                DataGridViewContentAlignment.MiddleCenter;
         }
 
         private void ActualizarTotales()
@@ -447,7 +440,10 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             cboLoteDetalle.SelectedValue = detalle.IdLote;
 
             numCantidadPollos.Value = detalle.CantidadPollos;
-            numPesoLibras.Value = detalle.PesoLibras;
+            numPesoLibras.Value = decimal.Round(
+                detalle.PesoLibras / detalle.CantidadPollos,
+                2,
+                MidpointRounding.AwayFromZero);
         }
 
         private bool ValidarDetalle()
@@ -504,9 +500,31 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             {
                 errorIcon.SetError(
                     numPesoLibras,
-                    "El peso total debe ser mayor que cero.");
+                    "El peso promedio por pollo debe ser mayor que cero.");
 
                 valido = false;
+            }
+
+            if (numCantidadPollos.Value > 0 &&
+                numPesoLibras.Value > 0)
+            {
+                int idDetalle = _indiceDetalleSeleccionado >= 0
+                    ? _detalles[_indiceDetalleSeleccionado].Id
+                    : 0;
+
+                decimal pesoTotalLibras = CalcularPesoTotalLibras(
+                    (int)numCantidadPollos.Value,
+                    numPesoLibras.Value,
+                    idDetalle);
+
+                if (pesoTotalLibras > DetalleVentaEntity.PesoMaximo)
+                {
+                    errorIcon.SetError(
+                        numPesoLibras,
+                        "El peso total calculado supera el máximo permitido.");
+
+                    valido = false;
+                }
             }
 
             return valido;
@@ -519,11 +537,17 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             LoteEntity lote =
                 (LoteEntity)cboLoteDetalle.SelectedItem!;
 
+            int cantidadPollos = (int)numCantidadPollos.Value;
+            decimal pesoTotalLibras = CalcularPesoTotalLibras(
+                cantidadPollos,
+                numPesoLibras.Value,
+                id);
+
             DetalleVentaEntity detalle = new(
                 idVenta,
                 lote.Id,
-                (int)numCantidadPollos.Value,
-                numPesoLibras.Value,
+                cantidadPollos,
+                pesoTotalLibras,
                 _precioVigente!.Value);
 
             detalle.AsignarLote(lote.Id, lote.CodigoLote);
@@ -532,6 +556,31 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
                 detalle.AsignarId(id);
 
             return detalle;
+        }
+
+        private decimal CalcularPesoTotalLibras(
+            int cantidadPollos,
+            decimal pesoPromedioPorPollo,
+            int idDetalle)
+        {
+            DetalleVentaEntity? detalleExistente = idDetalle > 0
+                ? _detalles.FirstOrDefault(d => d.Id == idDetalle)
+                : null;
+
+            if (detalleExistente is not null &&
+                detalleExistente.CantidadPollos == cantidadPollos &&
+                decimal.Round(
+                    detalleExistente.PesoLibras / cantidadPollos,
+                    2,
+                    MidpointRounding.AwayFromZero) == pesoPromedioPorPollo)
+            {
+                return detalleExistente.PesoLibras;
+            }
+
+            return decimal.Round(
+                cantidadPollos * pesoPromedioPorPollo,
+                2,
+                MidpointRounding.AwayFromZero);
         }
 
         private void LimpiarEntradaDetalle()

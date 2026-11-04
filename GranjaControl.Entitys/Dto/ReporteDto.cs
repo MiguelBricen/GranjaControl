@@ -99,6 +99,8 @@ namespace GranjaControl.Entitys.Dto
     {
         public int TotalCompras { get; set; }
 
+        public decimal TotalCantidadSacos { get; set; }
+
         public decimal TotalLibras { get; set; }
 
         public decimal TotalKilogramos { get; set; }
@@ -116,12 +118,12 @@ namespace GranjaControl.Entitys.Dto
 
         public DateTime FechaCompra { get; set; }
 
+        public decimal CantidadSacos { get; set; }
+
         public decimal Libras { get; set; }
 
         public decimal Kilogramos { get; set; }
 
         public decimal CostoTotal { get; set; }
-
-        public int CantidadItems { get; set; }
     }
 }

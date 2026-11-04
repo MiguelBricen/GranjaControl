@@ -101,20 +101,18 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Roles
 
             dgvListado.DefaultCellStyle.WrapMode = DataGridViewTriState.False;
 
+            if (dgvListado.Columns.Count == 0)
+                return;
+
+
             dgvListado.Columns["Id"]!.Visible = false;
             dgvListado.Columns["NombreRol"]!.HeaderText = "Nombre del Rol";
-
-
 
             dgvListado.Columns["Activo"]!.Visible = false;
             dgvListado.Columns["Estado"]!.HeaderText = "Estado";
 
             dgvListado.Columns["NombreRol"]!.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dgvListado.Columns["NombreRol"]!.FillWeight = 30;
-            dgvListado.Columns["Estado"]!.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-
-            dgvListado.Columns["NombreRol"]!.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleLeft;
+            dgvListado.Columns["Estado"]!.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
             AjustarColumnas("Estado");
         }
@@ -151,8 +149,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Roles
 
             string accion = activo ? "desactivar" : "activar";
 
-            DialogResult respuesta = mensajes.MensajeConfirmacion(
-                $"¿Desea {accion} este registro?");
+            DialogResult respuesta = mensajes.MensajeConfirmacion($"¿Desea {accion} este registro?");
 
             if (respuesta != DialogResult.Yes)
                 return;

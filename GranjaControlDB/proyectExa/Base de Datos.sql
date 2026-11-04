@@ -251,6 +251,11 @@ CREATE TABLE tblDetalleComprasAlimento
 	cantidad DECIMAL(10,2) NOT NULL,
 	unidadMedida NVARCHAR(20) NOT NULL,
 	costoUnitario DECIMAL(10,2) NOT NULL,
+	pesoPorSaco DECIMAL(10,4) NULL,
+	unidadPesoSaco NVARCHAR(20) NULL,
+	pesoTotalLibras DECIMAL(18,2) NULL,
+	pesoTotalKilogramos DECIMAL(18,2) NULL,
+	subtotal DECIMAL(18,2) NULL,
 
 	CONSTRAINT PK_tblDetalleComprasAlimento PRIMARY KEY (id),
 
@@ -259,7 +264,28 @@ CREATE TABLE tblDetalleComprasAlimento
 
 	CONSTRAINT CK_tblDetalleComprasAlimento_cantidad CHECK(cantidad > 0),
 	CONSTRAINT CK_tblDetalleComprasAlimento_costoUnitario CHECK(costoUnitario >= 0),
-	CONSTRAINT CK_tblDetalleComprasAlimento_unidadMedida CHECK(unidadMedida IN ('Libras', 'Kilogramos'))
+	CONSTRAINT CK_tblDetalleComprasAlimento_unidadMedida CHECK(unidadMedida IN ('Libras', 'Kilogramos', 'Sacos')),
+	CONSTRAINT CK_tblDetalleComprasAlimento_datosSaco CHECK
+	(
+		(
+			unidadMedida IN ('Libras', 'Kilogramos')
+			AND pesoPorSaco IS NULL
+			AND unidadPesoSaco IS NULL
+			AND pesoTotalLibras IS NULL
+			AND pesoTotalKilogramos IS NULL
+			AND subtotal IS NULL
+		)
+		OR
+		(
+			unidadMedida = 'Sacos'
+			AND pesoPorSaco IS NOT NULL AND pesoPorSaco > 0
+			AND unidadPesoSaco IS NOT NULL
+			AND unidadPesoSaco IN ('Libras', 'Kilogramos')
+			AND pesoTotalLibras IS NOT NULL AND pesoTotalLibras > 0
+			AND pesoTotalKilogramos IS NOT NULL AND pesoTotalKilogramos > 0
+			AND subtotal IS NOT NULL AND subtotal >= 0
+		)
+	)
 );
 GO
 

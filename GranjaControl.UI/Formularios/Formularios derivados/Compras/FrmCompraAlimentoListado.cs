@@ -21,36 +21,25 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
         {
             InitializeComponent();
 
-            _compraBLL = new CompraAlimentoBLL(
-                new CompraAlimentoDAL(),
-                new DetalleCompraAlimentoDAL());
+            _compraBLL = new CompraAlimentoBLL(new CompraAlimentoDAL(), new DetalleCompraAlimentoDAL());
 
             _proveedorBLL = new ProveedorBLL(new ProveedorDAL());
             _alimentoBLL = new AlimentoBLL(new AlimentoDAL());
 
             lblTitulo.Text = "Listado de Compras de Alimentos";
-            label1.Text =
-                "Consulte y administre las compras de alimentos registradas.";
+            label1.Text ="Consulte y administre las compras de alimentos registradas.";
 
             iconTitulo.IconChar = FontAwesome.Sharp.IconChar.CartShopping;
 
-            txtBuscar.PlaceholderText =
-                "Buscar por número de compra o proveedor";
-
+            txtBuscar.PlaceholderText ="Buscar por número de compra o proveedor";
             btnEditar.Text = "Ver / Editar";
         }
 
-        protected override async Task MostrarDatosAsync(
-            int pagina,
-            int tamPagina,
-            string? buscar = null)
+        protected override async Task MostrarDatosAsync(int pagina, int tamPagina, string? buscar = null)
         {
             try
             {
-                var resultado = await _compraBLL.MostrarAsync(
-                    pagina,
-                    tamPagina,
-                    buscar);
+                var resultado = await _compraBLL.MostrarAsync(pagina, tamPagina, buscar);
 
                 dgvListado.DataSource = null;
                 dgvListado.DataSource = resultado.Registros;
@@ -65,16 +54,13 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError(
-                    $"Error al mostrar las compras: {ex.Message}");
+                mensajes.MensajeError($"Error al mostrar las compras: {ex.Message}");
             }
         }
 
         private void ConfigurarGrid()
         {
-            if (!dgvListado.Columns.Contains("Id"))
-                return;
-
+            // Configuracion general del GridView
             dgvListado.BorderStyle = BorderStyle.None;
             dgvListado.BackgroundColor = Color.White;
             dgvListado.GridColor = Color.FromArgb(220, 228, 222);
@@ -86,61 +72,52 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
             dgvListado.AllowUserToDeleteRows = false;
             dgvListado.ReadOnly = true;
             dgvListado.MultiSelect = false;
-            dgvListado.SelectionMode =
-                DataGridViewSelectionMode.FullRowSelect;
+            dgvListado.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
-            dgvListado.AutoSizeColumnsMode =
-                DataGridViewAutoSizeColumnsMode.None;
+            dgvListado.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
 
             dgvListado.ColumnHeadersHeight = 42;
-            dgvListado.ColumnHeadersHeightSizeMode =
-                DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvListado.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
 
             dgvListado.RowTemplate.Height = 36;
-            dgvListado.CellBorderStyle =
-                DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvListado.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
 
-            dgvListado.ColumnHeadersDefaultCellStyle.BackColor =
-                Color.FromArgb(32, 76, 56);
 
-            dgvListado.ColumnHeadersDefaultCellStyle.ForeColor =
-                Color.White;
+            // Encabezados         
+            dgvListado.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(32, 76, 56);
 
-            dgvListado.ColumnHeadersDefaultCellStyle.SelectionBackColor =
-                Color.FromArgb(32, 76, 56);
+            dgvListado.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
 
-            dgvListado.ColumnHeadersDefaultCellStyle.SelectionForeColor =
-                Color.White;
+            dgvListado.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(32, 76, 56);
 
-            dgvListado.ColumnHeadersDefaultCellStyle.Font =
-                new Font("Segoe UI", 12, FontStyle.Bold);
+            dgvListado.ColumnHeadersDefaultCellStyle.SelectionForeColor = Color.White;
 
-            dgvListado.ColumnHeadersDefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleLeft;
+            dgvListado.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 12, FontStyle.Bold);
 
-            dgvListado.ColumnHeadersDefaultCellStyle.WrapMode =
-                DataGridViewTriState.False;
+            dgvListado.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
+            dgvListado.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
+
+            // Filas       
             dgvListado.DefaultCellStyle.BackColor = Color.White;
+
             dgvListado.DefaultCellStyle.ForeColor = Color.Black;
 
-            dgvListado.DefaultCellStyle.SelectionBackColor =
-                Color.FromArgb(226, 239, 228);
+            dgvListado.DefaultCellStyle.SelectionBackColor = Color.FromArgb(226, 239, 228);
 
-            dgvListado.DefaultCellStyle.SelectionForeColor =
-                Color.FromArgb(32, 76, 56);
+            dgvListado.DefaultCellStyle.SelectionForeColor = Color.FromArgb(32, 76, 56);
 
-            dgvListado.DefaultCellStyle.Font =
-                new Font("Segoe UI", 11, FontStyle.Bold);
+            dgvListado.DefaultCellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
 
-            dgvListado.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleLeft;
+            dgvListado.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
-            dgvListado.DefaultCellStyle.Padding =
-                new Padding(8, 0, 8, 0);
+            dgvListado.DefaultCellStyle.Padding = new Padding(8, 0, 8, 0);
 
-            dgvListado.DefaultCellStyle.WrapMode =
-                DataGridViewTriState.False;
+            dgvListado.DefaultCellStyle.WrapMode = DataGridViewTriState.False;
+
+            if (dgvListado.Columns.Count == 0)
+                return;
+
 
             dgvListado.Columns["Id"]!.Visible = false;
             dgvListado.Columns["IdProveedor"]!.Visible = false;
@@ -151,32 +128,21 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
             dgvListado.Columns["Observacion"]!.HeaderText = "Observación";
 
             dgvListado.Columns["NumeroCompra"]!.AutoSizeMode =
-                DataGridViewAutoSizeColumnMode.AllCells;
+                DataGridViewAutoSizeColumnMode.Fill;
 
             dgvListado.Columns["NombreProveedor"]!.AutoSizeMode =
                 DataGridViewAutoSizeColumnMode.Fill;
-            dgvListado.Columns["NombreProveedor"]!.FillWeight = 28;
 
             dgvListado.Columns["FechaCompra"]!.AutoSizeMode =
                 DataGridViewAutoSizeColumnMode.AllCells;
 
             dgvListado.Columns["Observacion"]!.AutoSizeMode =
-                DataGridViewAutoSizeColumnMode.Fill;
-            dgvListado.Columns["Observacion"]!.FillWeight = 40;
-
-            dgvListado.Columns["FechaCompra"]!.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleCenter;
-
-            dgvListado.Columns["NumeroCompra"]!.DisplayIndex = 0;
-            dgvListado.Columns["NombreProveedor"]!.DisplayIndex = 1;
-            dgvListado.Columns["FechaCompra"]!.DisplayIndex = 2;
-            dgvListado.Columns["Observacion"]!.DisplayIndex = 3;
+                DataGridViewAutoSizeColumnMode.AllCells;
 
             AjustarColumnas("NumeroCompra", "FechaCompra");
         }
 
-        protected override void FormatearCelda(
-            DataGridViewCellFormattingEventArgs e)
+        protected override void FormatearCelda(DataGridViewCellFormattingEventArgs e)
         {
             if (e.Value is null)
                 return;
@@ -185,8 +151,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
 
             if (columna == "FechaCompra")
             {
-                e.Value = Convert.ToDateTime(e.Value)
-                    .ToString("dd/MM/yyyy");
+                e.Value = Convert.ToDateTime(e.Value).ToString("dd/MM/yyyy");
 
                 e.FormattingApplied = true;
             }
@@ -194,19 +159,12 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
 
         protected override Form? CrearFormularioAccionPrincipal()
         {
-            return new FrmRegistroCompraAlimento(
-                _compraBLL,
-                _proveedorBLL,
-                _alimentoBLL);
+            return new FrmRegistroCompraAlimento(_compraBLL, _proveedorBLL, _alimentoBLL);
         }
 
         protected override Form? CrearFormularioAccionSecundaria(int id)
         {
-            return new FrmRegistroCompraAlimento(
-                _compraBLL,
-                _proveedorBLL,
-                _alimentoBLL,
-                id);
+            return new FrmRegistroCompraAlimento(_compraBLL, _proveedorBLL, _alimentoBLL,id);
         }
 
         protected override int? ObtenerIdSeleccionado()
@@ -214,8 +172,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
             if (dgvListado.CurrentRow == null)
                 return null;
 
-            return Convert.ToInt32(
-                dgvListado.CurrentRow.Cells["Id"].Value);
+            return Convert.ToInt32(dgvListado.CurrentRow.Cells["Id"].Value);
         }
     }
 }

@@ -161,8 +161,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Usuarios
 
             string accion = activo ? "desactivar" : "activar";
 
-            DialogResult respuesta = mensajes.MensajeConfirmacion(
-                $"¿Desea {accion} este registro?");
+            DialogResult respuesta = mensajes.MensajeConfirmacion($"¿Desea {accion} este registro?");
 
             if (respuesta != DialogResult.Yes)
                 return;

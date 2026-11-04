@@ -38,7 +38,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
 
             lblTitulo.Text = "Nueva compra de alimentos";
             lblDescripcion.Text =
-                "Registre el encabezado y los alimentos de la compra.";
+                "Registre sacos, peso por saco y precio por saco.";
         }
 
         public FrmRegistroCompraAlimento(
@@ -56,7 +56,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
 
             lblTitulo.Text = "Editar compra de alimentos";
             lblDescripcion.Text =
-                "Modifique el encabezado y los detalles de la compra.";
+                "Consulte y edite los detalles de la compra.";
         }
 
         private async Task CargarCombosAsync()
@@ -91,7 +91,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
 
             cboUnidadDetalle.Items.Clear();
             cboUnidadDetalle.Items.AddRange(
-                DetalleCompraAlimentoEntity.UnidadesPermitidas.ToArray());
+                DetalleCompraAlimentoEntity.UnidadesPesoSacoPermitidas.ToArray());
 
             cboUnidadDetalle.SelectedIndex = -1;
 
@@ -118,6 +118,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
             if (!_idCompra.HasValue)
             {
                 dtpFecha.Value = DateTime.Today;
+                numPesoSacoDetalle.Value = 100;
                 cboUnidadDetalle.SelectedItem = "Libras";
                 return;
             }
@@ -241,23 +242,23 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
             dgvDetalles.DefaultCellStyle.Padding =
                 new Padding(6, 0, 6, 0);
 
-            dgvDetalles.Columns["Id"]!.Visible = false;
-            dgvDetalles.Columns["IdCompra"]!.Visible = false;
-            dgvDetalles.Columns["NumeroCompra"]!.Visible = false;
+            foreach (DataGridViewColumn columna in dgvDetalles.Columns)
+                columna.Visible = false;
+
+            dgvDetalles.Columns["NombreAlimento"]!.Visible = true;
+            dgvDetalles.Columns["Cantidad"]!.Visible = true;
+            dgvDetalles.Columns["UnidadMedida"]!.Visible = true;
+            dgvDetalles.Columns["CostoUnitario"]!.Visible = true;
+            dgvDetalles.Columns["Subtotal"]!.Visible = true;
 
             dgvDetalles.Columns["NombreAlimento"]!.HeaderText = "Alimento";
-            dgvDetalles.Columns["TipoAlimento"]!.HeaderText = "Tipo";
             dgvDetalles.Columns["Cantidad"]!.HeaderText = "Cantidad";
             dgvDetalles.Columns["UnidadMedida"]!.HeaderText = "Unidad";
-            dgvDetalles.Columns["CostoUnitario"]!.HeaderText = "Costo unit.";
+            dgvDetalles.Columns["CostoUnitario"]!.HeaderText = "Costo unitario";
             dgvDetalles.Columns["Subtotal"]!.HeaderText = "Subtotal";
 
             dgvDetalles.Columns["NombreAlimento"]!.AutoSizeMode =
                 DataGridViewAutoSizeColumnMode.Fill;
-            dgvDetalles.Columns["NombreAlimento"]!.FillWeight = 35;
-
-            dgvDetalles.Columns["TipoAlimento"]!.AutoSizeMode =
-                DataGridViewAutoSizeColumnMode.AllCells;
 
             dgvDetalles.Columns["Cantidad"]!.AutoSizeMode =
                 DataGridViewAutoSizeColumnMode.AllCells;
@@ -272,26 +273,16 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
                 DataGridViewAutoSizeColumnMode.AllCells;
 
             dgvDetalles.Columns["Cantidad"]!.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleRight;
+                DataGridViewContentAlignment.MiddleCenter;
 
             dgvDetalles.Columns["UnidadMedida"]!.DefaultCellStyle.Alignment =
                 DataGridViewContentAlignment.MiddleCenter;
 
-            dgvDetalles.Columns["TipoAlimento"]!.DefaultCellStyle.Alignment =
+            dgvDetalles.Columns["CostoUnitario"]!.DefaultCellStyle.Alignment =
                 DataGridViewContentAlignment.MiddleCenter;
 
-            dgvDetalles.Columns["CostoUnitario"]!.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleRight;
-
             dgvDetalles.Columns["Subtotal"]!.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleRight;
-
-            dgvDetalles.Columns["NombreAlimento"]!.DisplayIndex = 0;
-            dgvDetalles.Columns["TipoAlimento"]!.DisplayIndex = 1;
-            dgvDetalles.Columns["Cantidad"]!.DisplayIndex = 2;
-            dgvDetalles.Columns["UnidadMedida"]!.DisplayIndex = 3;
-            dgvDetalles.Columns["CostoUnitario"]!.DisplayIndex = 4;
-            dgvDetalles.Columns["Subtotal"]!.DisplayIndex = 5;
+                DataGridViewContentAlignment.MiddleCenter;
         }
 
         private void ActualizarTotal()
@@ -328,13 +319,37 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
         private void CargarDetalleEnControles(
             DetalleCompraAlimentoEntity detalle)
         {
+            bool esHistorico = detalle.EsPendienteRevision;
+            ConfigurarModoDetalle(esHistorico);
+
             cboAlimentoDetalle.SelectedValue = detalle.IdAlimento;
             numCantidadDetalle.Value = detalle.Cantidad;
-            cboUnidadDetalle.SelectedItem = detalle.UnidadMedida;
+            if (esHistorico)
+            {
+                cboUnidadDetalle.SelectedItem = detalle.UnidadMedida;
+            }
+            else
+            {
+                numPesoSacoDetalle.Value = detalle.PesoPorSaco!.Value;
+                cboUnidadDetalle.SelectedItem = detalle.UnidadPesoSaco;
+            }
+
             numCostoDetalle.Value = detalle.CostoUnitario;
         }
 
-        private bool ValidarDetalle()
+        private void ConfigurarModoDetalle(bool esHistorico)
+        {
+            labelCantidadDetalle.Text = esHistorico ? "Cantidad" : "Sacos";
+            labelUnidadDetalle.Text = esHistorico ? "Unidad" : "Unidad peso";
+            labelCostoDetalle.Text = esHistorico
+                ? "Costo unitario"
+                : "Precio por saco";
+
+            labelPesoSacoDetalle.Visible = !esHistorico;
+            pnlPesoSacoDetalle.Visible = !esHistorico;
+        }
+
+        private bool ValidarDetalle(bool esHistorico = false)
         {
             bool valido = true;
 
@@ -365,22 +380,40 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
                 valido = false;
             }
 
+            if (!esHistorico && numPesoSacoDetalle.Value <= 0)
+            {
+                errorIcon.SetError(
+                    numPesoSacoDetalle,
+                    "El peso por saco debe ser mayor que cero.");
+
+                valido = false;
+            }
+
             return valido;
         }
 
         private DetalleCompraAlimentoEntity CrearDetalleDesdeControles(
             int id = 0,
-            int idCompra = 0)
+            int idCompra = 0,
+            bool esHistorico = false)
         {
             AlimentoEntity alimento =
                 (AlimentoEntity)cboAlimentoDetalle.SelectedItem!;
 
-            DetalleCompraAlimentoEntity detalle = new(
-                idCompra,
-                alimento.Id,
-                numCantidadDetalle.Value,
-                cboUnidadDetalle.SelectedItem!.ToString()!,
-                numCostoDetalle.Value);
+            DetalleCompraAlimentoEntity detalle = esHistorico
+                ? new DetalleCompraAlimentoEntity(
+                    idCompra,
+                    alimento.Id,
+                    numCantidadDetalle.Value,
+                    cboUnidadDetalle.SelectedItem!.ToString()!,
+                    numCostoDetalle.Value)
+                : new DetalleCompraAlimentoEntity(
+                    idCompra,
+                    alimento.Id,
+                    numCantidadDetalle.Value,
+                    numPesoSacoDetalle.Value,
+                    cboUnidadDetalle.SelectedItem!.ToString()!,
+                    numCostoDetalle.Value);
 
             detalle.AsignarAlimento(
                 alimento.Id,
@@ -395,8 +428,11 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
 
         private void LimpiarEntradaDetalle()
         {
+            ConfigurarModoDetalle(false);
             cboAlimentoDetalle.SelectedIndex = -1;
             numCantidadDetalle.Value = 0;
+            numPesoSacoDetalle.Value = 100;
+            cboUnidadDetalle.SelectedItem = "Libras";
             numCostoDetalle.Value = 0;
         }
 
@@ -419,13 +455,28 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
             CargarDetalleEnControles(_detalles[indice]);
 
             btnActualizarDetalle.Enabled = true;
-            btnQuitarDetalle.Enabled = _detalles[indice].Id == 0;
+            btnQuitarDetalle.Enabled =
+                _detalles[indice].Id == 0;
         }
 
         private void btnAgregarDetalle_Click(
             object sender,
             EventArgs e)
         {
+            if (_indiceDetalleSeleccionado >= 0 &&
+                _indiceDetalleSeleccionado < _detalles.Count &&
+                _detalles[_indiceDetalleSeleccionado].EsPendienteRevision)
+            {
+                dgvDetalles.ClearSelection();
+                _indiceDetalleSeleccionado = -1;
+                LimpiarEntradaDetalle();
+
+                mensajes.MensajeInformacion(
+                    "Ingrese los datos del nuevo detalle antes de agregarlo.");
+
+                return;
+            }
+
             errorIcon.Clear();
 
             if (!ValidarDetalle())
@@ -456,16 +507,17 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
 
             errorIcon.Clear();
 
-            if (!ValidarDetalle())
-                return;
-
             DetalleCompraAlimentoEntity actual =
                 _detalles[_indiceDetalleSeleccionado];
+
+            if (!ValidarDetalle(actual.EsPendienteRevision))
+                return;
 
             DetalleCompraAlimentoEntity actualizado =
                 CrearDetalleDesdeControles(
                     actual.Id,
-                    actual.IdCompra);
+                    actual.IdCompra,
+                    actual.EsPendienteRevision);
 
             actualizado.AsignarCompra(
                 actual.IdCompra,
@@ -473,10 +525,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
 
             _detalles[_indiceDetalleSeleccionado] = actualizado;
 
-            int indice = _indiceDetalleSeleccionado;
-
             RefrescarDetalles();
-            SeleccionarDetalle(indice);
+            LimpiarEntradaDetalle();
         }
 
         private void btnQuitarDetalle_Click(
@@ -629,9 +679,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
             Cancelar();
         }
 
-        private void FrmRegistroCompraAlimento_Shown(
-            object sender,
-            EventArgs e)
+        private void FrmRegistroCompraAlimento_Shown(object sender, EventArgs e)
         {
             RedondearControlHelper.RedondearControl(this, 20);
             RedondearControlHelper.RedondearControl(pnlContenido, 20);
@@ -647,10 +695,11 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
 
             RedondearControlHelper.RedondearControl(pnlAlimentoDetalle, 12);
             RedondearControlHelper.RedondearControl(pnlCantidadDetalle, 12);
+            RedondearControlHelper.RedondearControl(pnlPesoSacoDetalle, 12);
             RedondearControlHelper.RedondearControl(pnlUnidadDetalle, 12);
             RedondearControlHelper.RedondearControl(pnlCostoDetalle, 12);
 
-            RedondearControlHelper.RedondearControl(dgvDetalles, 12);
+            //RedondearControlHelper.RedondearControl(dgvDetalles, 12);
         }
 
         private void pnlSuperior_MouseDown(

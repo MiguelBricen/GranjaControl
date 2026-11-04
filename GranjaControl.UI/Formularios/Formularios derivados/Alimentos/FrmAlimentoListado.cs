@@ -22,17 +22,11 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Alimentos
             _alimentoBLL = new AlimentoBLL(new AlimentoDAL());
         }
 
-        protected override async Task MostrarDatosAsync(
-            int pagina,
-            int tamPagina,
-            string? buscar = null)
+        protected override async Task MostrarDatosAsync(int pagina, int tamPagina, string? buscar = null)
         {
             try
             {
-                var resultado = await _alimentoBLL.MostrarAsync(
-                    pagina,
-                    tamPagina,
-                    buscar);
+                var resultado = await _alimentoBLL.MostrarAsync(pagina, tamPagina, buscar);
 
                 dgvListado.DataSource = null;
                 dgvListado.DataSource = resultado.Registros;
@@ -47,16 +41,13 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Alimentos
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError(
-                    $"Error al mostrar los alimentos: {ex.Message}");
+                mensajes.MensajeError($"Error al mostrar los alimentos: {ex.Message}");
             }
         }
 
         private void ConfigurarGrid()
         {
-            if (!dgvListado.Columns.Contains("Id"))
-                return;
-
+            // Configuracion general del GridView
             dgvListado.BorderStyle = BorderStyle.None;
             dgvListado.BackgroundColor = Color.White;
             dgvListado.GridColor = Color.FromArgb(220, 228, 222);
@@ -68,98 +59,75 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Alimentos
             dgvListado.AllowUserToDeleteRows = false;
             dgvListado.ReadOnly = true;
             dgvListado.MultiSelect = false;
-            dgvListado.SelectionMode =
-                DataGridViewSelectionMode.FullRowSelect;
+            dgvListado.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
-            dgvListado.AutoSizeColumnsMode =
-                DataGridViewAutoSizeColumnsMode.None;
+            dgvListado.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
 
             dgvListado.ColumnHeadersHeight = 42;
-            dgvListado.ColumnHeadersHeightSizeMode =
-                DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvListado.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
 
             dgvListado.RowTemplate.Height = 36;
-            dgvListado.CellBorderStyle =
-                DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvListado.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
 
-            dgvListado.ColumnHeadersDefaultCellStyle.BackColor =
-                Color.FromArgb(32, 76, 56);
 
-            dgvListado.ColumnHeadersDefaultCellStyle.ForeColor =
-                Color.White;
+            // Encabezados         
+            dgvListado.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(32, 76, 56);
 
-            dgvListado.ColumnHeadersDefaultCellStyle.SelectionBackColor =
-                Color.FromArgb(32, 76, 56);
+            dgvListado.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
 
-            dgvListado.ColumnHeadersDefaultCellStyle.SelectionForeColor =
-                Color.White;
+            dgvListado.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(32, 76, 56);
 
-            dgvListado.ColumnHeadersDefaultCellStyle.Font =
-                new Font("Segoe UI", 12, FontStyle.Bold);
+            dgvListado.ColumnHeadersDefaultCellStyle.SelectionForeColor = Color.White;
 
-            dgvListado.ColumnHeadersDefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleLeft;
+            dgvListado.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 12, FontStyle.Bold);
 
-            dgvListado.ColumnHeadersDefaultCellStyle.WrapMode =
-                DataGridViewTriState.False;
+            dgvListado.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
+            dgvListado.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
+
+            // Filas       
             dgvListado.DefaultCellStyle.BackColor = Color.White;
+
             dgvListado.DefaultCellStyle.ForeColor = Color.Black;
 
-            dgvListado.DefaultCellStyle.SelectionBackColor =
-                Color.FromArgb(226, 239, 228);
+            dgvListado.DefaultCellStyle.SelectionBackColor = Color.FromArgb(226, 239, 228);
 
-            dgvListado.DefaultCellStyle.SelectionForeColor =
-                Color.FromArgb(32, 76, 56);
+            dgvListado.DefaultCellStyle.SelectionForeColor = Color.FromArgb(32, 76, 56);
 
-            dgvListado.DefaultCellStyle.Font =
-                new Font("Segoe UI", 11, FontStyle.Bold);
+            dgvListado.DefaultCellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
 
-            dgvListado.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleLeft;
+            dgvListado.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
-            dgvListado.DefaultCellStyle.Padding =
-                new Padding(8, 0, 8, 0);
+            dgvListado.DefaultCellStyle.Padding = new Padding(8, 0, 8, 0);
 
-            dgvListado.DefaultCellStyle.WrapMode =
-                DataGridViewTriState.False;
+            dgvListado.DefaultCellStyle.WrapMode = DataGridViewTriState.False;
+
+            if (dgvListado.Columns.Count == 0)
+                return;
+
 
             dgvListado.Columns["Id"]!.Visible = false;
             dgvListado.Columns["Activo"]!.Visible = false;
 
-            dgvListado.Columns["NombreAlimento"]!.HeaderText =
-                "Nombre del alimento";
-
+            dgvListado.Columns["NombreAlimento"]!.HeaderText = "Nombre del alimento";
             dgvListado.Columns["TipoAlimento"]!.HeaderText = "Tipo";
-            dgvListado.Columns["Descripcion"]!.HeaderText =
-                "Descripción";
+            dgvListado.Columns["Descripcion"]!.HeaderText = "Descripción";
 
             dgvListado.Columns["Estado"]!.HeaderText = "Estado";
 
             dgvListado.Columns["NombreAlimento"]!.AutoSizeMode =
                 DataGridViewAutoSizeColumnMode.Fill;
-            dgvListado.Columns["NombreAlimento"]!.FillWeight = 30;
 
             dgvListado.Columns["TipoAlimento"]!.AutoSizeMode =
-                DataGridViewAutoSizeColumnMode.AllCells;
+                DataGridViewAutoSizeColumnMode.Fill;
 
             dgvListado.Columns["Descripcion"]!.AutoSizeMode =
-                DataGridViewAutoSizeColumnMode.Fill;
-            dgvListado.Columns["Descripcion"]!.FillWeight = 50;
-
-            dgvListado.Columns["Estado"]!.AutoSizeMode =
                 DataGridViewAutoSizeColumnMode.AllCells;
 
-            dgvListado.Columns["TipoAlimento"]!.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleCenter;
+            dgvListado.Columns["Estado"]!.AutoSizeMode =
+                DataGridViewAutoSizeColumnMode.Fill;
 
-            dgvListado.Columns["Estado"]!.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleCenter;
-
-            dgvListado.Columns["NombreAlimento"]!.DisplayIndex = 0;
-            dgvListado.Columns["TipoAlimento"]!.DisplayIndex = 1;
-            dgvListado.Columns["Descripcion"]!.DisplayIndex = 2;
-            dgvListado.Columns["Estado"]!.DisplayIndex = 3;
+            AjustarColumnas("Estado");
         }
 
         protected override Form? CrearFormularioAccionPrincipal()
@@ -187,8 +155,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Alimentos
 
             if (id == null)
             {
-                mensajes.MensajeInformacion(
-                    "Seleccione un alimento para cambiar su estado.");
+                mensajes.MensajeInformacion("Seleccione un alimento para cambiar su estado.");
 
                 return;
             }
@@ -198,31 +165,22 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Alimentos
 
             string accion = activo ? "desactivar" : "activar";
 
-            DialogResult respuesta = mensajes.MensajeConfirmacion(
-                $"¿Desea {accion} este alimento?");
+            DialogResult respuesta = mensajes.MensajeConfirmacion($"¿Desea {accion} este alimento?");
 
             if (respuesta != DialogResult.Yes)
                 return;
 
             try
             {
-                await _alimentoBLL.CambiarEstadoAsync(
-                    id.Value,
-                    !activo,
-                    UsuarioSesion.NombreUsuario);
+                await _alimentoBLL.CambiarEstadoAsync(id.Value, !activo, UsuarioSesion.NombreUsuario);
 
-                mensajes.MensajeOk(
-                    $"Alimento {(activo ? "desactivado" : "activado")} correctamente.");
+                mensajes.MensajeOk($"Alimento {(activo ? "desactivado" : "activado")} correctamente.");
 
-                await MostrarDatosAsync(
-                    PaginaActual,
-                    TamPagina,
-                    txtBuscar.Text);
+                await MostrarDatosAsync(PaginaActual, TamPagina, txtBuscar.Text);
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError(
-                    $"No se pudo cambiar el estado: {ex.Message}");
+                mensajes.MensajeError($"No se pudo cambiar el estado: {ex.Message}");
             }
         }
     }

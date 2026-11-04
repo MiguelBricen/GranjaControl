@@ -47,6 +47,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Clientes
 
         private void ConfigurarGrid()
         {
+            // Configuracion general del GridView
             dgvListado.BorderStyle = BorderStyle.None;
             dgvListado.BackgroundColor = Color.White;
             dgvListado.GridColor = Color.FromArgb(220, 228, 222);
@@ -63,58 +64,52 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Clientes
             dgvListado.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
 
             dgvListado.ColumnHeadersHeight = 42;
-            dgvListado.ColumnHeadersHeightSizeMode =
-                DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvListado.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
 
             dgvListado.RowTemplate.Height = 36;
-            dgvListado.CellBorderStyle =
-                DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvListado.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
 
-            dgvListado.ColumnHeadersDefaultCellStyle.BackColor =
-                Color.FromArgb(32, 76, 56);
+
+            // Encabezados         
+            dgvListado.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(32, 76, 56);
 
             dgvListado.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
 
-            dgvListado.ColumnHeadersDefaultCellStyle.SelectionBackColor =
-                Color.FromArgb(32, 76, 56);
+            dgvListado.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(32, 76, 56);
 
-            dgvListado.ColumnHeadersDefaultCellStyle.SelectionForeColor =
-                Color.White;
+            dgvListado.ColumnHeadersDefaultCellStyle.SelectionForeColor = Color.White;
 
-            dgvListado.ColumnHeadersDefaultCellStyle.Font =
-                new Font("Segoe UI", 12, FontStyle.Bold);
+            dgvListado.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 12, FontStyle.Bold);
 
-            dgvListado.ColumnHeadersDefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleLeft;
+            dgvListado.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
-            dgvListado.ColumnHeadersDefaultCellStyle.WrapMode =
-                DataGridViewTriState.False;
+            dgvListado.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
 
+            // Filas       
             dgvListado.DefaultCellStyle.BackColor = Color.White;
+
             dgvListado.DefaultCellStyle.ForeColor = Color.Black;
 
-            dgvListado.DefaultCellStyle.SelectionBackColor =
-                Color.FromArgb(226, 239, 228);
+            dgvListado.DefaultCellStyle.SelectionBackColor = Color.FromArgb(226, 239, 228);
 
-            dgvListado.DefaultCellStyle.SelectionForeColor =
-                Color.FromArgb(32, 76, 56);
+            dgvListado.DefaultCellStyle.SelectionForeColor = Color.FromArgb(32, 76, 56);
 
-            dgvListado.DefaultCellStyle.Font =
-                new Font("Segoe UI", 11, FontStyle.Bold);
+            dgvListado.DefaultCellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
 
-            dgvListado.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleLeft;
+            dgvListado.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
             dgvListado.DefaultCellStyle.Padding = new Padding(8, 0, 8, 0);
 
-            dgvListado.DefaultCellStyle.WrapMode =
-                DataGridViewTriState.False;
+            dgvListado.DefaultCellStyle.WrapMode = DataGridViewTriState.False;
+
+            if (dgvListado.Columns.Count == 0)
+                return;
+
 
             dgvListado.Columns["Id"]!.Visible = false;
             dgvListado.Columns["Activo"]!.Visible = false;
 
-            dgvListado.Columns["NombreCliente"]!.HeaderText =
-                "Nombre del cliente";
+            dgvListado.Columns["NombreCliente"]!.HeaderText = "Nombre del cliente";
 
             dgvListado.Columns["TipoCliente"]!.HeaderText = "Tipo";
             dgvListado.Columns["Telefono"]!.HeaderText = "Teléfono";
@@ -124,36 +119,19 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Clientes
             dgvListado.Columns["NombreCliente"]!.AutoSizeMode =
                 DataGridViewAutoSizeColumnMode.Fill;
 
-            dgvListado.Columns["NombreCliente"]!.FillWeight = 30;
-
             dgvListado.Columns["TipoCliente"]!.AutoSizeMode =
-                DataGridViewAutoSizeColumnMode.AllCells;
+                DataGridViewAutoSizeColumnMode.Fill;
 
             dgvListado.Columns["Telefono"]!.AutoSizeMode =
-                DataGridViewAutoSizeColumnMode.AllCells;
+                DataGridViewAutoSizeColumnMode.Fill;
 
             dgvListado.Columns["Direccion"]!.AutoSizeMode =
                 DataGridViewAutoSizeColumnMode.Fill;
 
-            dgvListado.Columns["Direccion"]!.FillWeight = 40;
-
             dgvListado.Columns["Estado"]!.AutoSizeMode =
-                DataGridViewAutoSizeColumnMode.AllCells;
+                DataGridViewAutoSizeColumnMode.Fill ;
 
-            dgvListado.Columns["TipoCliente"]!.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleCenter;
-
-            dgvListado.Columns["Telefono"]!.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleCenter;
-
-            dgvListado.Columns["Estado"]!.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleCenter;
-
-            dgvListado.Columns["NombreCliente"]!.DisplayIndex = 0;
-            dgvListado.Columns["TipoCliente"]!.DisplayIndex = 1;
-            dgvListado.Columns["Telefono"]!.DisplayIndex = 2;
-            dgvListado.Columns["Direccion"]!.DisplayIndex = 3;
-            dgvListado.Columns["Estado"]!.DisplayIndex = 4;
+            AjustarColumnas("Estado");
         }
 
         protected override Form? CrearFormularioAccionPrincipal()
@@ -171,8 +149,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Clientes
             if (dgvListado.CurrentRow == null)
                 return null;
 
-            return Convert.ToInt32(
-                dgvListado.CurrentRow.Cells["Id"].Value);
+            return Convert.ToInt32(dgvListado.CurrentRow.Cells["Id"].Value);
         }
 
         protected override async Task DesactivarAsync()
@@ -182,12 +159,10 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Clientes
             if (id == null)
             {
                 mensajes.MensajeInformacion("Seleccione un cliente para cambiar su estado.");
-
                 return;
             }
 
-            bool activo = Convert.ToBoolean(
-                dgvListado.CurrentRow!.Cells["Activo"].Value);
+            bool activo = Convert.ToBoolean(dgvListado.CurrentRow!.Cells["Activo"].Value);
 
             string accion = activo ? "desactivar" : "activar";
 
@@ -198,10 +173,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Clientes
 
             try
             {
-                await _clienteBLL.CambiarEstadoAsync(
-                    id.Value,
-                    !activo,
-                    UsuarioSesion.NombreUsuario);
+                await _clienteBLL.CambiarEstadoAsync(id.Value, !activo, UsuarioSesion.NombreUsuario);
 
                 mensajes.MensajeOk($"Cliente {(activo ? "desactivado" : "activado")} correctamente.");
 

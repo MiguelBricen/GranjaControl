@@ -263,13 +263,13 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Reportes
                 DataGridViewAutoSizeColumnMode.AllCells;
 
             dgvLotes.Columns["CantidadInicial"]!.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleRight;
+                DataGridViewContentAlignment.MiddleCenter;
 
             dgvLotes.Columns["Disponibles"]!.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleRight;
+                DataGridViewContentAlignment.MiddleCenter;
 
             dgvLotes.Columns["PorcentajeMortalidad"]!.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleRight;
+                DataGridViewContentAlignment.MiddleCenter;
 
             dgvLotes.Columns["Estado"]!.DefaultCellStyle.Alignment =
                 DataGridViewContentAlignment.MiddleCenter;
@@ -318,7 +318,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Reportes
                 DataGridViewContentAlignment.MiddleCenter;
 
             dgvVentas.Columns["Total"]!.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleRight;
+                DataGridViewContentAlignment.MiddleCenter;
         }
 
         private void FormatearCeldaLote(

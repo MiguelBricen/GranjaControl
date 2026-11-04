@@ -23,6 +23,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
             // btnEliminar
             // 
             btnEliminar.FlatAppearance.BorderSize = 0;
+            btnEliminar.FlatAppearance.MouseOverBackColor = Color.FromArgb(151, 40, 40);
             // 
             // btnEditar
             // 
@@ -34,18 +35,21 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
             btnNuevo.FlatAppearance.BorderSize = 0;
             btnNuevo.FlatAppearance.MouseOverBackColor = Color.FromArgb(46, 104, 65);
             // 
-            // iconTitulo
+            // label1
             // 
-            iconTitulo.IconChar = FontAwesome.Sharp.IconChar.CartShopping;
-            iconTitulo.IconColor = Color.FromArgb(23, 61, 43);
+            label1.Size = new Size(466, 23);
+            label1.Text = "Consulte y administre las compras de alimentos registradas.";
             // 
             // lblTitulo
             // 
+            lblTitulo.Size = new Size(478, 41);
             lblTitulo.Text = "Listado de Compras de Alimentos";
             // 
-            // label1
+            // iconTitulo
             // 
-            label1.Text = "Consulte y administre las compras de alimentos registradas.";
+            iconTitulo.ForeColor = Color.FromArgb(23, 61, 43);
+            iconTitulo.IconChar = FontAwesome.Sharp.IconChar.CartShopping;
+            iconTitulo.IconColor = Color.FromArgb(23, 61, 43);
             // 
             // FrmCompraAlimentoListado
             // 

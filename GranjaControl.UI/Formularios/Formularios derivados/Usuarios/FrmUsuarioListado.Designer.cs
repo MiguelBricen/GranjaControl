@@ -28,18 +28,37 @@
         /// </summary>
         private void InitializeComponent()
         {
+            ((System.ComponentModel.ISupportInitialize)iconTitulo).BeginInit();
             SuspendLayout();
+            // 
+            // btnEliminar
+            // 
+            btnEliminar.FlatAppearance.BorderSize = 0;
+            btnEliminar.FlatAppearance.MouseOverBackColor = Color.FromArgb(151, 40, 40);
+            // 
+            // btnEditar
+            // 
+            btnEditar.FlatAppearance.BorderSize = 0;
+            btnEditar.FlatAppearance.MouseOverBackColor = Color.FromArgb(36, 83, 116);
+            // 
+            // btnNuevo
+            // 
+            btnNuevo.FlatAppearance.BorderSize = 0;
+            btnNuevo.FlatAppearance.MouseOverBackColor = Color.FromArgb(46, 104, 65);
+            // 
+            // lblTitulo
+            // 
+            lblTitulo.Size = new Size(285, 41);
+            lblTitulo.Text = "Listado de Usuarios";
             // 
             // FrmUsuarioListado
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1000, 630);
-            FormBorderStyle = FormBorderStyle.None;
-            MaximizeBox = false;
-            MinimizeBox = false;
             Name = "FrmUsuarioListado";
             Text = "FrmUsuarioListado";
+            ((System.ComponentModel.ISupportInitialize)iconTitulo).EndInit();
             ResumeLayout(false);
         }
 

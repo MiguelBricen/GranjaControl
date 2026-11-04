@@ -72,7 +72,7 @@ namespace GranjaControl.UI.Formularios_derivados
             dgvListado.RowTemplate.Height = 36;
             dgvListado.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
 
-          
+
             // Encabezados         
             dgvListado.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(32, 76, 56);
 
@@ -105,25 +105,11 @@ namespace GranjaControl.UI.Formularios_derivados
 
             dgvListado.DefaultCellStyle.WrapMode = DataGridViewTriState.False;
 
-         
-            /*// FILAS ALTERNAS          
-            dgvListado.AlternatingRowsDefaultCellStyle.BackColor =
-                Color.FromArgb(248, 250, 248);
-
-            dgvListado.AlternatingRowsDefaultCellStyle.ForeColor =
-                Color.Black;
-
-            dgvListado.AlternatingRowsDefaultCellStyle.SelectionBackColor =
-                Color.FromArgb(226, 239, 228);
-
-            dgvListado.AlternatingRowsDefaultCellStyle.SelectionForeColor =
-                Color.FromArgb(32, 76, 56);
-
-            dgvListado.AlternatingRowsDefaultCellStyle.Font =
-                new Font("Segoe UI", 11, FontStyle.Bold);*/
+            if (dgvListado.Columns.Count == 0)
+                return;
 
             // VISIBILIDAD Y ENCABEZADOS
-           
+
             dgvListado.Columns["Id"]!.Visible = false;
             dgvListado.Columns["Activo"]!.Visible = false;
 
@@ -139,41 +125,16 @@ namespace GranjaControl.UI.Formularios_derivados
             // Ancho de las columnas
             dgvListado.Columns["NombreGalpon"]!.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            dgvListado.Columns["NombreGalpon"]!.FillWeight = 30;
+            dgvListado.Columns["Capacidad"]!.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            dgvListado.Columns["Capacidad"]!.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgvListado.Columns["Capacidad"]!.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
             dgvListado.Columns["Descripcion"]!.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            dgvListado.Columns["Descripcion"]!.FillWeight = 55;
+            dgvListado.Columns["Estado"]!.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            dgvListado.Columns["Estado"]!.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            AjustarColumnas("Capacidad", "Descripcion", "Estado");
 
-            
-            // Alineación del contenido
-           
-            // Nombre del galpón: centrado a la izquierda
-            dgvListado.Columns["NombreGalpon"]!.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleLeft;
-
-            // Capacidad: centrada.
-            dgvListado.Columns["Capacidad"]!.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleCenter;
-
-            // Descripción: alineada a la izquierda.
-            dgvListado.Columns["Descripcion"]!.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleLeft;
-
-            // Agregar espacio interior a la descripción.
-            dgvListado.Columns["Descripcion"]!.DefaultCellStyle.Padding =
-                new Padding(12, 0, 8, 0);
-
-            // Estado: centrado.
-            dgvListado.Columns["Estado"]!.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleCenter;
-
-            // Ajuste adicional de columnas existente en tu proyecto.
-            AjustarColumnas("Estado");
         }
 
 

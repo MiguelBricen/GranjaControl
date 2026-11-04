@@ -182,6 +182,8 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
+            DECLARE @esHistoricoPendiente BIT = 0;
+
             IF NOT EXISTS
             (
                 SELECT 1
@@ -261,7 +263,12 @@ BEGIN
         a.tipoAlimento,
         d.cantidad,
         d.unidadMedida,
-        d.costoUnitario
+        d.costoUnitario,
+        d.pesoPorSaco,
+        d.unidadPesoSaco,
+        d.pesoTotalLibras,
+        d.pesoTotalKilogramos,
+        d.subtotal
     FROM tblDetalleComprasAlimento d
     INNER JOIN tblComprasAlimento c
         ON d.idCompra = c.id
@@ -290,7 +297,12 @@ BEGIN
         a.tipoAlimento,
         d.cantidad,
         d.unidadMedida,
-        d.costoUnitario
+        d.costoUnitario,
+        d.pesoPorSaco,
+        d.unidadPesoSaco,
+        d.pesoTotalLibras,
+        d.pesoTotalKilogramos,
+        d.subtotal
     FROM tblDetalleComprasAlimento d
     INNER JOIN tblComprasAlimento c
         ON d.idCompra = c.id
@@ -308,6 +320,11 @@ CREATE OR ALTER PROC sp_AgregarDetalleCompraAlimento
     @cantidad DECIMAL(10,2),
     @unidadMedida NVARCHAR(20),
     @costoUnitario DECIMAL(10,2),
+    @pesoPorSaco DECIMAL(10,4),
+    @unidadPesoSaco NVARCHAR(20),
+    @pesoTotalLibras DECIMAL(18,2),
+    @pesoTotalKilogramos DECIMAL(18,2),
+    @subtotal DECIMAL(18,2),
     @usuarioApp NVARCHAR(25)
 )
 AS
@@ -315,6 +332,7 @@ BEGIN
     SET NOCOUNT ON;
 
     SET @unidadMedida = TRIM(@unidadMedida);
+    SET @unidadPesoSaco = TRIM(@unidadPesoSaco);
     SET @usuarioApp = TRIM(@usuarioApp);
 
     BEGIN TRY
@@ -341,10 +359,20 @@ BEGIN
                 THROW 52042, 'La cantidad de alimento debe ser mayor que cero', 1;
 
             IF @costoUnitario < 0
-                THROW 52043, 'El costo unitario no puede ser negativo', 1;
+                THROW 52043, 'El precio por saco no puede ser negativo', 1;
 
-            IF @unidadMedida NOT IN ('Libras', 'Kilogramos')
-                THROW 52025, 'La unidad de medida no es válida', 1;
+            IF @unidadMedida <> 'Sacos'
+               OR @pesoPorSaco IS NULL
+               OR @pesoPorSaco <= 0
+               OR @unidadPesoSaco IS NULL
+               OR @unidadPesoSaco NOT IN ('Libras', 'Kilogramos')
+               OR @pesoTotalLibras IS NULL
+               OR @pesoTotalLibras <= 0
+               OR @pesoTotalKilogramos IS NULL
+               OR @pesoTotalKilogramos <= 0
+               OR @subtotal IS NULL
+               OR @subtotal < 0
+                THROW 52025, 'La compra nueva debe tener cantidad de sacos, peso por saco y valores derivados válidos', 1;
 
             INSERT INTO tblDetalleComprasAlimento
             (
@@ -352,7 +380,12 @@ BEGIN
                 idAlimento,
                 cantidad,
                 unidadMedida,
-                costoUnitario
+                costoUnitario,
+                pesoPorSaco,
+                unidadPesoSaco,
+                pesoTotalLibras,
+                pesoTotalKilogramos,
+                subtotal
             )
             VALUES
             (
@@ -360,7 +393,12 @@ BEGIN
                 @idAlimento,
                 @cantidad,
                 @unidadMedida,
-                @costoUnitario
+                @costoUnitario,
+                @pesoPorSaco,
+                @unidadPesoSaco,
+                @pesoTotalLibras,
+                @pesoTotalKilogramos,
+                @subtotal
             );
 
         COMMIT TRANSACTION;
@@ -398,6 +436,11 @@ CREATE OR ALTER PROC sp_ActualizarDetalleCompraAlimento
     @cantidad DECIMAL(10,2),
     @unidadMedida NVARCHAR(20),
     @costoUnitario DECIMAL(10,2),
+    @pesoPorSaco DECIMAL(10,4),
+    @unidadPesoSaco NVARCHAR(20),
+    @pesoTotalLibras DECIMAL(18,2),
+    @pesoTotalKilogramos DECIMAL(18,2),
+    @subtotal DECIMAL(18,2),
     @usuarioApp NVARCHAR(25)
 )
 AS
@@ -405,10 +448,13 @@ BEGIN
     SET NOCOUNT ON;
 
     SET @unidadMedida = TRIM(@unidadMedida);
+    SET @unidadPesoSaco = TRIM(@unidadPesoSaco);
     SET @usuarioApp = TRIM(@usuarioApp);
 
     BEGIN TRY
         BEGIN TRANSACTION;
+
+            DECLARE @esHistoricoPendiente BIT = 0;
 
             IF NOT EXISTS
             (
@@ -417,6 +463,20 @@ BEGIN
                 WHERE id = @Id
             )
                 THROW 52044, 'El detalle de compra no existe', 1;
+
+            IF EXISTS
+            (
+                SELECT 1
+                FROM tblDetalleComprasAlimento
+                WHERE id = @Id
+                  AND unidadMedida IN ('Libras', 'Kilogramos')
+                  AND pesoPorSaco IS NULL
+                  AND unidadPesoSaco IS NULL
+                  AND pesoTotalLibras IS NULL
+                  AND pesoTotalKilogramos IS NULL
+                  AND subtotal IS NULL
+            )
+                SET @esHistoricoPendiente = 1;
 
             IF NOT EXISTS
             (
@@ -439,10 +499,30 @@ BEGIN
                 THROW 52042, 'La cantidad de alimento debe ser mayor que cero', 1;
 
             IF @costoUnitario < 0
-                THROW 52043, 'El costo unitario no puede ser negativo', 1;
+                THROW 52043, 'El precio por saco no puede ser negativo', 1;
 
-            IF @unidadMedida NOT IN ('Libras', 'Kilogramos')
-                THROW 52025, 'La unidad de medida no es válida', 1;
+            IF @esHistoricoPendiente = 1
+            BEGIN
+                IF @unidadMedida NOT IN ('Libras', 'Kilogramos')
+                   OR @pesoPorSaco IS NOT NULL
+                   OR @unidadPesoSaco IS NOT NULL
+                   OR @pesoTotalLibras IS NOT NULL
+                   OR @pesoTotalKilogramos IS NOT NULL
+                   OR @subtotal IS NOT NULL
+                    THROW 52045, 'El detalle histórico debe conservarse como unidad de peso y sin datos de saco validados', 1;
+            END
+            ELSE IF @unidadMedida <> 'Sacos'
+                 OR @pesoPorSaco IS NULL
+                 OR @pesoPorSaco <= 0
+                 OR @unidadPesoSaco IS NULL
+                 OR @unidadPesoSaco NOT IN ('Libras', 'Kilogramos')
+                 OR @pesoTotalLibras IS NULL
+                 OR @pesoTotalLibras <= 0
+                 OR @pesoTotalKilogramos IS NULL
+                 OR @pesoTotalKilogramos <= 0
+                 OR @subtotal IS NULL
+                 OR @subtotal < 0
+                    THROW 52025, 'La compra nueva debe tener cantidad de sacos, peso por saco y valores derivados válidos', 1;
 
             UPDATE tblDetalleComprasAlimento
             SET
@@ -450,7 +530,12 @@ BEGIN
                 idAlimento = @idAlimento,
                 cantidad = @cantidad,
                 unidadMedida = @unidadMedida,
-                costoUnitario = @costoUnitario
+                costoUnitario = @costoUnitario,
+                pesoPorSaco = @pesoPorSaco,
+                unidadPesoSaco = @unidadPesoSaco,
+                pesoTotalLibras = @pesoTotalLibras,
+                pesoTotalKilogramos = @pesoTotalKilogramos,
+                subtotal = @subtotal
             WHERE id = @Id;
 
         COMMIT TRANSACTION;

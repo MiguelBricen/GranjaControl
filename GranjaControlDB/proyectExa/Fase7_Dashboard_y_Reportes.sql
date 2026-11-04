@@ -27,7 +27,7 @@ BEGIN
             l.id,
             l.cantidadInicial
         FROM tblLotes l
-        WHERE l.estado IN ('En producción', 'Listo para venta')
+        WHERE l.estado IN (N'En producción', N'Listo para venta')
     ),
     Mortalidad AS
     (
@@ -88,12 +88,18 @@ BEGIN
         ) AS IngresosMes,
         ISNULL(SUM(ISNULL(m.Cantidad, 0)), 0) AS MortalidadAcumulada,
         (
-            SELECT ISNULL(SUM(dc.cantidad * dc.costoUnitario), 0)
+            SELECT ISNULL(SUM(dc.subtotal), 0)
             FROM tblComprasAlimento c
             INNER JOIN tblDetalleComprasAlimento dc
                 ON dc.idCompra = c.id
             WHERE c.fechaCompra >= @inicioMes
               AND c.fechaCompra < @finMes
+              AND dc.unidadMedida = 'Sacos'
+              AND dc.pesoPorSaco IS NOT NULL
+              AND dc.unidadPesoSaco IN ('Libras', 'Kilogramos')
+              AND dc.pesoTotalLibras IS NOT NULL
+              AND dc.pesoTotalKilogramos IS NOT NULL
+              AND dc.subtotal IS NOT NULL
         ) AS ComprasMes,
         (
             SELECT COUNT(*)
@@ -159,7 +165,7 @@ BEGIN
         ON m.idLote = l.id
     LEFT JOIN Vendidos v
         ON v.idLote = l.id
-    WHERE l.estado IN ('En producción', 'Listo para venta')
+    WHERE l.estado IN (N'En producción', N'Listo para venta')
     ORDER BY l.fechaIngreso DESC, l.codigoLote;
 END
 GO
@@ -430,10 +436,10 @@ BEGIN
         NumeroCompra NVARCHAR(25) NOT NULL,
         NombreProveedor NVARCHAR(100) NOT NULL,
         FechaCompra DATETIME NOT NULL,
+        CantidadSacos DECIMAL(18, 2) NOT NULL,
         Libras DECIMAL(18, 2) NOT NULL,
         Kilogramos DECIMAL(18, 2) NOT NULL,
-        CostoTotal DECIMAL(18, 2) NOT NULL,
-        CantidadItems INT NOT NULL
+        CostoTotal DECIMAL(18, 2) NOT NULL
     );
 
     INSERT INTO #Compras
@@ -442,20 +448,52 @@ BEGIN
         NumeroCompra,
         NombreProveedor,
         FechaCompra,
+        CantidadSacos,
         Libras,
         Kilogramos,
-        CostoTotal,
-        CantidadItems
+        CostoTotal
     )
     SELECT
         c.id,
         c.numeroCompra,
         p.nombreProveedor,
         c.fechaCompra,
-        ISNULL(SUM(CASE WHEN dc.unidadMedida = 'Libras' THEN dc.cantidad ELSE 0 END), 0),
-        ISNULL(SUM(CASE WHEN dc.unidadMedida = 'Kilogramos' THEN dc.cantidad ELSE 0 END), 0),
-        ISNULL(SUM(dc.cantidad * dc.costoUnitario), 0),
-        COUNT(dc.id)
+        ISNULL(SUM(CASE
+            WHEN dc.unidadMedida = 'Sacos'
+             AND dc.pesoPorSaco IS NOT NULL
+             AND dc.pesoTotalLibras IS NOT NULL
+             AND dc.pesoTotalKilogramos IS NOT NULL
+             AND dc.subtotal IS NOT NULL
+            THEN dc.cantidad
+            ELSE 0
+        END), 0),
+        ISNULL(SUM(CASE
+            WHEN dc.unidadMedida = 'Sacos'
+             AND dc.pesoPorSaco IS NOT NULL
+             AND dc.pesoTotalLibras IS NOT NULL
+             AND dc.pesoTotalKilogramos IS NOT NULL
+             AND dc.subtotal IS NOT NULL
+            THEN dc.pesoTotalLibras
+            ELSE 0
+        END), 0),
+        ISNULL(SUM(CASE
+            WHEN dc.unidadMedida = 'Sacos'
+             AND dc.pesoPorSaco IS NOT NULL
+             AND dc.pesoTotalLibras IS NOT NULL
+             AND dc.pesoTotalKilogramos IS NOT NULL
+             AND dc.subtotal IS NOT NULL
+            THEN dc.pesoTotalKilogramos
+            ELSE 0
+        END), 0),
+        ISNULL(SUM(CASE
+            WHEN dc.unidadMedida = 'Sacos'
+             AND dc.pesoPorSaco IS NOT NULL
+             AND dc.pesoTotalLibras IS NOT NULL
+             AND dc.pesoTotalKilogramos IS NOT NULL
+             AND dc.subtotal IS NOT NULL
+            THEN dc.subtotal
+            ELSE 0
+        END), 0)
     FROM tblComprasAlimento c
     INNER JOIN tblProveedores p
         ON p.id = c.idProveedor
@@ -472,8 +510,9 @@ BEGIN
 
     SELECT
         COUNT(*) AS TotalCompras,
-        ISNULL(SUM(Libras), 0) AS TotalLibras,
-        ISNULL(SUM(Kilogramos), 0) AS TotalKilogramos,
+        ISNULL(SUM(CantidadSacos), 0) AS TotalCantidadSacos,
+        ISNULL(SUM(ISNULL(Libras, 0)), 0) AS TotalLibras,
+        ISNULL(SUM(ISNULL(Kilogramos, 0)), 0) AS TotalKilogramos,
         ISNULL(SUM(CostoTotal), 0) AS CostoTotal
     FROM #Compras;
 
@@ -482,10 +521,10 @@ BEGIN
         NumeroCompra,
         NombreProveedor,
         FechaCompra,
+        CantidadSacos,
         Libras,
         Kilogramos,
-        CostoTotal,
-        CantidadItems
+        CostoTotal
     FROM #Compras
     ORDER BY FechaCompra DESC, Id DESC;
 

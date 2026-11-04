@@ -24,8 +24,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Vitaminizaciones
         {
             InitializeComponent();
 
-            _vitaminizacionBLL =
-                new VitaminizacionBLL(new VitaminizacionDAL());
+            _vitaminizacionBLL = new VitaminizacionBLL(new VitaminizacionDAL());
 
             _loteBLL = new LoteBLL(new LoteDAL());
             _vitaminaBLL = new VitaminaBLL(new VitaminaDAL());
@@ -40,10 +39,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Vitaminizaciones
             cboLoteFiltro.BackColor = Color.White;
             cboLoteFiltro.DropDownStyle = ComboBoxStyle.DropDownList;
             cboLoteFiltro.FlatStyle = FlatStyle.Flat;
-            cboLoteFiltro.Font = new Font(
-                "Segoe UI Semibold",
-                10.2F,
-                FontStyle.Bold);
+            cboLoteFiltro.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold);
 
             cboLoteFiltro.ForeColor = Color.FromArgb(42, 52, 45);
             cboLoteFiltro.FormattingEnabled = true;
@@ -52,8 +48,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Vitaminizaciones
             cboLoteFiltro.Size = new Size(424, 28);
             cboLoteFiltro.TabIndex = 0;
 
-            cboLoteFiltro.SelectedIndexChanged +=
-                cboLoteFiltro_SelectedIndexChanged;
+            cboLoteFiltro.SelectedIndexChanged += cboLoteFiltro_SelectedIndexChanged;
 
             if (txtBuscar.Parent is Panel panelBuscar)
             {
@@ -73,30 +68,21 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Vitaminizaciones
         {
             try
             {
-                var resultado = await _loteBLL.MostrarAsync(
-                    1,
-                    10000,
-                    null);
+                var resultado = await _loteBLL.MostrarAsync(1, 10000, null);
 
                 _cargandoFiltro = true;
 
                 cboLoteFiltro.Items.Clear();
-                cboLoteFiltro.Items.Add(
-                    new LoteFiltroItem(0, "Todos los lotes"));
+                cboLoteFiltro.Items.Add(new LoteFiltroItem(0, "Todos los lotes"));
 
                 foreach (var lote in resultado.Registros)
                 {
-                    cboLoteFiltro.Items.Add(
-                        new LoteFiltroItem(
-                            lote.Id,
-                            lote.CodigoLote));
+                    cboLoteFiltro.Items.Add(new LoteFiltroItem(lote.Id, lote.CodigoLote));
                 }
 
-                cboLoteFiltro.DisplayMember =
-                    nameof(LoteFiltroItem.Descripcion);
+                cboLoteFiltro.DisplayMember = nameof(LoteFiltroItem.Descripcion);
 
-                cboLoteFiltro.ValueMember =
-                    nameof(LoteFiltroItem.Id);
+                cboLoteFiltro.ValueMember = nameof(LoteFiltroItem.Id);
 
                 cboLoteFiltro.SelectedIndex = 0;
 
@@ -108,14 +94,11 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Vitaminizaciones
             {
                 _cargandoFiltro = false;
 
-                mensajes.MensajeError(
-                    $"No se pudieron cargar los lotes: {ex.Message}");
+                mensajes.MensajeError($"No se pudieron cargar los lotes: {ex.Message}");
             }
         }
 
-        private async void cboLoteFiltro_SelectedIndexChanged(
-            object? sender,
-            EventArgs e)
+        private async void cboLoteFiltro_SelectedIndexChanged(object? sender,EventArgs e)
         {
             if (_cargandoFiltro)
                 return;
@@ -136,17 +119,11 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Vitaminizaciones
             return null;
         }
 
-        protected override async Task MostrarDatosAsync(
-            int pagina,
-            int tamPagina,
-            string? buscar = null)
+        protected override async Task MostrarDatosAsync(int pagina, int tamPagina, string? buscar = null)
         {
             try
             {
-                var resultado = await _vitaminizacionBLL.MostrarAsync(
-                    pagina,
-                    tamPagina,
-                    ObtenerIdLoteFiltro());
+                var resultado = await _vitaminizacionBLL.MostrarAsync(pagina, tamPagina, ObtenerIdLoteFiltro());
 
                 dgvListado.DataSource = null;
                 dgvListado.DataSource = resultado.Registros;
@@ -161,16 +138,13 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Vitaminizaciones
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError(
-                    $"Error al mostrar las vitaminizaciones: {ex.Message}");
+                mensajes.MensajeError($"Error al mostrar las vitaminizaciones: {ex.Message}");
             }
         }
 
         private void ConfigurarGrid()
         {
-            if (!dgvListado.Columns.Contains("Id"))
-                return;
-
+            // Configuracion general del GridView
             dgvListado.BorderStyle = BorderStyle.None;
             dgvListado.BackgroundColor = Color.White;
             dgvListado.GridColor = Color.FromArgb(220, 228, 222);
@@ -182,61 +156,52 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Vitaminizaciones
             dgvListado.AllowUserToDeleteRows = false;
             dgvListado.ReadOnly = true;
             dgvListado.MultiSelect = false;
-            dgvListado.SelectionMode =
-                DataGridViewSelectionMode.FullRowSelect;
+            dgvListado.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
-            dgvListado.AutoSizeColumnsMode =
-                DataGridViewAutoSizeColumnsMode.None;
+            dgvListado.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
 
             dgvListado.ColumnHeadersHeight = 42;
-            dgvListado.ColumnHeadersHeightSizeMode =
-                DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvListado.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
 
             dgvListado.RowTemplate.Height = 36;
-            dgvListado.CellBorderStyle =
-                DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvListado.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
 
-            dgvListado.ColumnHeadersDefaultCellStyle.BackColor =
-                Color.FromArgb(32, 76, 56);
 
-            dgvListado.ColumnHeadersDefaultCellStyle.ForeColor =
-                Color.White;
+            // Encabezados         
+            dgvListado.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(32, 76, 56);
 
-            dgvListado.ColumnHeadersDefaultCellStyle.SelectionBackColor =
-                Color.FromArgb(32, 76, 56);
+            dgvListado.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
 
-            dgvListado.ColumnHeadersDefaultCellStyle.SelectionForeColor =
-                Color.White;
+            dgvListado.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(32, 76, 56);
 
-            dgvListado.ColumnHeadersDefaultCellStyle.Font =
-                new Font("Segoe UI", 12, FontStyle.Bold);
+            dgvListado.ColumnHeadersDefaultCellStyle.SelectionForeColor = Color.White;
 
-            dgvListado.ColumnHeadersDefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleLeft;
+            dgvListado.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 12, FontStyle.Bold);
 
-            dgvListado.ColumnHeadersDefaultCellStyle.WrapMode =
-                DataGridViewTriState.False;
+            dgvListado.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
+            dgvListado.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
+
+            // Filas       
             dgvListado.DefaultCellStyle.BackColor = Color.White;
+
             dgvListado.DefaultCellStyle.ForeColor = Color.Black;
 
-            dgvListado.DefaultCellStyle.SelectionBackColor =
-                Color.FromArgb(226, 239, 228);
+            dgvListado.DefaultCellStyle.SelectionBackColor = Color.FromArgb(226, 239, 228);
 
-            dgvListado.DefaultCellStyle.SelectionForeColor =
-                Color.FromArgb(32, 76, 56);
+            dgvListado.DefaultCellStyle.SelectionForeColor = Color.FromArgb(32, 76, 56);
 
-            dgvListado.DefaultCellStyle.Font =
-                new Font("Segoe UI", 11, FontStyle.Bold);
+            dgvListado.DefaultCellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
 
-            dgvListado.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleLeft;
+            dgvListado.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
-            dgvListado.DefaultCellStyle.Padding =
-                new Padding(8, 0, 8, 0);
+            dgvListado.DefaultCellStyle.Padding = new Padding(8, 0, 8, 0);
 
-            dgvListado.DefaultCellStyle.WrapMode =
-                DataGridViewTriState.False;
+            dgvListado.DefaultCellStyle.WrapMode = DataGridViewTriState.False;
+
+            if (dgvListado.Columns.Count == 0)
+                return;
+
 
             dgvListado.Columns["Id"]!.Visible = false;
             dgvListado.Columns["IdLote"]!.Visible = false;
@@ -257,43 +222,23 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Vitaminizaciones
 
             dgvListado.Columns["NombreVitamina"]!.AutoSizeMode =
                 DataGridViewAutoSizeColumnMode.Fill;
-            dgvListado.Columns["NombreVitamina"]!.FillWeight = 28;
 
             dgvListado.Columns["Cantidad"]!.AutoSizeMode =
                 DataGridViewAutoSizeColumnMode.AllCells;
+
+            dgvListado.Columns["Cantidad"]!.DefaultCellStyle.Alignment =
+                DataGridViewContentAlignment.MiddleCenter;
 
             dgvListado.Columns["UnidadMedida"]!.AutoSizeMode =
                 DataGridViewAutoSizeColumnMode.AllCells;
 
             dgvListado.Columns["Observacion"]!.AutoSizeMode =
                 DataGridViewAutoSizeColumnMode.Fill;
-            dgvListado.Columns["Observacion"]!.FillWeight = 35;
 
-            dgvListado.Columns["Fecha"]!.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleCenter;
-
-            dgvListado.Columns["Cantidad"]!.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleRight;
-
-            dgvListado.Columns["UnidadMedida"]!.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleCenter;
-
-            dgvListado.Columns["Fecha"]!.DisplayIndex = 0;
-            dgvListado.Columns["CodigoLote"]!.DisplayIndex = 1;
-            dgvListado.Columns["NombreVitamina"]!.DisplayIndex = 2;
-            dgvListado.Columns["Cantidad"]!.DisplayIndex = 3;
-            dgvListado.Columns["UnidadMedida"]!.DisplayIndex = 4;
-            dgvListado.Columns["Observacion"]!.DisplayIndex = 5;
-
-            AjustarColumnas(
-                "Fecha",
-                "CodigoLote",
-                "Cantidad",
-                "UnidadMedida");
+            AjustarColumnas("Fecha", "Cantidad", "UnidadMedida", "Observacion");
         }
 
-        protected override void FormatearCelda(
-            DataGridViewCellFormattingEventArgs e)
+        protected override void FormatearCelda(DataGridViewCellFormattingEventArgs e)
         {
             if (e.Value is null)
                 return;
@@ -303,14 +248,12 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Vitaminizaciones
             switch (columna)
             {
                 case "Fecha":
-                    e.Value = Convert.ToDateTime(e.Value)
-                        .ToString("dd/MM/yyyy");
+                    e.Value = Convert.ToDateTime(e.Value).ToString("dd/MM/yyyy");
                     e.FormattingApplied = true;
                     break;
 
                 case "Cantidad":
-                    e.Value = Convert.ToDecimal(e.Value)
-                        .ToString("N2");
+                    e.Value = Convert.ToDecimal(e.Value).ToString("N2");
                     e.FormattingApplied = true;
                     break;
             }
@@ -318,19 +261,12 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Vitaminizaciones
 
         protected override Form? CrearFormularioAccionPrincipal()
         {
-            return new FrmRegistroVitaminizacion(
-                _vitaminizacionBLL,
-                _loteBLL,
-                _vitaminaBLL);
+            return new FrmRegistroVitaminizacion(_vitaminizacionBLL, _loteBLL, _vitaminaBLL);
         }
 
         protected override Form? CrearFormularioAccionSecundaria(int id)
         {
-            return new FrmRegistroVitaminizacion(
-                _vitaminizacionBLL,
-                _loteBLL,
-                _vitaminaBLL,
-                id);
+            return new FrmRegistroVitaminizacion(_vitaminizacionBLL, _loteBLL, _vitaminaBLL, id);
         }
 
         protected override int? ObtenerIdSeleccionado()
@@ -338,8 +274,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Vitaminizaciones
             if (dgvListado.CurrentRow == null)
                 return null;
 
-            return Convert.ToInt32(
-                dgvListado.CurrentRow.Cells["Id"].Value);
+            return Convert.ToInt32(dgvListado.CurrentRow.Cells["Id"].Value);
         }
 
         private sealed class LoteFiltroItem

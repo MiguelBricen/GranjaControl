@@ -87,8 +87,27 @@ namespace GranjaControl.DAL
             detalle.CambiarUnidadMedida(
                 dr["unidadMedida"].ToString()!);
 
+            detalle.CambiarPesoPorSaco(
+                dr["pesoPorSaco"] == DBNull.Value
+                    ? null
+                    : Convert.ToDecimal(dr["pesoPorSaco"]),
+                dr["unidadPesoSaco"] == DBNull.Value
+                    ? null
+                    : dr["unidadPesoSaco"].ToString());
+
             detalle.CambiarCostoUnitario(
                 Convert.ToDecimal(dr["costoUnitario"]));
+
+            detalle.AsignarValoresDerivadosPersistidos(
+                dr["pesoTotalLibras"] == DBNull.Value
+                    ? null
+                    : Convert.ToDecimal(dr["pesoTotalLibras"]),
+                dr["pesoTotalKilogramos"] == DBNull.Value
+                    ? null
+                    : Convert.ToDecimal(dr["pesoTotalKilogramos"]),
+                dr["subtotal"] == DBNull.Value
+                    ? null
+                    : Convert.ToDecimal(dr["subtotal"]));
 
             return detalle;
         }

@@ -308,6 +308,31 @@ namespace GranjaControl.DAL
             cmd.Parameters.AddWithValue("@cantidad", detalle.Cantidad);
             cmd.Parameters.AddWithValue("@unidadMedida", detalle.UnidadMedida);
             cmd.Parameters.AddWithValue("@costoUnitario", detalle.CostoUnitario);
+            cmd.Parameters.AddWithValue(
+                "@pesoPorSaco",
+                detalle.PesoPorSaco.HasValue
+                    ? detalle.PesoPorSaco.Value
+                    : DBNull.Value);
+            cmd.Parameters.AddWithValue(
+                "@unidadPesoSaco",
+                detalle.UnidadPesoSaco is null
+                    ? DBNull.Value
+                    : detalle.UnidadPesoSaco);
+            cmd.Parameters.AddWithValue(
+                "@pesoTotalLibras",
+                detalle.PesoTotalLibras.HasValue
+                    ? detalle.PesoTotalLibras.Value
+                    : DBNull.Value);
+            cmd.Parameters.AddWithValue(
+                "@pesoTotalKilogramos",
+                detalle.PesoTotalKilogramos.HasValue
+                    ? detalle.PesoTotalKilogramos.Value
+                    : DBNull.Value);
+            cmd.Parameters.AddWithValue(
+                "@subtotal",
+                detalle.EsPendienteRevision
+                    ? DBNull.Value
+                    : detalle.Subtotal);
         }
 
         private static void IntentarRollback(SqlTransaction tx)

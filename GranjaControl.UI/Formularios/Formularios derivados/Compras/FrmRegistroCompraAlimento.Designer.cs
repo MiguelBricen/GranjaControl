@@ -44,6 +44,9 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
             labelCantidadDetalle = new Label();
             pnlCantidadDetalle = new Panel();
             numCantidadDetalle = new NumericUpDown();
+            labelPesoSacoDetalle = new Label();
+            pnlPesoSacoDetalle = new Panel();
+            numPesoSacoDetalle = new NumericUpDown();
             labelUnidadDetalle = new Label();
             pnlUnidadDetalle = new Panel();
             cboUnidadDetalle = new ComboBox();
@@ -68,6 +71,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
             pnlAlimentoDetalle.SuspendLayout();
             pnlCantidadDetalle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numCantidadDetalle).BeginInit();
+            pnlPesoSacoDetalle.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numPesoSacoDetalle).BeginInit();
             pnlUnidadDetalle.SuspendLayout();
             pnlCostoDetalle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numCostoDetalle).BeginInit();
@@ -155,6 +160,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
             pnlContenido.Controls.Add(pnlAlimentoDetalle);
             pnlContenido.Controls.Add(labelCantidadDetalle);
             pnlContenido.Controls.Add(pnlCantidadDetalle);
+            pnlContenido.Controls.Add(labelPesoSacoDetalle);
+            pnlContenido.Controls.Add(pnlPesoSacoDetalle);
             pnlContenido.Controls.Add(labelUnidadDetalle);
             pnlContenido.Controls.Add(pnlUnidadDetalle);
             pnlContenido.Controls.Add(labelCostoDetalle);
@@ -368,9 +375,9 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
             labelCantidadDetalle.ForeColor = Color.FromArgb(42, 52, 45);
             labelCantidadDetalle.Location = new Point(350, 268);
             labelCantidadDetalle.Name = "labelCantidadDetalle";
-            labelCantidadDetalle.Size = new Size(68, 20);
+            labelCantidadDetalle.Size = new Size(46, 20);
             labelCantidadDetalle.TabIndex = 12;
-            labelCantidadDetalle.Text = "Cantidad";
+            labelCantidadDetalle.Text = "Sacos";
             // 
             // pnlCantidadDetalle
             // 
@@ -378,7 +385,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
             pnlCantidadDetalle.Controls.Add(numCantidadDetalle);
             pnlCantidadDetalle.Location = new Point(350, 292);
             pnlCantidadDetalle.Name = "pnlCantidadDetalle";
-            pnlCantidadDetalle.Size = new Size(120, 41);
+            pnlCantidadDetalle.Size = new Size(86, 41);
             pnlCantidadDetalle.TabIndex = 13;
             // 
             // numCantidadDetalle
@@ -388,34 +395,71 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
             numCantidadDetalle.DecimalPlaces = 2;
             numCantidadDetalle.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             numCantidadDetalle.ForeColor = Color.FromArgb(42, 52, 45);
-            numCantidadDetalle.Increment = new decimal(new int[] { 5, 0, 0, 65536 });
+            numCantidadDetalle.Increment = new decimal(new int[] { 1, 0, 0, 0 });
             numCantidadDetalle.Location = new Point(8, 7);
             numCantidadDetalle.Maximum = new decimal(new int[] { 99999999, 0, 0, 131072 });
             numCantidadDetalle.Name = "numCantidadDetalle";
-            numCantidadDetalle.Size = new Size(104, 26);
+            numCantidadDetalle.Size = new Size(70, 26);
             numCantidadDetalle.TabIndex = 0;
             numCantidadDetalle.TextAlign = HorizontalAlignment.Right;
             numCantidadDetalle.ThousandsSeparator = true;
-            // 
+            //
+            // labelPesoSacoDetalle
+            //
+            labelPesoSacoDetalle.AutoSize = true;
+            labelPesoSacoDetalle.BackColor = Color.Transparent;
+            labelPesoSacoDetalle.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            labelPesoSacoDetalle.ForeColor = Color.FromArgb(42, 52, 45);
+            labelPesoSacoDetalle.Location = new Point(448, 268);
+            labelPesoSacoDetalle.Name = "labelPesoSacoDetalle";
+            labelPesoSacoDetalle.Size = new Size(81, 20);
+            labelPesoSacoDetalle.TabIndex = 23;
+            labelPesoSacoDetalle.Text = "Peso/saco";
+            //
+            // pnlPesoSacoDetalle
+            //
+            pnlPesoSacoDetalle.BackColor = Color.White;
+            pnlPesoSacoDetalle.Controls.Add(numPesoSacoDetalle);
+            pnlPesoSacoDetalle.Location = new Point(448, 292);
+            pnlPesoSacoDetalle.Name = "pnlPesoSacoDetalle";
+            pnlPesoSacoDetalle.Size = new Size(88, 41);
+            pnlPesoSacoDetalle.TabIndex = 24;
+            //
+            // numPesoSacoDetalle
+            //
+            numPesoSacoDetalle.BackColor = Color.White;
+            numPesoSacoDetalle.BorderStyle = BorderStyle.None;
+            numPesoSacoDetalle.DecimalPlaces = 4;
+            numPesoSacoDetalle.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            numPesoSacoDetalle.ForeColor = Color.FromArgb(42, 52, 45);
+            numPesoSacoDetalle.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
+            numPesoSacoDetalle.Location = new Point(6, 7);
+            numPesoSacoDetalle.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
+            numPesoSacoDetalle.Name = "numPesoSacoDetalle";
+            numPesoSacoDetalle.Size = new Size(76, 24);
+            numPesoSacoDetalle.TabIndex = 0;
+            numPesoSacoDetalle.TextAlign = HorizontalAlignment.Right;
+            numPesoSacoDetalle.ThousandsSeparator = true;
+            //
             // labelUnidadDetalle
             // 
             labelUnidadDetalle.AutoSize = true;
             labelUnidadDetalle.BackColor = Color.Transparent;
             labelUnidadDetalle.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             labelUnidadDetalle.ForeColor = Color.FromArgb(42, 52, 45);
-            labelUnidadDetalle.Location = new Point(486, 268);
+            labelUnidadDetalle.Location = new Point(548, 268);
             labelUnidadDetalle.Name = "labelUnidadDetalle";
             labelUnidadDetalle.Size = new Size(55, 20);
             labelUnidadDetalle.TabIndex = 14;
-            labelUnidadDetalle.Text = "Unidad";
+            labelUnidadDetalle.Text = "Unidad peso";
             // 
             // pnlUnidadDetalle
             // 
             pnlUnidadDetalle.BackColor = Color.White;
             pnlUnidadDetalle.Controls.Add(cboUnidadDetalle);
-            pnlUnidadDetalle.Location = new Point(486, 292);
+            pnlUnidadDetalle.Location = new Point(548, 292);
             pnlUnidadDetalle.Name = "pnlUnidadDetalle";
-            pnlUnidadDetalle.Size = new Size(130, 41);
+            pnlUnidadDetalle.Size = new Size(100, 41);
             pnlUnidadDetalle.TabIndex = 15;
             // 
             // cboUnidadDetalle
@@ -428,7 +472,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
             cboUnidadDetalle.FormattingEnabled = true;
             cboUnidadDetalle.Location = new Point(8, 6);
             cboUnidadDetalle.Name = "cboUnidadDetalle";
-            cboUnidadDetalle.Size = new Size(114, 28);
+            cboUnidadDetalle.Size = new Size(84, 28);
             cboUnidadDetalle.TabIndex = 0;
             // 
             // labelCostoDetalle
@@ -437,19 +481,19 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
             labelCostoDetalle.BackColor = Color.Transparent;
             labelCostoDetalle.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             labelCostoDetalle.ForeColor = Color.FromArgb(42, 52, 45);
-            labelCostoDetalle.Location = new Point(632, 268);
+            labelCostoDetalle.Location = new Point(660, 268);
             labelCostoDetalle.Name = "labelCostoDetalle";
-            labelCostoDetalle.Size = new Size(100, 20);
+            labelCostoDetalle.Size = new Size(110, 20);
             labelCostoDetalle.TabIndex = 16;
-            labelCostoDetalle.Text = "Costo unitario";
+            labelCostoDetalle.Text = "Precio por saco";
             // 
             // pnlCostoDetalle
             // 
             pnlCostoDetalle.BackColor = Color.White;
             pnlCostoDetalle.Controls.Add(numCostoDetalle);
-            pnlCostoDetalle.Location = new Point(632, 292);
+            pnlCostoDetalle.Location = new Point(660, 292);
             pnlCostoDetalle.Name = "pnlCostoDetalle";
-            pnlCostoDetalle.Size = new Size(140, 41);
+            pnlCostoDetalle.Size = new Size(120, 41);
             pnlCostoDetalle.TabIndex = 17;
             // 
             // numCostoDetalle
@@ -463,7 +507,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
             numCostoDetalle.Location = new Point(8, 7);
             numCostoDetalle.Maximum = new decimal(new int[] { 99999999, 0, 0, 131072 });
             numCostoDetalle.Name = "numCostoDetalle";
-            numCostoDetalle.Size = new Size(124, 26);
+            numCostoDetalle.Size = new Size(104, 26);
             numCostoDetalle.TabIndex = 0;
             numCostoDetalle.TextAlign = HorizontalAlignment.Right;
             numCostoDetalle.ThousandsSeparator = true;
@@ -646,6 +690,9 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
             pnlCantidadDetalle.ResumeLayout(false);
             pnlCantidadDetalle.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numCantidadDetalle).EndInit();
+            pnlPesoSacoDetalle.ResumeLayout(false);
+            pnlPesoSacoDetalle.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numPesoSacoDetalle).EndInit();
             pnlUnidadDetalle.ResumeLayout(false);
             pnlCostoDetalle.ResumeLayout(false);
             pnlCostoDetalle.PerformLayout();
@@ -684,6 +731,9 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
         private Label labelCantidadDetalle;
         private Panel pnlCantidadDetalle;
         private NumericUpDown numCantidadDetalle;
+        private Label labelPesoSacoDetalle;
+        private Panel pnlPesoSacoDetalle;
+        private NumericUpDown numPesoSacoDetalle;
         private Label labelUnidadDetalle;
         private Panel pnlUnidadDetalle;
         private ComboBox cboUnidadDetalle;
