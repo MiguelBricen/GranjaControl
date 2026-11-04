@@ -140,7 +140,7 @@ namespace GranjaControl.UI
 
                     await _galponBLL.AgregarAsync(galpon, UsuarioSesion.NombreUsuario);
 
-                    mensajes.MensajeInformacion("Galpón registrado correctamente");
+                    mensajes.MensajeOk("Galpón registrado correctamente.");
                 }
                 else
                 {
@@ -162,7 +162,7 @@ namespace GranjaControl.UI
                     galpon.CambiarActivo(existente.Activo);
 
                     await _galponBLL.ActualizarAsync(galpon, UsuarioSesion.NombreUsuario);
-                    mensajes.MensajeInformacion("Galpón actualizado correctamente.");
+                    mensajes.MensajeOk("Galpón actualizado correctamente.");
 
                 }
 
@@ -239,6 +239,8 @@ namespace GranjaControl.UI
         // Cargar datos al abrir el formulario.
         private async void FrmGalpon_Load(object sender, EventArgs e)
         {
+            if (!RolesSistema.Autorizar(this, RolesSistema.PuedeAdministrarCatalogos()))
+                return;
 
             if (EsEdicion)
                 await CargarDatosAsync();

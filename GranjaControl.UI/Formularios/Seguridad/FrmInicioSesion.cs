@@ -12,6 +12,7 @@ namespace GranjaControl.UI.Formularios.Seguridad
     {
         private readonly UsuarioBll _usuarioBll;
         private readonly RolBll _rolBll;
+        private readonly Mensajes _mensajes = new();
         public FrmInicioSesion()
         {
             InitializeComponent();
@@ -84,33 +85,44 @@ namespace GranjaControl.UI.Formularios.Seguridad
 
                 UsuarioSesion.IniciarSesion(usuario);
 
+                if (!RolesSistema.TieneAccesoAlSistema())
+                {
+                    UsuarioSesion.CerrarSesion();
+                    _mensajes.MensajeError("El usuario no tiene un rol autorizado para acceder al sistema.");
+                    txtClave.Clear();
+                    txtClave.Focus();
+                    return;
+                }
+
                 Hide();
 
-                if (usuario.NombreRol == RolesSistema.Administrador)
-                {
-                    using FrmPrincipal frm = new FrmPrincipal();
-                    DialogResult resultado = frm.ShowDialog();
+                using FrmPrincipal frm = new FrmPrincipal();
+                DialogResult resultado = frm.ShowDialog();
 
-                    if (resultado == DialogResult.Retry)
-                    {
-                        txtClave.Clear();
-                        txtClave.Focus();
-                        Show();
-                    }
-                    else
-                    {
-                        Close();
-                    }
+                UsuarioSesion.CerrarSesion();
+
+                if (resultado == DialogResult.Retry)
+                {
+                    txtClave.Clear();
+                    txtClave.Focus();
+                    Show();
                 }
                 else
                 {
-                    // Funcionalidad para iniciar como usuario del sistema
-                    MessageBox.Show("Bienvenido usuario del sistema");
+                    Close();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                UsuarioSesion.CerrarSesion();
+                _mensajes.MensajeError(ex.Message);
+
+                if (!Visible)
+                {
+                    txtClave.Clear();
+                    txtClave.Focus();
+                    Show();
+                }
             }
         }
 

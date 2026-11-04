@@ -2,6 +2,7 @@ using GranjaControl.DAL.Common;
 using GranjaControl.UI.Formularios;
 using GranjaControl.UI.Formularios.Seguridad;
 using GranjaControl.UI.Formularios_derivados;
+using GranjaControl.UI.Utilidades;
 
 namespace GranjaControl.UI
 {
@@ -35,8 +36,10 @@ namespace GranjaControl.UI
 
             if (config is null)
             {
-                MessageBox.Show("No se pudo obtener la configuración de conexión. La aplicación se cerrará.", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Mensajes mensajes = new();
+                mensajes.MensajeError(
+                    "No se pudo obtener la configuración de conexión. La aplicación se cerrará.");
+
                 return;
             }
 

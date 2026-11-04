@@ -34,6 +34,20 @@
             pnlSeguridad = new Panel();
             btnRoles = new FontAwesome.Sharp.IconButton();
             btnUsuarios = new FontAwesome.Sharp.IconButton();
+            pnlProduccion = new Panel();
+            btnVitaminizacion = new FontAwesome.Sharp.IconButton();
+            btnMortalidades = new FontAwesome.Sharp.IconButton();
+            btnAlimentacion = new FontAwesome.Sharp.IconButton();
+            btnLotes = new FontAwesome.Sharp.IconButton();
+            pnlComercializacion = new Panel();
+            btnVentas = new FontAwesome.Sharp.IconButton();
+            btnTarifas = new FontAwesome.Sharp.IconButton();
+            pnlCatalogos = new Panel();
+            btnClientes = new FontAwesome.Sharp.IconButton();
+            btnAlimentos = new FontAwesome.Sharp.IconButton();
+            btnVitaminas = new FontAwesome.Sharp.IconButton();
+            btnProveedores = new FontAwesome.Sharp.IconButton();
+            btnGalpones = new FontAwesome.Sharp.IconButton();
             pnlSidebar = new Panel();
             picDif7 = new PictureBox();
             picDif6 = new PictureBox();
@@ -62,6 +76,9 @@
             picFondo = new PictureBox();
             pnlMovimiento.SuspendLayout();
             pnlSeguridad.SuspendLayout();
+            pnlProduccion.SuspendLayout();
+            pnlComercializacion.SuspendLayout();
+            pnlCatalogos.SuspendLayout();
             pnlSidebar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picDif7).BeginInit();
             ((System.ComponentModel.ISupportInitialize)picDif6).BeginInit();
@@ -180,9 +197,337 @@
             btnUsuarios.UseVisualStyleBackColor = false;
             btnUsuarios.Click += btnUsuarios_Click;
             // 
+            // pnlCatalogos
+            // 
+            pnlCatalogos.BackColor = Color.FromArgb(23, 61, 43);
+            pnlCatalogos.Controls.Add(btnClientes);
+            pnlCatalogos.Controls.Add(btnVitaminas);
+            pnlCatalogos.Controls.Add(btnAlimentos);
+            pnlCatalogos.Controls.Add(btnProveedores);
+            pnlCatalogos.Controls.Add(btnGalpones);
+            pnlCatalogos.Location = new Point(0, 330);
+            pnlCatalogos.Name = "pnlCatalogos";
+            pnlCatalogos.Size = new Size(226, 265);
+            pnlCatalogos.TabIndex = 5;
+            pnlCatalogos.Visible = false;
+            // 
+            // pnlProduccion
+            // 
+            pnlProduccion.BackColor = Color.FromArgb(23, 61, 43);
+            pnlProduccion.Controls.Add(btnVitaminizacion);
+            pnlProduccion.Controls.Add(btnMortalidades);
+            pnlProduccion.Controls.Add(btnAlimentacion);
+            pnlProduccion.Controls.Add(btnLotes);
+            pnlProduccion.Location = new Point(0, 440);
+            pnlProduccion.Name = "pnlProduccion";
+            pnlProduccion.Size = new Size(226, 206);
+            pnlProduccion.TabIndex = 6;
+            pnlProduccion.Visible = false;
+            // 
+            // pnlComercializacion
+            // 
+            pnlComercializacion.BackColor = Color.FromArgb(23, 61, 43);
+            pnlComercializacion.Controls.Add(btnVentas);
+            pnlComercializacion.Controls.Add(btnTarifas);
+            pnlComercializacion.Location = new Point(0, 496);
+            pnlComercializacion.Name = "pnlComercializacion";
+            pnlComercializacion.Size = new Size(226, 106);
+            pnlComercializacion.TabIndex = 24;
+            pnlComercializacion.Visible = false;
+            // 
+            // btnVentas
+            // 
+            btnVentas.BackColor = Color.FromArgb(23, 61, 43);
+            btnVentas.Cursor = Cursors.Hand;
+            btnVentas.FlatAppearance.BorderColor = Color.FromArgb(220, 225, 216);
+            btnVentas.FlatAppearance.BorderSize = 0;
+            btnVentas.FlatAppearance.MouseOverBackColor = Color.FromArgb(62, 94, 69);
+            btnVentas.FlatStyle = FlatStyle.Flat;
+            btnVentas.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold);
+            btnVentas.ForeColor = Color.White;
+            btnVentas.IconChar = FontAwesome.Sharp.IconChar.CashRegister;
+            btnVentas.IconColor = Color.White;
+            btnVentas.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnVentas.IconSize = 30;
+            btnVentas.ImageAlign = ContentAlignment.MiddleLeft;
+            btnVentas.Location = new Point(2, 53);
+            btnVentas.Name = "btnVentas";
+            btnVentas.Padding = new Padding(5, 0, 0, 0);
+            btnVentas.Size = new Size(225, 50);
+            btnVentas.TabIndex = 25;
+            btnVentas.Text = "Ventas";
+            btnVentas.TextAlign = ContentAlignment.MiddleRight;
+            btnVentas.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnVentas.UseVisualStyleBackColor = false;
+            btnVentas.Click += btnVentas_Click;
+            // 
+            // btnTarifas
+            // 
+            btnTarifas.BackColor = Color.FromArgb(23, 61, 43);
+            btnTarifas.Cursor = Cursors.Hand;
+            btnTarifas.FlatAppearance.BorderColor = Color.FromArgb(220, 225, 216);
+            btnTarifas.FlatAppearance.BorderSize = 0;
+            btnTarifas.FlatAppearance.MouseOverBackColor = Color.FromArgb(62, 94, 69);
+            btnTarifas.FlatStyle = FlatStyle.Flat;
+            btnTarifas.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold);
+            btnTarifas.ForeColor = Color.White;
+            btnTarifas.IconChar = FontAwesome.Sharp.IconChar.SackDollar;
+            btnTarifas.IconColor = Color.White;
+            btnTarifas.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnTarifas.IconSize = 30;
+            btnTarifas.ImageAlign = ContentAlignment.MiddleLeft;
+            btnTarifas.Location = new Point(2, 3);
+            btnTarifas.Name = "btnTarifas";
+            btnTarifas.Padding = new Padding(5, 0, 0, 0);
+            btnTarifas.Size = new Size(225, 50);
+            btnTarifas.TabIndex = 24;
+            btnTarifas.Text = "Tarifas";
+            btnTarifas.TextAlign = ContentAlignment.MiddleRight;
+            btnTarifas.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnTarifas.UseVisualStyleBackColor = false;
+            btnTarifas.Click += btnTarifas_Click;
+            // 
+            // btnLotes
+            // 
+            btnLotes.BackColor = Color.FromArgb(23, 61, 43);
+            btnLotes.Cursor = Cursors.Hand;
+            btnLotes.FlatAppearance.BorderColor = Color.FromArgb(220, 225, 216);
+            btnLotes.FlatAppearance.BorderSize = 0;
+            btnLotes.FlatAppearance.MouseOverBackColor = Color.FromArgb(62, 94, 69);
+            btnLotes.FlatStyle = FlatStyle.Flat;
+            btnLotes.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold);
+            btnLotes.ForeColor = Color.White;
+            btnLotes.IconChar = FontAwesome.Sharp.IconChar.ClipboardList;
+            btnLotes.IconColor = Color.White;
+            btnLotes.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnLotes.IconSize = 30;
+            btnLotes.ImageAlign = ContentAlignment.MiddleLeft;
+            btnLotes.Location = new Point(2, 3);
+            btnLotes.Name = "btnLotes";
+            btnLotes.Padding = new Padding(5, 0, 0, 0);
+            btnLotes.Size = new Size(225, 50);
+            btnLotes.TabIndex = 17;
+            btnLotes.Text = "Lotes";
+            btnLotes.TextAlign = ContentAlignment.MiddleRight;
+            btnLotes.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnLotes.UseVisualStyleBackColor = false;
+            btnLotes.Click += btnLotes_Click;
+            // 
+            // btnAlimentacion
+            // 
+            btnAlimentacion.BackColor = Color.FromArgb(23, 61, 43);
+            btnAlimentacion.Cursor = Cursors.Hand;
+            btnAlimentacion.FlatAppearance.BorderColor = Color.FromArgb(220, 225, 216);
+            btnAlimentacion.FlatAppearance.BorderSize = 0;
+            btnAlimentacion.FlatAppearance.MouseOverBackColor = Color.FromArgb(62, 94, 69);
+            btnAlimentacion.FlatStyle = FlatStyle.Flat;
+            btnAlimentacion.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold);
+            btnAlimentacion.ForeColor = Color.White;
+            btnAlimentacion.IconChar = FontAwesome.Sharp.IconChar.WheatAwn;
+            btnAlimentacion.IconColor = Color.White;
+            btnAlimentacion.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnAlimentacion.IconSize = 30;
+            btnAlimentacion.ImageAlign = ContentAlignment.MiddleLeft;
+            btnAlimentacion.Location = new Point(2, 53);
+            btnAlimentacion.Name = "btnAlimentacion";
+            btnAlimentacion.Padding = new Padding(5, 0, 0, 0);
+            btnAlimentacion.Size = new Size(225, 50);
+            btnAlimentacion.TabIndex = 18;
+            btnAlimentacion.Text = "Alimentación";
+            btnAlimentacion.TextAlign = ContentAlignment.MiddleRight;
+            btnAlimentacion.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnAlimentacion.UseVisualStyleBackColor = false;
+            btnAlimentacion.Click += btnAlimentacion_Click;
+            // 
+            // btnMortalidades
+            // 
+            btnMortalidades.BackColor = Color.FromArgb(23, 61, 43);
+            btnMortalidades.Cursor = Cursors.Hand;
+            btnMortalidades.FlatAppearance.BorderColor = Color.FromArgb(220, 225, 216);
+            btnMortalidades.FlatAppearance.BorderSize = 0;
+            btnMortalidades.FlatAppearance.MouseOverBackColor = Color.FromArgb(62, 94, 69);
+            btnMortalidades.FlatStyle = FlatStyle.Flat;
+            btnMortalidades.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold);
+            btnMortalidades.ForeColor = Color.White;
+            btnMortalidades.IconChar = FontAwesome.Sharp.IconChar.SkullCrossbones;
+            btnMortalidades.IconColor = Color.White;
+            btnMortalidades.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnMortalidades.IconSize = 30;
+            btnMortalidades.ImageAlign = ContentAlignment.MiddleLeft;
+            btnMortalidades.Location = new Point(2, 103);
+            btnMortalidades.Name = "btnMortalidades";
+            btnMortalidades.Padding = new Padding(5, 0, 0, 0);
+            btnMortalidades.Size = new Size(225, 50);
+            btnMortalidades.TabIndex = 19;
+            btnMortalidades.Text = "Mortalidades";
+            btnMortalidades.TextAlign = ContentAlignment.MiddleRight;
+            btnMortalidades.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnMortalidades.UseVisualStyleBackColor = false;
+            btnMortalidades.Click += btnMortalidades_Click;
+            //
+            // btnVitaminizacion
+            //
+            btnVitaminizacion.BackColor = Color.FromArgb(23, 61, 43);
+            btnVitaminizacion.Cursor = Cursors.Hand;
+            btnVitaminizacion.FlatAppearance.BorderColor = Color.FromArgb(220, 225, 216);
+            btnVitaminizacion.FlatAppearance.BorderSize = 0;
+            btnVitaminizacion.FlatAppearance.MouseOverBackColor = Color.FromArgb(62, 94, 69);
+            btnVitaminizacion.FlatStyle = FlatStyle.Flat;
+            btnVitaminizacion.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold);
+            btnVitaminizacion.ForeColor = Color.White;
+            btnVitaminizacion.IconChar = FontAwesome.Sharp.IconChar.Syringe;
+            btnVitaminizacion.IconColor = Color.White;
+            btnVitaminizacion.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnVitaminizacion.IconSize = 30;
+            btnVitaminizacion.ImageAlign = ContentAlignment.MiddleLeft;
+            btnVitaminizacion.Location = new Point(2, 153);
+            btnVitaminizacion.Name = "btnVitaminizacion";
+            btnVitaminizacion.Padding = new Padding(5, 0, 0, 0);
+            btnVitaminizacion.Size = new Size(225, 50);
+            btnVitaminizacion.TabIndex = 20;
+            btnVitaminizacion.Text = "Vitaminización";
+            btnVitaminizacion.TextAlign = ContentAlignment.MiddleRight;
+            btnVitaminizacion.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnVitaminizacion.UseVisualStyleBackColor = false;
+            btnVitaminizacion.Click += btnVitaminizacion_Click;
+            //
+            // btnClientes
+            //
+            btnClientes.BackColor = Color.FromArgb(23, 61, 43);
+            btnClientes.Cursor = Cursors.Hand;
+            btnClientes.FlatAppearance.BorderColor = Color.FromArgb(220, 225, 216);
+            btnClientes.FlatAppearance.BorderSize = 0;
+            btnClientes.FlatAppearance.MouseOverBackColor = Color.FromArgb(62, 94, 69);
+            btnClientes.FlatStyle = FlatStyle.Flat;
+            btnClientes.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold);
+            btnClientes.ForeColor = Color.White;
+            btnClientes.IconChar = FontAwesome.Sharp.IconChar.Users;
+            btnClientes.IconColor = Color.White;
+            btnClientes.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnClientes.IconSize = 30;
+            btnClientes.ImageAlign = ContentAlignment.MiddleLeft;
+            btnClientes.Location = new Point(2, 203);
+            btnClientes.Name = "btnClientes";
+            btnClientes.Padding = new Padding(5, 0, 0, 0);
+            btnClientes.Size = new Size(225, 50);
+            btnClientes.TabIndex = 21;
+            btnClientes.Text = "Clientes";
+            btnClientes.TextAlign = ContentAlignment.MiddleRight;
+            btnClientes.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnClientes.UseVisualStyleBackColor = false;
+            btnClientes.Click += btnClientes_Click;
+            //
+            // btnAlimentos
+            //
+            btnAlimentos.BackColor = Color.FromArgb(23, 61, 43);
+            btnAlimentos.Cursor = Cursors.Hand;
+            btnAlimentos.FlatAppearance.BorderColor = Color.FromArgb(220, 225, 216);
+            btnAlimentos.FlatAppearance.BorderSize = 0;
+            btnAlimentos.FlatAppearance.MouseOverBackColor = Color.FromArgb(62, 94, 69);
+            btnAlimentos.FlatStyle = FlatStyle.Flat;
+            btnAlimentos.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold);
+            btnAlimentos.ForeColor = Color.White;
+            btnAlimentos.IconChar = FontAwesome.Sharp.IconChar.WheatAwn;
+            btnAlimentos.IconColor = Color.White;
+            btnAlimentos.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnAlimentos.IconSize = 30;
+            btnAlimentos.ImageAlign = ContentAlignment.MiddleLeft;
+            btnAlimentos.Location = new Point(2, 103);
+            btnAlimentos.Name = "btnAlimentos";
+            btnAlimentos.Padding = new Padding(5, 0, 0, 0);
+            btnAlimentos.Size = new Size(225, 50);
+            btnAlimentos.TabIndex = 19;
+            btnAlimentos.Text = "Alimentos";
+            btnAlimentos.TextAlign = ContentAlignment.MiddleRight;
+            btnAlimentos.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnAlimentos.UseVisualStyleBackColor = false;
+            btnAlimentos.Click += btnAlimentos_Click;
+            //
+            // btnVitaminas
+            //
+            btnVitaminas.BackColor = Color.FromArgb(23, 61, 43);
+            btnVitaminas.Cursor = Cursors.Hand;
+            btnVitaminas.FlatAppearance.BorderColor = Color.FromArgb(220, 225, 216);
+            btnVitaminas.FlatAppearance.BorderSize = 0;
+            btnVitaminas.FlatAppearance.MouseOverBackColor = Color.FromArgb(62, 94, 69);
+            btnVitaminas.FlatStyle = FlatStyle.Flat;
+            btnVitaminas.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold);
+            btnVitaminas.ForeColor = Color.White;
+            btnVitaminas.IconChar = FontAwesome.Sharp.IconChar.Capsules;
+            btnVitaminas.IconColor = Color.White;
+            btnVitaminas.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnVitaminas.IconSize = 30;
+            btnVitaminas.ImageAlign = ContentAlignment.MiddleLeft;
+            btnVitaminas.Location = new Point(2, 153);
+            btnVitaminas.Name = "btnVitaminas";
+            btnVitaminas.Padding = new Padding(5, 0, 0, 0);
+            btnVitaminas.Size = new Size(225, 50);
+            btnVitaminas.TabIndex = 20;
+            btnVitaminas.Text = "Vitaminas";
+            btnVitaminas.TextAlign = ContentAlignment.MiddleRight;
+            btnVitaminas.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnVitaminas.UseVisualStyleBackColor = false;
+            btnVitaminas.Click += btnVitaminas_Click;
+            // 
+            // btnProveedores
+            // 
+            btnProveedores.BackColor = Color.FromArgb(23, 61, 43);
+            btnProveedores.Cursor = Cursors.Hand;
+            btnProveedores.FlatAppearance.BorderColor = Color.FromArgb(220, 225, 216);
+            btnProveedores.FlatAppearance.BorderSize = 0;
+            btnProveedores.FlatAppearance.MouseOverBackColor = Color.FromArgb(62, 94, 69);
+            btnProveedores.FlatStyle = FlatStyle.Flat;
+            btnProveedores.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold);
+            btnProveedores.ForeColor = Color.White;
+            btnProveedores.IconChar = FontAwesome.Sharp.IconChar.Truck;
+            btnProveedores.IconColor = Color.White;
+            btnProveedores.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnProveedores.IconSize = 30;
+            btnProveedores.ImageAlign = ContentAlignment.MiddleLeft;
+            btnProveedores.Location = new Point(2, 53);
+            btnProveedores.Name = "btnProveedores";
+            btnProveedores.Padding = new Padding(5, 0, 0, 0);
+            btnProveedores.Size = new Size(225, 50);
+            btnProveedores.TabIndex = 18;
+            btnProveedores.Text = "Proveedores";
+            btnProveedores.TextAlign = ContentAlignment.MiddleRight;
+            btnProveedores.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnProveedores.UseVisualStyleBackColor = false;
+            btnProveedores.Click += btnProveedores_Click;
+            // 
+            // btnGalpones
+            // 
+            btnGalpones.BackColor = Color.FromArgb(23, 61, 43);
+            btnGalpones.Cursor = Cursors.Hand;
+            btnGalpones.FlatAppearance.BorderColor = Color.FromArgb(220, 225, 216);
+            btnGalpones.FlatAppearance.BorderSize = 0;
+            btnGalpones.FlatAppearance.MouseOverBackColor = Color.FromArgb(62, 94, 69);
+            btnGalpones.FlatStyle = FlatStyle.Flat;
+            btnGalpones.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold);
+            btnGalpones.ForeColor = Color.White;
+            btnGalpones.IconChar = FontAwesome.Sharp.IconChar.Warehouse;
+            btnGalpones.IconColor = Color.White;
+            btnGalpones.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnGalpones.IconSize = 30;
+            btnGalpones.ImageAlign = ContentAlignment.MiddleLeft;
+            btnGalpones.Location = new Point(2, 3);
+            btnGalpones.Name = "btnGalpones";
+            btnGalpones.Padding = new Padding(5, 0, 0, 0);
+            btnGalpones.Size = new Size(225, 50);
+            btnGalpones.TabIndex = 17;
+            btnGalpones.Text = "Galpones";
+            btnGalpones.TextAlign = ContentAlignment.MiddleRight;
+            btnGalpones.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnGalpones.UseVisualStyleBackColor = false;
+            btnGalpones.Click += btnGalpones_Click;
+            // 
             // pnlSidebar
             // 
+            pnlSidebar.AutoScroll = true;
             pnlSidebar.BackColor = Color.FromArgb(23, 61, 43);
+            pnlSidebar.Controls.Add(pnlComercializacion);
+            pnlSidebar.Controls.Add(pnlProduccion);
+            pnlSidebar.Controls.Add(pnlCatalogos);
             pnlSidebar.Controls.Add(pnlSeguridad);
             pnlSidebar.Controls.Add(picDif7);
             pnlSidebar.Controls.Add(picDif6);
@@ -204,7 +549,7 @@
             pnlSidebar.Font = new Font("Microsoft Sans Serif", 8.25F);
             pnlSidebar.Location = new Point(0, 44);
             pnlSidebar.Name = "pnlSidebar";
-            pnlSidebar.Size = new Size(226, 676);
+            pnlSidebar.Size = new Size(248, 676);
             pnlSidebar.TabIndex = 0;
             // 
             // picDif7
@@ -294,6 +639,7 @@
             btnInicio.TextAlign = ContentAlignment.MiddleRight;
             btnInicio.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnInicio.UseVisualStyleBackColor = false;
+            btnInicio.Click += btnInicio_Click;
             // 
             // btnReportes
             // 
@@ -319,6 +665,7 @@
             btnReportes.TextAlign = ContentAlignment.MiddleRight;
             btnReportes.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnReportes.UseVisualStyleBackColor = false;
+            btnReportes.Click += btnReportes_Click;
             // 
             // btnComercializacion
             // 
@@ -344,6 +691,7 @@
             btnComercializacion.TextAlign = ContentAlignment.MiddleRight;
             btnComercializacion.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnComercializacion.UseVisualStyleBackColor = false;
+            btnComercializacion.Click += btnComercializacion_Click;
             // 
             // btnProduccion
             // 
@@ -369,6 +717,7 @@
             btnProduccion.TextAlign = ContentAlignment.MiddleRight;
             btnProduccion.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnProduccion.UseVisualStyleBackColor = false;
+            btnProduccion.Click += btnProduccion_Click;
             // 
             // btnCompras
             // 
@@ -394,6 +743,7 @@
             btnCompras.TextAlign = ContentAlignment.MiddleRight;
             btnCompras.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnCompras.UseVisualStyleBackColor = false;
+            btnCompras.Click += btnCompras_Click;
             // 
             // btnSeguridad
             // 
@@ -569,9 +919,9 @@
             // 
             pnlContenedor.Controls.Add(picFondo);
             pnlContenedor.Dock = DockStyle.Fill;
-            pnlContenedor.Location = new Point(226, 44);
+            pnlContenedor.Location = new Point(248, 44);
             pnlContenedor.Name = "pnlContenedor";
-            pnlContenedor.Size = new Size(1054, 636);
+            pnlContenedor.Size = new Size(1032, 636);
             pnlContenedor.TabIndex = 4;
             // 
             // picFondo
@@ -607,6 +957,9 @@
             Load += FrmPrincipal_Load;
             pnlMovimiento.ResumeLayout(false);
             pnlSeguridad.ResumeLayout(false);
+            pnlProduccion.ResumeLayout(false);
+            pnlComercializacion.ResumeLayout(false);
+            pnlCatalogos.ResumeLayout(false);
             pnlSidebar.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)picDif7).EndInit();
             ((System.ComponentModel.ISupportInitialize)picDif6).EndInit();
@@ -650,6 +1003,20 @@
         private Panel pnlSeguridad;
         private FontAwesome.Sharp.IconButton btnRoles;
         private FontAwesome.Sharp.IconButton btnUsuarios;
+        private Panel pnlCatalogos;
+        private FontAwesome.Sharp.IconButton btnGalpones;
+        private FontAwesome.Sharp.IconButton btnProveedores;
+        private FontAwesome.Sharp.IconButton btnClientes;
+        private FontAwesome.Sharp.IconButton btnAlimentos;
+        private FontAwesome.Sharp.IconButton btnVitaminas;
+        private Panel pnlProduccion;
+        private Panel pnlComercializacion;
+        private FontAwesome.Sharp.IconButton btnTarifas;
+        private FontAwesome.Sharp.IconButton btnVentas;
+        private FontAwesome.Sharp.IconButton btnLotes;
+        private FontAwesome.Sharp.IconButton btnAlimentacion;
+        private FontAwesome.Sharp.IconButton btnMortalidades;
+        private FontAwesome.Sharp.IconButton btnVitaminizacion;
         private PictureBox picDif;
         private PictureBox picDif7;
         private PictureBox picDif6;

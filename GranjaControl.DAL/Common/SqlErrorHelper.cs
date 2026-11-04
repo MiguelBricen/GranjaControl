@@ -30,6 +30,84 @@ namespace GranjaControl.DAL.Common
                 52001 => new Exception("La categoría ya existe."),
                 52002 => new Exception("La categoría no existe o está inactiva."),
 
+                // Proveedores
+                52009 => new Exception("El proveedor ya existe."),
+                52010 => new Exception("El tipo de proveedor no es válido."),
+                52011 => new Exception("El proveedor no existe."),
+
+                // Lotes
+                52012 => new Exception("El código del lote ya existe."),
+                52013 => new Exception("El galpón seleccionado no existe o está inactivo."),
+                52014 => new Exception("El proveedor seleccionado no puede suministrar pollitos o está inactivo."),
+                52015 => new Exception("La cantidad inicial de pollitos debe ser mayor que cero."),
+                52016 => new Exception("El costo por pollito no puede ser negativo."),
+                52017 => new Exception("El lote no existe."),
+                52018 => new Exception("El estado del lote no es válido."),
+
+                // Alimentos
+                52019 => new Exception("El alimento ya existe."),
+                52020 => new Exception("El tipo de alimento no es válido."),
+                52021 => new Exception("El alimento no existe."),
+
+                // Alimentación
+                52022 => new Exception("El lote no existe o está cancelado."),
+                52023 => new Exception("El alimento no existe o está inactivo."),
+                52024 => new Exception("La cantidad de alimento debe ser mayor que cero."),
+                52025 => new Exception("La unidad de medida no es válida."),
+                52026 => new Exception("El registro de alimentación no existe."),
+
+                // Vitaminas
+                52027 => new Exception("La vitamina ya existe."),
+                52028 => new Exception("La vitamina no existe."),
+
+                // Vitaminización
+                52029 => new Exception("El lote no existe o está cancelado."),
+                52030 => new Exception("La vitamina no existe o está inactiva."),
+                52031 => new Exception("La cantidad de vitamina debe ser mayor que cero."),
+                52032 => new Exception("La unidad de medida no es válida."),
+                52033 => new Exception("El registro de aplicación de vitamina no existe."),
+
+                // Mortalidades
+                52034 => new Exception("El lote no existe o está cancelado."),
+                52035 => new Exception("La cantidad de mortalidad debe ser mayor que cero."),
+                52036 => new Exception("La causa de mortalidad es obligatoria."),
+                52037 => new Exception("La cantidad de mortalidad supera la cantidad disponible del lote."),
+                52038 => new Exception("El registro de mortalidad no existe."),
+
+                // Compras de alimentos
+                52039 => new Exception("El número de compra ya existe."),
+                52040 => new Exception("El proveedor seleccionado no puede suministrar alimento o está inactivo."),
+                52041 => new Exception("La compra de alimento no existe."),
+                52042 => new Exception("La cantidad de alimento debe ser mayor que cero."),
+                52043 => new Exception("El costo unitario no puede ser negativo."),
+                52044 => new Exception("El detalle de compra no existe."),
+
+                // Clientes
+                52045 => new Exception("El nombre del cliente es obligatorio."),
+                52046 => new Exception("El tipo de cliente no es válido."),
+                52047 => new Exception("Ya existe un cliente con ese nombre."),
+                52048 => new Exception("El cliente no existe."),
+                52049 => new Exception("El precio por libra debe ser mayor que cero."),
+                52050 => new Exception("La fecha fin no puede ser anterior a la fecha inicio."),
+                52051 => new Exception("El período de la tarifa se cruza con otra tarifa existente."),
+                52052 => new Exception("La tarifa de pollo no existe."),
+
+                // Ventas
+                52053 => new Exception("El número de venta es obligatorio."),
+                52054 => new Exception("Ya existe una venta con ese número."),
+                52055 => new Exception("El cliente no existe o está inactivo."),
+                52056 => new Exception("La venta no existe."),
+                52057 => new Exception("El lote no existe."),
+                52058 => new Exception("El peso total en libras debe ser mayor que cero."),
+                52059 => new Exception("El lote no existe o está cancelado."),
+                52060 => new Exception("El lote no tiene pollos disponibles para la venta."),
+                52061 => new Exception("No existe una tarifa vigente para la fecha de la venta."),
+                52062 => new Exception("El detalle de venta no existe."),
+                52063 => new Exception("La cantidad de pollos debe ser mayor que cero."),
+                52064 => new Exception("La cantidad de pollos supera la disponibilidad del lote."),
+                52065 => new Exception("La venta está anulada y no puede modificarse."),
+                52066 => new Exception("La venta ya está anulada."),
+
                 // Tickets
                 53001 => new Exception("El usuario solicitante no existe."),
                 53002 => new Exception("El ticket no existe."),
