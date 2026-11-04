@@ -127,7 +127,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Alimentos
             dgvListado.Columns["Estado"]!.AutoSizeMode =
                 DataGridViewAutoSizeColumnMode.Fill;
 
-            AjustarColumnas("Estado");
+            AjustarColumnas("TipoAlimento", "Estado");
         }
 
         protected override Form? CrearFormularioAccionPrincipal()
