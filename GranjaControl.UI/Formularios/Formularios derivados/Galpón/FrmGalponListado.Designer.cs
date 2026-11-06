@@ -35,7 +35,6 @@
             // 
             btnEliminar.FlatAppearance.BorderSize = 0;
             btnEliminar.FlatAppearance.MouseOverBackColor = Color.FromArgb(151, 40, 40);
-            
             // 
             // btnEditar
             // 
@@ -47,12 +46,17 @@
             btnNuevo.FlatAppearance.BorderSize = 0;
             btnNuevo.FlatAppearance.MouseOverBackColor = Color.FromArgb(46, 104, 65);
             // 
-            // FrmListadoGalpon
+            // iconTitulo
+            // 
+            iconTitulo.ForeColor = Color.FromArgb(154, 24, 26);
+            iconTitulo.IconColor = Color.FromArgb(154, 24, 26);
+            // 
+            // FrmGalponListado
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1000, 630);
-            Name = "FrmListadoGalpon";
+            Name = "FrmGalponListado";
             Text = "FrmListadoGalpon";
             ((System.ComponentModel.ISupportInitialize)iconTitulo).EndInit();
             ResumeLayout(false);

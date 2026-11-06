@@ -35,18 +35,21 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Alimentos
             btnNuevo.FlatAppearance.BorderSize = 0;
             btnNuevo.FlatAppearance.MouseOverBackColor = Color.FromArgb(46, 104, 65);
             // 
-            // iconTitulo
+            // label1
             // 
-            iconTitulo.IconChar = FontAwesome.Sharp.IconChar.WheatAwn;
-            iconTitulo.IconColor = Color.FromArgb(23, 61, 43);
+            label1.Size = new Size(359, 23);
+            label1.Text = "Consulte, administre y gestione los alimentos.";
             // 
             // lblTitulo
             // 
+            lblTitulo.Size = new Size(306, 41);
             lblTitulo.Text = "Listado de Alimentos";
             // 
-            // label1
+            // iconTitulo
             // 
-            label1.Text = "Consulte, administre y gestione los alimentos.";
+            iconTitulo.ForeColor = Color.FromArgb(154, 24, 26);
+            iconTitulo.IconChar = FontAwesome.Sharp.IconChar.WheatAwn;
+            iconTitulo.IconColor = Color.FromArgb(154, 24, 26);
             // 
             // FrmAlimentoListado
             // 

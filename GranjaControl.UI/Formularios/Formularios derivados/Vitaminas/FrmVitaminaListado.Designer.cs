@@ -35,18 +35,21 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Vitaminas
             btnNuevo.FlatAppearance.BorderSize = 0;
             btnNuevo.FlatAppearance.MouseOverBackColor = Color.FromArgb(46, 104, 65);
             // 
-            // iconTitulo
+            // label1
             // 
-            iconTitulo.IconChar = FontAwesome.Sharp.IconChar.Capsules;
-            iconTitulo.IconColor = Color.FromArgb(23, 61, 43);
+            label1.Size = new Size(357, 23);
+            label1.Text = "Consulte, administre y gestione las vitaminas.";
             // 
             // lblTitulo
             // 
+            lblTitulo.Size = new Size(303, 41);
             lblTitulo.Text = "Listado de Vitaminas";
             // 
-            // label1
+            // iconTitulo
             // 
-            label1.Text = "Consulte, administre y gestione las vitaminas.";
+            iconTitulo.ForeColor = Color.FromArgb(154, 24, 26);
+            iconTitulo.IconChar = FontAwesome.Sharp.IconChar.Capsules;
+            iconTitulo.IconColor = Color.FromArgb(154, 24, 26);
             // 
             // FrmVitaminaListado
             // 

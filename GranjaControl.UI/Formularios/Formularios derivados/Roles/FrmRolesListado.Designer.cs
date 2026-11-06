@@ -51,6 +51,11 @@
             lblTitulo.Size = new Size(240, 41);
             lblTitulo.Text = "Listado de Roles";
             // 
+            // iconTitulo
+            // 
+            iconTitulo.ForeColor = Color.FromArgb(154, 24, 26);
+            iconTitulo.IconColor = Color.FromArgb(154, 24, 26);
+            // 
             // FrmRolesListado
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);

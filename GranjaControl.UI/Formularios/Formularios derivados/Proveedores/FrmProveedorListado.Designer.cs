@@ -35,18 +35,21 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Proveedores
             btnNuevo.FlatAppearance.BorderSize = 0;
             btnNuevo.FlatAppearance.MouseOverBackColor = Color.FromArgb(46, 104, 65);
             // 
-            // iconTitulo
+            // label1
             // 
-            iconTitulo.IconChar = FontAwesome.Sharp.IconChar.Truck;
-            iconTitulo.IconColor = Color.FromArgb(37, 99, 235);
+            label1.Size = new Size(380, 23);
+            label1.Text = "Consulte, administre y gestione los proveedores.";
             // 
             // lblTitulo
             // 
+            lblTitulo.Size = new Size(337, 41);
             lblTitulo.Text = "Listado de Proveedores";
             // 
-            // label1
+            // iconTitulo
             // 
-            label1.Text = "Consulte, administre y gestione los proveedores.";
+            iconTitulo.ForeColor = Color.FromArgb(154, 24, 26);
+            iconTitulo.IconChar = FontAwesome.Sharp.IconChar.Truck;
+            iconTitulo.IconColor = Color.FromArgb(154, 24, 26);
             // 
             // FrmProveedorListado
             // 

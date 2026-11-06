@@ -102,7 +102,7 @@
             btnVolver.Cursor = Cursors.Hand;
             btnVolver.FlatAppearance.BorderSize = 0;
             btnVolver.FlatStyle = FlatStyle.Flat;
-            btnVolver.Image = Properties.Resources._25_volver;
+            btnVolver.Image = Properties.Resources._25_volver1;
             btnVolver.Location = new Point(12, 12);
             btnVolver.Name = "btnVolver";
             btnVolver.Size = new Size(32, 32);
@@ -135,9 +135,9 @@
             // iconTitulo
             // 
             iconTitulo.BackColor = Color.FromArgb(230, 236, 243);
-            iconTitulo.ForeColor = Color.FromArgb(37, 99, 235);
+            iconTitulo.ForeColor = Color.FromArgb(154, 24, 26);
             iconTitulo.IconChar = FontAwesome.Sharp.IconChar.Tasks;
-            iconTitulo.IconColor = Color.FromArgb(37, 99, 235);
+            iconTitulo.IconColor = Color.FromArgb(154, 24, 26);
             iconTitulo.IconFont = FontAwesome.Sharp.IconFont.Auto;
             iconTitulo.IconSize = 55;
             iconTitulo.Location = new Point(12, 74);

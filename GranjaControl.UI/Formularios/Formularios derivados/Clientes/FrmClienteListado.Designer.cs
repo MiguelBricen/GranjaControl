@@ -35,18 +35,21 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Clientes
             btnNuevo.FlatAppearance.BorderSize = 0;
             btnNuevo.FlatAppearance.MouseOverBackColor = Color.FromArgb(46, 104, 65);
             // 
-            // iconTitulo
+            // label1
             // 
-            iconTitulo.IconChar = FontAwesome.Sharp.IconChar.Users;
-            iconTitulo.IconColor = Color.FromArgb(37, 99, 235);
+            label1.Size = new Size(342, 23);
+            label1.Text = "Consulte, administre y gestione los clientes.";
             // 
             // lblTitulo
             // 
+            lblTitulo.Size = new Size(276, 41);
             lblTitulo.Text = "Listado de Clientes";
             // 
-            // label1
+            // iconTitulo
             // 
-            label1.Text = "Consulte, administre y gestione los clientes.";
+            iconTitulo.ForeColor = Color.FromArgb(154, 24, 26);
+            iconTitulo.IconChar = FontAwesome.Sharp.IconChar.Users;
+            iconTitulo.IconColor = Color.FromArgb(154, 24, 26);
             // 
             // FrmClienteListado
             // 

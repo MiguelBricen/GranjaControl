@@ -23,6 +23,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Vitaminizaciones
             // btnEliminar
             // 
             btnEliminar.FlatAppearance.BorderSize = 0;
+            btnEliminar.FlatAppearance.MouseOverBackColor = Color.FromArgb(151, 40, 40);
             // 
             // btnEditar
             // 
@@ -34,18 +35,21 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Vitaminizaciones
             btnNuevo.FlatAppearance.BorderSize = 0;
             btnNuevo.FlatAppearance.MouseOverBackColor = Color.FromArgb(46, 104, 65);
             // 
-            // iconTitulo
+            // label1
             // 
-            iconTitulo.IconChar = FontAwesome.Sharp.IconChar.Syringe;
-            iconTitulo.IconColor = Color.FromArgb(23, 61, 43);
+            label1.Size = new Size(404, 23);
+            label1.Text = "Consulte y administre las aplicaciones de vitaminas.";
             // 
             // lblTitulo
             // 
+            lblTitulo.Size = new Size(399, 41);
             lblTitulo.Text = "Listado de Vitaminizaciones";
             // 
-            // label1
+            // iconTitulo
             // 
-            label1.Text = "Consulte y administre las aplicaciones de vitaminas.";
+            iconTitulo.ForeColor = Color.FromArgb(154, 24, 26);
+            iconTitulo.IconChar = FontAwesome.Sharp.IconChar.Syringe;
+            iconTitulo.IconColor = Color.FromArgb(154, 24, 26);
             // 
             // FrmVitaminizacionListado
             // 

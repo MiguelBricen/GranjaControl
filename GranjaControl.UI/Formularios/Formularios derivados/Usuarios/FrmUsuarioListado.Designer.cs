@@ -51,6 +51,11 @@
             lblTitulo.Size = new Size(285, 41);
             lblTitulo.Text = "Listado de Usuarios";
             // 
+            // iconTitulo
+            // 
+            iconTitulo.ForeColor = Color.FromArgb(154, 24, 26);
+            iconTitulo.IconColor = Color.FromArgb(154, 24, 26);
+            // 
             // FrmUsuarioListado
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);

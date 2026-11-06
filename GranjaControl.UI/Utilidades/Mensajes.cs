@@ -11,7 +11,7 @@ namespace GranjaControl.UI.Utilidades
             FrmMensajes frm =
                 new FrmMensajes(mensaje, "error");
 
-            frm.ShowDialog();
+            frm.Show();
         }
 
         // Mostrar mensaje de éxito.
@@ -20,7 +20,7 @@ namespace GranjaControl.UI.Utilidades
             FrmMensajes frm =
                 new FrmMensajes(mensaje, "ok");
 
-            frm.ShowDialog();
+            frm.Show();
         }
 
         // Mostrar mensaje de validación.
@@ -29,7 +29,7 @@ namespace GranjaControl.UI.Utilidades
             FrmMensajes frm =
                 new FrmMensajes(mensaje, "warning");
 
-            frm.ShowDialog();
+            frm.Show();
         }
 
         // Mostrar mensaje informativo.
@@ -38,7 +38,7 @@ namespace GranjaControl.UI.Utilidades
             FrmMensajes frm =
                 new FrmMensajes(mensaje, "info");
 
-            frm.ShowDialog();
+            frm.Show();
         }
 
         // Mostrar mensaje de confirmación.

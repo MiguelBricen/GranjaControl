@@ -35,18 +35,21 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Lotes
             btnNuevo.FlatAppearance.BorderSize = 0;
             btnNuevo.FlatAppearance.MouseOverBackColor = Color.FromArgb(46, 104, 65);
             // 
-            // iconTitulo
+            // label1
             // 
-            iconTitulo.IconChar = FontAwesome.Sharp.IconChar.WheatAwn;
-            iconTitulo.IconColor = Color.FromArgb(23, 61, 43);
+            label1.Size = new Size(436, 23);
+            label1.Text = "Consulte, administre y gestione los lotes de producción.";
             // 
             // lblTitulo
             // 
+            lblTitulo.Size = new Size(240, 41);
             lblTitulo.Text = "Listado de Lotes";
             // 
-            // label1
+            // iconTitulo
             // 
-            label1.Text = "Consulte, administre y gestione los lotes de producción.";
+            iconTitulo.ForeColor = Color.FromArgb(154, 24, 26);
+            iconTitulo.IconChar = FontAwesome.Sharp.IconChar.WheatAwn;
+            iconTitulo.IconColor = Color.FromArgb(154, 24, 26);
             // 
             // FrmLoteListado
             // 

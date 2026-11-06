@@ -255,7 +255,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Reportes
             lblDisponibilidadTitulo.Name = "lblDisponibilidadTitulo";
             lblDisponibilidadTitulo.Size = new Size(300, 36);
             lblDisponibilidadTitulo.TabIndex = 0;
-            lblDisponibilidadTitulo.Text = "Disponibilidad de aves en lotes activos";
+            lblDisponibilidadTitulo.Text = "Disponibilidad de pollos en lotes activos";
             lblDisponibilidadTitulo.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // prgDisponibilidad
@@ -278,7 +278,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Reportes
             lblDisponibilidadValor.Name = "lblDisponibilidadValor";
             lblDisponibilidadValor.Size = new Size(170, 36);
             lblDisponibilidadValor.TabIndex = 2;
-            lblDisponibilidadValor.Text = "-- de -- aves";
+            lblDisponibilidadValor.Text = "-- de -- pollos";
             lblDisponibilidadValor.TextAlign = ContentAlignment.MiddleRight;
             // 
             // tlpDetalle
