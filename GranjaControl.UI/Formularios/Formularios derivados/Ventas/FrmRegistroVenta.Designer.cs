@@ -594,7 +594,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             lblTotales.TabIndex = 24;
             lblTotales.Text = "Pollos: 0    Libras: 0.00";
             lblTotales.TextAlign = ContentAlignment.MiddleLeft;
-            // 
+          
             // lblTotal
             // 
             lblTotal.BackColor = Color.Transparent;

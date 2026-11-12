@@ -915,5 +915,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
                 e.FormattingApplied = true;
             }
         }
+
+       
     }
 }
