@@ -60,7 +60,8 @@ namespace GranjaControl.DAL
             }
         }
 
-        public async Task<List<LoteEntity>> MostrarLotesActivosAsync()
+        public async Task<List<LoteEntity>> MostrarLotesActivosAsync(
+            int? idVenta = null)
         {
             try
             {
@@ -70,6 +71,9 @@ namespace GranjaControl.DAL
                 using SqlCommand cmd = new("sp_MostrarLotesActivos", cn);
 
                 cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue(
+                    "@idVenta",
+                    idVenta.HasValue ? idVenta.Value : DBNull.Value);
 
                 await cn.OpenAsync();
 
@@ -79,6 +83,36 @@ namespace GranjaControl.DAL
                     lista.Add(CrearLote(dr));
 
                 return lista;
+            }
+            catch (SqlException ex)
+            {
+                throw SqlErrorHelper.TraducirError(ex);
+            }
+        }
+
+        public async Task<LoteEntity?> ObtenerLoteParaVentaAsync(
+            int id,
+            int? idVenta = null)
+        {
+            try
+            {
+                using SqlConnection cn = Conexion.ObtenerConexion();
+                using SqlCommand cmd = new("sp_ObtenerLoteParaVenta", cn);
+
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@idLote", id);
+                cmd.Parameters.AddWithValue(
+                    "@idVenta",
+                    idVenta.HasValue ? idVenta.Value : DBNull.Value);
+
+                await cn.OpenAsync();
+
+                using SqlDataReader dr = await cmd.ExecuteReaderAsync();
+
+                if (!await dr.ReadAsync())
+                    return null;
+
+                return CrearLote(dr);
             }
             catch (SqlException ex)
             {
@@ -223,6 +257,9 @@ namespace GranjaControl.DAL
             lote.CambiarCantidadInicial(
                 Convert.ToInt32(dr["cantidadInicial"]));
 
+            lote.EstablecerCantidadDisponible(
+                LeerEnteroOpcional(dr, "cantidadDisponible") ?? 0);
+
             lote.CambiarCostoPorPollito(
                 Convert.ToDecimal(dr["costoPorPollito"]));
 
@@ -234,6 +271,27 @@ namespace GranjaControl.DAL
                     : dr["observacion"].ToString());
 
             return lote;
+        }
+
+        private static int? LeerEnteroOpcional(
+            SqlDataReader dr,
+            string nombreColumna)
+        {
+            for (int i = 0; i < dr.FieldCount; i++)
+            {
+                if (!dr.GetName(i).Equals(
+                        nombreColumna,
+                        StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                return dr.IsDBNull(i)
+                    ? null
+                    : Convert.ToInt32(dr[i]);
+            }
+
+            return null;
         }
     }
 }

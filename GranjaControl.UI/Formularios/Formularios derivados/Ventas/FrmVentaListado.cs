@@ -22,7 +22,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
         {
             InitializeComponent();
 
-            _ventaBLL = new VentaBLL(new VentaDAL());
+            _ventaBLL = new VentaBLL(new VentaDAL(), new LoteDAL());
             _clienteBLL = new ClienteBLL(new ClienteDAL());
             _loteBLL = new LoteBLL(new LoteDAL());
             _tarifaBLL = new TarifaPolloBLL(new TarifaPolloDAL());

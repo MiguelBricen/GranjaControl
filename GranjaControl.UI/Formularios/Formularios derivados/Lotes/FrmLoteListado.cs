@@ -118,7 +118,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Lotes
             dgvListado.Columns["NombreGalpon"]!.HeaderText = "Galpón";
             dgvListado.Columns["NombreProveedor"]!.HeaderText = "Proveedor";
             dgvListado.Columns["FechaIngreso"]!.HeaderText = "Ingreso";
-            dgvListado.Columns["CantidadInicial"]!.HeaderText = "Cantidad";
+            dgvListado.Columns["CantidadDisponible"]!.HeaderText = "Cantidad";
             dgvListado.Columns["CostoPorPollito"]!.HeaderText = "Costo";
             dgvListado.Columns["Estado"]!.HeaderText = "Estado";
             dgvListado.Columns["Observacion"]!.HeaderText = "Observación";
@@ -135,8 +135,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Lotes
             dgvListado.Columns["FechaIngreso"]!.AutoSizeMode =
                 DataGridViewAutoSizeColumnMode.Fill;
 
-            dgvListado.Columns["CantidadInicial"]!.AutoSizeMode =
-                DataGridViewAutoSizeColumnMode.Fill;
+            dgvListado.Columns["CantidadDisponible"]!.AutoSizeMode =
+                DataGridViewAutoSizeColumnMode.AllCells;
 
             dgvListado.Columns["CostoPorPollito"]!.AutoSizeMode =
                 DataGridViewAutoSizeColumnMode.Fill;
@@ -147,7 +147,11 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Lotes
             dgvListado.Columns["Observacion"]!.AutoSizeMode =
                 DataGridViewAutoSizeColumnMode.Fill;
 
-            AjustarColumnas("CantidadInicial", "CostoPorPollito", "Observacion","Estado");
+            AjustarColumnas(
+                "CantidadDisponible",
+                "CostoPorPollito",
+                "Observacion",
+                "Estado");
         }
 
         protected override void FormatearCelda(DataGridViewCellFormattingEventArgs e)
@@ -166,6 +170,11 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Lotes
 
                 case "CostoPorPollito":
                     e.Value = Convert.ToDecimal(e.Value).ToString("N2");
+                    e.FormattingApplied = true;
+                    break;
+
+                case "CantidadDisponible":
+                    e.Value = Convert.ToInt32(e.Value).ToString("N0");
                     e.FormattingApplied = true;
                     break;
 

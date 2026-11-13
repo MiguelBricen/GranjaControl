@@ -7,6 +7,34 @@ namespace GranjaControl.DAL
 {
     public class VentaDAL
     {
+        public async Task<string> ObtenerSiguienteNumeroVentaAsync()
+        {
+            try
+            {
+                using SqlConnection cn = Conexion.ObtenerConexion();
+                using SqlCommand cmd = new(
+                    "sp_ObtenerNumeroVentaSiguiente",
+                    cn);
+
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                await cn.OpenAsync();
+                object? resultado = await cmd.ExecuteScalarAsync();
+
+                if (resultado is null || resultado == DBNull.Value)
+                {
+                    throw new InvalidOperationException(
+                        "No se pudo consultar el siguiente número de venta.");
+                }
+
+                return Convert.ToString(resultado)!;
+            }
+            catch (SqlException ex)
+            {
+                throw SqlErrorHelper.TraducirError(ex);
+            }
+        }
+
         public async Task<PaginacionEntity<VentaEntity>> MostrarAsync(
             int pagina,
             int tamPagina,
@@ -133,6 +161,7 @@ namespace GranjaControl.DAL
                 {
                     bool ventaNueva = venta.Id <= 0;
                     int idVenta = venta.Id;
+                    string? numeroVentaDefinitivo = null;
 
                     if (!ventaNueva)
                     {
@@ -144,7 +173,7 @@ namespace GranjaControl.DAL
                     }
                     else
                     {
-                        idVenta = await AgregarVentaAsync(
+                        (idVenta, numeroVentaDefinitivo) = await AgregarVentaAsync(
                             cn,
                             tx,
                             venta,
@@ -188,7 +217,10 @@ namespace GranjaControl.DAL
                     await tx.CommitAsync();
 
                     if (ventaNueva)
+                    {
                         venta.AsignarId(idVenta);
+                        venta.CambiarNumeroVenta(numeroVentaDefinitivo!);
+                    }
 
                     foreach (var nuevo in detallesNuevos)
                     {
@@ -233,7 +265,7 @@ namespace GranjaControl.DAL
             }
         }
 
-        private static async Task<int> AgregarVentaAsync(
+        private static async Task<(int Id, string NumeroVenta)> AgregarVentaAsync(
             SqlConnection cn,
             SqlTransaction tx,
             VentaEntity venta,
@@ -244,18 +276,20 @@ namespace GranjaControl.DAL
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Transaction = tx;
 
-            AgregarParametrosVenta(venta, cmd);
+            AgregarParametrosVenta(venta, cmd, incluirNumeroVenta: false);
             cmd.Parameters.AddWithValue("@usuarioApp", usuarioApp);
 
-            object? resultado = await cmd.ExecuteScalarAsync();
+            using SqlDataReader dr = await cmd.ExecuteReaderAsync();
 
-            if (resultado is null || resultado == DBNull.Value)
+            if (!await dr.ReadAsync())
             {
                 throw new InvalidOperationException(
-                    "No se pudo recuperar el ID de la venta registrada.");
+                    "No se pudo recuperar el ID y el número de la venta registrada.");
             }
 
-            return Convert.ToInt32(resultado);
+            return (
+                Convert.ToInt32(dr["id"]),
+                Convert.ToString(dr["numeroVenta"])!);
         }
 
         private static async Task ActualizarVentaAsync(
@@ -380,9 +414,11 @@ namespace GranjaControl.DAL
 
         private static void AgregarParametrosVenta(
             VentaEntity venta,
-            SqlCommand cmd)
+            SqlCommand cmd,
+            bool incluirNumeroVenta = true)
         {
-            cmd.Parameters.AddWithValue("@numeroVenta", venta.NumeroVenta);
+            if (incluirNumeroVenta)
+                cmd.Parameters.AddWithValue("@numeroVenta", venta.NumeroVenta);
             cmd.Parameters.AddWithValue("@idCliente", venta.IdCliente);
             cmd.Parameters.AddWithValue("@fechaVenta", venta.FechaVenta);
             cmd.Parameters.AddWithValue(

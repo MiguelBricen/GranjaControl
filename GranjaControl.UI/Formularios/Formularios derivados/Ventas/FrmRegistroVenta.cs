@@ -23,6 +23,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
         private bool _actualizandoDetalles;
         private bool _cargando;
         private bool _esSoloLectura;
+        private bool _hayLotesParaVenta;
 
         private bool dragging = false;
         private Point dragCursorPoint;
@@ -71,6 +72,12 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
 
         private async Task CargarCombosAsync()
         {
+            if (!EsEdicion)
+            {
+                txtNumero.Text =
+                    await _ventaBLL.ObtenerSiguienteNumeroVentaAsync();
+            }
+
             if (_idVenta.HasValue)
             {
                 _ventaActual = await _ventaBLL.ObtenerPorIdAsync(
@@ -108,9 +115,6 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             cboCliente.DataSource = clientes;
             cboCliente.SelectedIndex = -1;
 
-            List<LoteEntity> lotes =
-                await _loteBLL.MostrarLotesActivosAsync();
-
             if (_ventaActual is not null)
             {
                 List<DetalleVentaEntity> detalles =
@@ -119,19 +123,13 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
 
                 _detalles.AddRange(detalles);
 
-                foreach (DetalleVentaEntity detalle in detalles)
-                {
-                    if (lotes.Any(l => l.Id == detalle.IdLote))
-                        continue;
-
-                    LoteEntity? lote =
-                        await _loteBLL.ObtenerPorIdAsync(
-                            detalle.IdLote);
-
-                    if (lote is not null)
-                        lotes.Add(lote);
-                }
             }
+
+            List<LoteEntity> lotes =
+                await _loteBLL.MostrarLotesActivosAsync(
+                    _ventaActual?.Id);
+
+            _hayLotesParaVenta = lotes.Count > 0;
 
             cboLoteDetalle.DisplayMember =
                 nameof(LoteEntity.CodigoLote);
@@ -154,13 +152,12 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
                     "No hay clientes activos disponibles para registrar ventas.");
             }
 
-            if (lotes.Count == 0)
+            if (!_hayLotesParaVenta)
             {
-                btnGuardar.Enabled = false;
                 btnAgregarDetalle.Enabled = false;
 
                 mensajes.MensajeInformacion(
-                    "No hay lotes activos disponibles para registrar ventas.");
+                    "No hay lotes listos para venta con pollos disponibles.");
             }
         }
 
@@ -268,6 +265,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
                 !_esSoloLectura && _precioVigente.HasValue;
 
             btnAgregarDetalle.Enabled = puedeEditar;
+            btnAgregarDetalle.Enabled &= _hayLotesParaVenta;
             btnGuardar.Enabled = puedeEditar;
         }
 
@@ -446,7 +444,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
                 MidpointRounding.AwayFromZero);
         }
 
-        private bool ValidarDetalle()
+        private async Task<bool> ValidarDetalleAsync()
         {
             errorIcon.Clear();
 
@@ -470,20 +468,41 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             }
             else
             {
-                int idLote = Convert.ToInt32(
-                    cboLoteDetalle.SelectedValue);
-
-                bool repetido = _detalles
-                    .Where((d, i) => i != _indiceDetalleSeleccionado)
-                    .Any(d => d.IdLote == idLote);
-
-                if (repetido)
+                if (cboLoteDetalle.SelectedItem is not LoteEntity loteSeleccionado)
                 {
                     errorIcon.SetError(
                         cboLoteDetalle,
-                        "El lote ya está incluido en la venta.");
+                        "Seleccione un lote válido.");
 
                     valido = false;
+                }
+                else
+                {
+                    int idLote = loteSeleccionado.Id;
+
+                    bool repetido = _detalles
+                        .Where((d, i) => i != _indiceDetalleSeleccionado)
+                        .Any(d => d.IdLote == idLote);
+
+                    if (repetido)
+                    {
+                        errorIcon.SetError(
+                            cboLoteDetalle,
+                            "El lote ya está incluido en la venta.");
+
+                        valido = false;
+                    }
+
+                    if (!loteSeleccionado.Estado.Equals(
+                            "Listo para venta",
+                            StringComparison.OrdinalIgnoreCase))
+                    {
+                        errorIcon.SetError(
+                            cboLoteDetalle,
+                            "El lote no está listo para la venta.");
+
+                        valido = false;
+                    }
                 }
             }
 
@@ -522,6 +541,68 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
                     errorIcon.SetError(
                         numPesoLibras,
                         "El peso total calculado supera el máximo permitido.");
+
+                    valido = false;
+                }
+            }
+
+            if (valido && cboLoteDetalle.SelectedItem is LoteEntity lote)
+            {
+                int idLoteValidado = lote.Id;
+                decimal cantidadValidada = numCantidadPollos.Value;
+                decimal pesoPromedioValidado = numPesoLibras.Value;
+
+                LoteEntity? loteActual;
+                try
+                {
+                    loteActual = await _loteBLL.ObtenerLoteParaVentaAsync(
+                        lote.Id,
+                        _ventaActual?.Id);
+                }
+                catch (Exception ex)
+                {
+                    mensajes.MensajeError(
+                        $"No se pudo comprobar la disponibilidad del lote: {ex.Message}");
+
+                    return false;
+                }
+
+                if (cboLoteDetalle.SelectedItem is not LoteEntity loteActualSeleccionado ||
+                    loteActualSeleccionado.Id != idLoteValidado ||
+                    numCantidadPollos.Value != cantidadValidada ||
+                    numPesoLibras.Value != pesoPromedioValidado)
+                {
+                    mensajes.MensajeValidacion(
+                        "Los datos del detalle cambiaron durante la validación. Revise e intente nuevamente.");
+
+                    return false;
+                }
+
+                if (loteActual is null)
+                {
+                    errorIcon.SetError(
+                        cboLoteDetalle,
+                        "El lote ya no está listo para la venta o no tiene disponibilidad.");
+
+                    return false;
+                }
+
+                if (!loteActual.Estado.Equals(
+                        "Listo para venta",
+                        StringComparison.OrdinalIgnoreCase))
+                {
+                    errorIcon.SetError(
+                        cboLoteDetalle,
+                        "El lote ya no está listo para la venta.");
+
+                    return false;
+                }
+
+                if (numCantidadPollos.Value > loteActual.CantidadDisponible)
+                {
+                    errorIcon.SetError(
+                        numCantidadPollos,
+                        $"Disponibilidad actual: {loteActual.CantidadDisponible:N0} pollos.");
 
                     valido = false;
                 }
@@ -618,13 +699,13 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             btnQuitarDetalle.Enabled = !_esSoloLectura;
         }
 
-        private void btnAgregarDetalle_Click(
+        private async void btnAgregarDetalle_Click(
             object sender,
             EventArgs e)
         {
             _indiceDetalleSeleccionado = -1;
 
-            if (!ValidarDetalle())
+            if (!await ValidarDetalleAsync())
                 return;
 
             DetalleVentaEntity detalle =
@@ -637,7 +718,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             LimpiarEntradaDetalle();
         }
 
-        private void btnActualizarDetalle_Click(
+        private async void btnActualizarDetalle_Click(
             object sender,
             EventArgs e)
         {
@@ -650,7 +731,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
                 return;
             }
 
-            if (!ValidarDetalle())
+            if (!await ValidarDetalleAsync())
                 return;
 
             DetalleVentaEntity actual =
@@ -698,11 +779,13 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
 
             bool valido = true;
 
-            if (string.IsNullOrWhiteSpace(txtNumero.Text))
+            if (string.IsNullOrWhiteSpace(txtNumero.Text) ||
+                (!EsEdicion &&
+                 !txtNumero.Text.StartsWith("VTA-", StringComparison.Ordinal)))
             {
                 errorIcon.SetError(
                     txtNumero,
-                    "Ingrese el número de venta.");
+                    "No se ha reservado un número de venta válido.");
 
                 valido = false;
             }
@@ -798,6 +881,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
                     venta,
                     _detalles,
                     UsuarioSesion.NombreUsuario);
+
+                txtNumero.Text = venta.NumeroVenta;
 
                 mensajes.MensajeOk(
                     EsEdicion

@@ -90,6 +90,11 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
+    DECLARE
+        @cantidadInicial INT,
+        @totalMortalidades INT,
+        @totalVendidos INT;
+
     SET @causa = TRIM(@causa);
     SET @observacion = TRIM(@observacion);
     SET @usuarioApp = TRIM(@usuarioApp);
@@ -97,13 +102,12 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
-            IF NOT EXISTS
-            (
-                SELECT 1
-                FROM tblLotes
-                WHERE id = @idLote
-                  AND estado <> 'Cancelado'
-            )
+            SELECT @cantidadInicial = cantidadInicial
+            FROM tblLotes WITH (UPDLOCK, HOLDLOCK)
+            WHERE id = @idLote
+              AND estado <> 'Cancelado';
+
+            IF @cantidadInicial IS NULL
                 THROW 52034, 'El lote no existe o está cancelado', 1;
 
             IF @cantidad <= 0
@@ -112,19 +116,18 @@ BEGIN
             IF @causa = ''
                 THROW 52036, 'La causa de mortalidad es obligatoria', 1;
 
-            IF
-            (
-                SELECT cantidadInicial
-                FROM tblLotes
-                WHERE id = @idLote
-            )
-            <
-            (
-                SELECT ISNULL(SUM(cantidad), 0)
-                FROM tblMortalidades
-                WHERE idLote = @idLote
-            ) + @cantidad
-            THROW 52037, 'La cantidad de mortalidad supera la cantidad disponible del lote', 1;
+            SELECT @totalMortalidades = ISNULL(SUM(cantidad), 0)
+            FROM tblMortalidades
+            WHERE idLote = @idLote;
+
+            SELECT @totalVendidos = ISNULL(SUM(d.cantidadPollos), 0)
+            FROM tblDetalleVentas d
+            INNER JOIN tblVentas v ON v.id = d.idVenta
+            WHERE d.idLote = @idLote
+              AND v.estado = 'Registrada';
+
+            IF @cantidadInicial < @totalMortalidades + @totalVendidos + @cantidad
+                THROW 52037, 'La cantidad de mortalidad supera la cantidad disponible del lote', 1;
 
             INSERT INTO tblMortalidades
             (
@@ -184,6 +187,11 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
+    DECLARE
+        @cantidadInicial INT,
+        @totalMortalidades INT,
+        @totalVendidos INT;
+
     SET @causa = TRIM(@causa);
     SET @observacion = TRIM(@observacion);
     SET @usuarioApp = TRIM(@usuarioApp);
@@ -199,13 +207,12 @@ BEGIN
             )
                 THROW 52038, 'El registro de mortalidad no existe', 1;
 
-            IF NOT EXISTS
-            (
-                SELECT 1
-                FROM tblLotes
-                WHERE id = @idLote
-                  AND estado <> 'Cancelado'
-            )
+            SELECT @cantidadInicial = cantidadInicial
+            FROM tblLotes WITH (UPDLOCK, HOLDLOCK)
+            WHERE id = @idLote
+              AND estado <> 'Cancelado';
+
+            IF @cantidadInicial IS NULL
                 THROW 52034, 'El lote no existe o está cancelado', 1;
 
             IF @cantidad <= 0
@@ -214,20 +221,19 @@ BEGIN
             IF @causa = ''
                 THROW 52036, 'La causa de mortalidad es obligatoria', 1;
 
-            IF
-            (
-                SELECT cantidadInicial
-                FROM tblLotes
-                WHERE id = @idLote
-            )
-            <
-            (
-                SELECT ISNULL(SUM(cantidad), 0)
-                FROM tblMortalidades
-                WHERE idLote = @idLote
-                  AND id <> @Id
-            ) + @cantidad
-            THROW 52037, 'La cantidad de mortalidad supera la cantidad disponible del lote', 1;
+            SELECT @totalMortalidades = ISNULL(SUM(cantidad), 0)
+            FROM tblMortalidades
+            WHERE idLote = @idLote
+              AND id <> @Id;
+
+            SELECT @totalVendidos = ISNULL(SUM(d.cantidadPollos), 0)
+            FROM tblDetalleVentas d
+            INNER JOIN tblVentas v ON v.id = d.idVenta
+            WHERE d.idLote = @idLote
+              AND v.estado = 'Registrada';
+
+            IF @cantidadInicial < @totalMortalidades + @totalVendidos + @cantidad
+                THROW 52037, 'La cantidad de mortalidad supera la cantidad disponible del lote', 1;
 
             UPDATE tblMortalidades
             SET

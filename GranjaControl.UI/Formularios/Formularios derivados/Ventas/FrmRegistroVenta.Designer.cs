@@ -207,6 +207,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             txtNumero.Location = new Point(8, 7);
             txtNumero.MaxLength = 50;
             txtNumero.Name = "txtNumero";
+            txtNumero.ReadOnly = true;
             txtNumero.Size = new Size(211, 24);
             txtNumero.TabIndex = 0;
             // 

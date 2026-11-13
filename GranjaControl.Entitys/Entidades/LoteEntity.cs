@@ -21,7 +21,10 @@ namespace GranjaControl.Entitys.Entidades
 
         public DateTime FechaIngreso { get; private set; } = DateTime.Today;
 
+        [System.ComponentModel.Browsable(false)]
         public int CantidadInicial { get; private set; }
+
+        public int CantidadDisponible { get; private set; }
 
         public decimal CostoPorPollito { get; private set; }
 
@@ -108,6 +111,15 @@ namespace GranjaControl.Entitys.Entidades
                     "La cantidad inicial de pollitos debe ser mayor que cero.");
 
             CantidadInicial = cantidadInicial;
+        }
+
+        public void EstablecerCantidadDisponible(int cantidadDisponible)
+        {
+            if (cantidadDisponible < 0)
+                throw new ArgumentException(
+                    "La disponibilidad del lote no puede ser negativa.");
+
+            CantidadDisponible = cantidadDisponible;
         }
 
         public void CambiarCostoPorPollito(decimal costoPorPollito)

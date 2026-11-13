@@ -6,10 +6,17 @@ namespace GranjaControl.BLL
     public class VentaBLL
     {
         private readonly VentaDAL _ventaDal;
+        private readonly LoteDAL _loteDal;
 
-        public VentaBLL(VentaDAL ventaDal)
+        public VentaBLL(VentaDAL ventaDal, LoteDAL loteDal)
         {
             _ventaDal = ventaDal;
+            _loteDal = loteDal;
+        }
+
+        public async Task<string> ObtenerSiguienteNumeroVentaAsync()
+        {
+            return await _ventaDal.ObtenerSiguienteNumeroVentaAsync();
         }
 
         public async Task<PaginacionEntity<VentaEntity>> MostrarAsync(
@@ -57,6 +64,33 @@ namespace GranjaControl.BLL
             ArgumentNullException.ThrowIfNull(detalles);
 
             ValidarVenta(venta, detalles, usuarioApp);
+
+            foreach (DetalleVentaEntity detalle in detalles)
+            {
+                LoteEntity? lote = await _loteDal.ObtenerLoteParaVentaAsync(
+                    detalle.IdLote,
+                    venta.Id > 0 ? venta.Id : null);
+
+                if (lote is null)
+                {
+                    throw new InvalidOperationException(
+                        "El lote ya no está listo para la venta o no tiene pollos disponibles.");
+                }
+
+                if (!lote.Estado.Equals(
+                        "Listo para venta",
+                        StringComparison.OrdinalIgnoreCase))
+                {
+                    throw new InvalidOperationException(
+                        $"El lote {lote.CodigoLote} ya no está listo para la venta.");
+                }
+
+                if (detalle.CantidadPollos > lote.CantidadDisponible)
+                {
+                    throw new InvalidOperationException(
+                        $"La disponibilidad actual del lote {lote.CodigoLote} es de {lote.CantidadDisponible:N0} pollos.");
+                }
+            }
 
             return await _ventaDal.GuardarAsync(
                 venta,

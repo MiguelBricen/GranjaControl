@@ -118,13 +118,24 @@ BEGIN
 
         SELECT
             @cantidadInicial = cantidadInicial
-        FROM tblLotes
+        FROM tblLotes WITH (UPDLOCK, HOLDLOCK)
         WHERE id = @idLote
-          AND estado <> 'Cancelado';
+          AND estado = 'Listo para venta';
 
         IF @cantidadInicial IS NULL
         BEGIN
-            THROW 52059, 'El lote no existe o está cancelado.', 1;
+            THROW 52059, 'El lote no está listo para la venta o no existe.', 1;
+        END;
+
+        IF EXISTS
+        (
+            SELECT 1
+            FROM tblDetalleVentas
+            WHERE idVenta = @idVenta
+              AND idLote = @idLote
+        )
+        BEGIN
+            THROW 52067, 'El lote ya está incluido en la venta.', 1;
         END;
 
         SELECT
@@ -138,7 +149,7 @@ BEGIN
         INNER JOIN tblVentas v
             ON v.id = d.idVenta
         WHERE d.idLote = @idLote
-          AND v.estado <> 'Anulada';
+          AND v.estado = 'Registrada';
 
         SET @disponibles =
             @cantidadInicial
@@ -278,17 +289,6 @@ BEGIN
             THROW 52065, 'La venta está anulada y no puede modificarse.', 1;
         END;
 
-        IF NOT EXISTS
-        (
-            SELECT 1
-            FROM tblLotes
-            WHERE id = @idLote
-              AND estado <> 'Cancelado'
-        )
-        BEGIN
-            THROW 52059, 'El lote no existe o está cancelado.', 1;
-        END;
-
         IF @cantidadPollos <= 0
         BEGIN
             THROW 52063, 'La cantidad de pollos debe ser mayor que cero.', 1;
@@ -301,8 +301,26 @@ BEGIN
 
         SELECT
             @cantidadInicial = cantidadInicial
-        FROM tblLotes
-        WHERE id = @idLote;
+        FROM tblLotes WITH (UPDLOCK, HOLDLOCK)
+        WHERE id = @idLote
+          AND estado = 'Listo para venta';
+
+        IF @cantidadInicial IS NULL
+        BEGIN
+            THROW 52059, 'El lote no está listo para la venta o no existe.', 1;
+        END;
+
+        IF EXISTS
+        (
+            SELECT 1
+            FROM tblDetalleVentas
+            WHERE idVenta = @idVenta
+              AND idLote = @idLote
+              AND id <> @Id
+        )
+        BEGIN
+            THROW 52067, 'El lote ya está incluido en la venta.', 1;
+        END;
 
         SELECT
             @totalMortalidades = ISNULL(SUM(cantidad), 0)
@@ -316,7 +334,7 @@ BEGIN
             ON v.id = d.idVenta
         WHERE d.idLote = @idLote
           AND d.id <> @Id
-          AND v.estado <> 'Anulada';
+          AND v.estado = 'Registrada';
 
         SET @disponibles =
             @cantidadInicial

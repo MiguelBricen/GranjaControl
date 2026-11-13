@@ -29,9 +29,22 @@ namespace GranjaControl.BLL
                 buscar);
         }
 
-        public async Task<List<LoteEntity>> MostrarLotesActivosAsync()
+        public async Task<List<LoteEntity>> MostrarLotesActivosAsync(
+            int? idVenta = null)
         {
-            return await _loteDal.MostrarLotesActivosAsync();
+            return await _loteDal.MostrarLotesActivosAsync(idVenta);
+        }
+
+        public async Task<LoteEntity?> ObtenerLoteParaVentaAsync(
+            int idLote,
+            int? idVenta = null)
+        {
+            if (idLote <= 0)
+                throw new ArgumentException("El ID del lote no es válido.");
+
+            return await _loteDal.ObtenerLoteParaVentaAsync(
+                idLote,
+                idVenta);
         }
 
         public async Task<LoteEntity?> ObtenerPorIdAsync(int id)

@@ -3,10 +3,37 @@ GO
 
 --> MOSTRAR LOTES EN ESTADOS ACTIVOS DE PRODUCCIÓN
 CREATE OR ALTER PROC sp_MostrarLotesActivos
+    @idVenta INT = NULL
 AS
 BEGIN
     SET NOCOUNT ON;
 
+    ;WITH Mortalidad AS
+    (
+        SELECT idLote, SUM(cantidad) AS cantidad
+        FROM tblMortalidades
+        GROUP BY idLote
+    ),
+    Vendidos AS
+    (
+        SELECT d.idLote, SUM(d.cantidadPollos) AS cantidad
+        FROM tblDetalleVentas d
+        INNER JOIN tblVentas v ON v.id = d.idVenta
+        WHERE v.estado = 'Registrada'
+          AND (@idVenta IS NULL OR v.id <> @idVenta)
+        GROUP BY d.idLote
+    ),
+    Disponibilidad AS
+    (
+        SELECT
+            l.id,
+            l.cantidadInicial
+                - ISNULL(m.cantidad, 0)
+                - ISNULL(v.cantidad, 0) AS cantidadDisponible
+        FROM tblLotes l
+        LEFT JOIN Mortalidad m ON m.idLote = l.id
+        LEFT JOIN Vendidos v ON v.idLote = l.id
+    )
     SELECT
         l.id,
         l.codigoLote,
@@ -18,16 +45,71 @@ BEGIN
         l.cantidadInicial,
         l.costoPorPollito,
         l.estado,
-        l.observacion
+        l.observacion,
+        d.cantidadDisponible
     FROM tblLotes l
+    INNER JOIN Disponibilidad d ON d.id = l.id
     INNER JOIN tblGalpones g
         ON l.idGalpon = g.id
     INNER JOIN tblProveedores p
         ON l.idProveedor = p.id
-    WHERE l.estado IN ('En producción', 'Listo para venta')
+    WHERE l.estado = 'Listo para venta'
+      AND d.cantidadDisponible > 0
       AND g.activo = 1
       AND p.activo = 1
     ORDER BY l.fechaIngreso DESC, l.codigoLote;
+END
+GO
+
+CREATE OR ALTER PROC sp_ObtenerLoteParaVenta
+    @idLote INT,
+    @idVenta INT = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    ;WITH Mortalidad AS
+    (
+        SELECT idLote, SUM(cantidad) AS cantidad
+        FROM tblMortalidades
+        GROUP BY idLote
+    ),
+    Vendidos AS
+    (
+        SELECT d.idLote, SUM(d.cantidadPollos) AS cantidad
+        FROM tblDetalleVentas d
+        INNER JOIN tblVentas v ON v.id = d.idVenta
+        WHERE v.estado = 'Registrada'
+          AND (@idVenta IS NULL OR v.id <> @idVenta)
+        GROUP BY d.idLote
+    )
+    SELECT
+        l.id,
+        l.codigoLote,
+        l.idGalpon,
+        g.nombreGalpon,
+        l.idProveedor,
+        p.nombreProveedor,
+        l.fechaIngreso,
+        l.cantidadInicial,
+        l.costoPorPollito,
+        l.estado,
+        l.observacion,
+        l.cantidadInicial
+            - ISNULL(m.cantidad, 0)
+            - ISNULL(v.cantidad, 0) AS cantidadDisponible
+    FROM tblLotes l
+    INNER JOIN tblGalpones g ON g.id = l.idGalpon
+    INNER JOIN tblProveedores p ON p.id = l.idProveedor
+    LEFT JOIN Mortalidad m ON m.idLote = l.id
+    LEFT JOIN Vendidos v ON v.idLote = l.id
+    WHERE l.id = @idLote
+      AND l.estado = 'Listo para venta'
+      AND l.cantidadInicial
+            - ISNULL(m.cantidad, 0)
+            - ISNULL(v.cantidad, 0) > 0
+      AND g.activo = 1
+      AND p.activo = 1;
 END
 GO
 
@@ -47,6 +129,20 @@ BEGIN
 
     SET @buscar = TRIM(@buscar);
 
+    ;WITH Mortalidad AS
+    (
+        SELECT idLote, SUM(cantidad) AS cantidad
+        FROM tblMortalidades
+        GROUP BY idLote
+    ),
+    Vendidos AS
+    (
+        SELECT d.idLote, SUM(d.cantidadPollos) AS cantidad
+        FROM tblDetalleVentas d
+        INNER JOIN tblVentas v ON v.id = d.idVenta
+        WHERE v.estado = 'Registrada'
+        GROUP BY d.idLote
+    )
     SELECT
         l.id,
         l.codigoLote,
@@ -58,12 +154,17 @@ BEGIN
         l.cantidadInicial,
         l.costoPorPollito,
         l.estado,
-        l.observacion
+        l.observacion,
+        l.cantidadInicial
+            - ISNULL(m.cantidad, 0)
+            - ISNULL(v.cantidad, 0) AS cantidadDisponible
     FROM tblLotes l
     INNER JOIN tblGalpones g
         ON l.idGalpon = g.id
     INNER JOIN tblProveedores p
         ON l.idProveedor = p.id
+    LEFT JOIN Mortalidad m ON m.idLote = l.id
+    LEFT JOIN Vendidos v ON v.idLote = l.id
     WHERE
         ISNULL(@buscar, '') = ''
         OR l.codigoLote LIKE '%' + @buscar + '%'
