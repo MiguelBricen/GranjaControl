@@ -40,7 +40,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Roles
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError(ex.Message);
+                mensajes.MensajeError(ex, "No se pudieron mostrar los roles. Inténtelo nuevamente.");
             }
         }
 
@@ -161,7 +161,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Roles
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError(ex.Message);
+                mensajes.MensajeError(ex, "No se pudo cambiar el estado del rol. No se realizaron cambios.");
             }
         }
     }

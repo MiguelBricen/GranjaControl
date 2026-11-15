@@ -41,7 +41,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Vitaminas
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError($"Error al mostrar las vitaminas: {ex.Message}");
+                mensajes.MensajeError(ex, "No se pudieron mostrar las vitaminas. Inténtelo nuevamente.");
             }
         }
 
@@ -174,7 +174,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Vitaminas
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError($"No se pudo cambiar el estado: {ex.Message}");
+                mensajes.MensajeError(ex, "No se pudo cambiar el estado de la vitamina. No se realizaron cambios.");
             }
         }
     }

@@ -174,6 +174,10 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
+    DECLARE
+        @ocupacionActual INT,
+        @mensajeCapacidad NVARCHAR(2048);
+
     SET @nombreGalpon = TRIM(@nombreGalpon);
     SET @descripcion = TRIM(@descripcion);
     SET @usuarioApp = TRIM(@usuarioApp);
@@ -184,7 +188,7 @@ BEGIN
             IF NOT EXISTS
             (
                 SELECT 1
-                FROM tblGalpones
+                FROM tblGalpones WITH (UPDLOCK, HOLDLOCK)
                 WHERE id = @Id
             )
                 THROW 52008, 'El galpón no existe', 1;
@@ -200,6 +204,50 @@ BEGIN
 
             IF @capacidad <= 0
                 THROW 52007, 'La capacidad del galpón debe ser mayor que cero', 1;
+
+            ;WITH Mortalidad AS
+            (
+                SELECT idLote, SUM(cantidad) AS cantidad
+                FROM tblMortalidades
+                GROUP BY idLote
+            ),
+            Vendidos AS
+            (
+                SELECT d.idLote, SUM(d.cantidadPollos) AS cantidad
+                FROM tblDetalleVentas d
+                INNER JOIN tblVentas v ON v.id = d.idVenta
+                WHERE v.estado = 'Registrada'
+                GROUP BY d.idLote
+            )
+            SELECT @ocupacionActual = ISNULL(SUM
+            (
+                CASE
+                    WHEN l.estado IN ('En producción', 'Listo para venta')
+                    THEN CASE
+                        WHEN l.cantidadInicial
+                            - ISNULL(m.cantidad, 0)
+                            - ISNULL(v.cantidad, 0) > 0
+                        THEN l.cantidadInicial
+                            - ISNULL(m.cantidad, 0)
+                            - ISNULL(v.cantidad, 0)
+                        ELSE 0
+                    END
+                    ELSE 0
+                END
+            ), 0)
+            FROM tblLotes l
+            LEFT JOIN Mortalidad m ON m.idLote = l.id
+            LEFT JOIN Vendidos v ON v.idLote = l.id
+            WHERE l.idGalpon = @Id;
+
+            IF @capacidad < @ocupacionActual
+            BEGIN
+                SET @mensajeCapacidad = CONCAT(
+                    'No se puede reducir la capacidad del galpón a ', @capacidad,
+                    ' porque actualmente aloja ', @ocupacionActual,
+                    ' pollitos.');
+                THROW 52071, @mensajeCapacidad, 1;
+            END;
 
             UPDATE tblGalpones
             SET

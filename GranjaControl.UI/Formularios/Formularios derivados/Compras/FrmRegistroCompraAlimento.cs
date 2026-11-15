@@ -622,7 +622,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
                 btnGuardar.Enabled = false;
 
                 mensajes.MensajeError(
-                    $"No se pudieron cargar los datos del formulario: {ex.Message}");
+                    ex,
+                    "No se pudieron cargar los datos de la compra. Compruebe la conexión e inténtelo nuevamente.");
             }
         }
 
@@ -659,7 +660,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
                 btnCancelar.Enabled = true;
 
                 mensajes.MensajeError(
-                    $"No se pudo guardar la compra: {ex.Message}");
+                    ex,
+                    "No se pudo guardar la compra de alimento. No se realizaron cambios. Inténtelo nuevamente.");
             }
         }
 

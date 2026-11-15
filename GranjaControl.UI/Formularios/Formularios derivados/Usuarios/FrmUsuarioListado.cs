@@ -44,7 +44,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Usuarios
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError(ex.Message);
+                mensajes.MensajeError(ex, "No se pudieron mostrar los usuarios. Inténtelo nuevamente.");
             }
         }
 
@@ -173,7 +173,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Usuarios
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError(ex.Message);
+                mensajes.MensajeError(ex, "No se pudo cambiar el estado del usuario. No se realizaron cambios.");
             }
         }
     }

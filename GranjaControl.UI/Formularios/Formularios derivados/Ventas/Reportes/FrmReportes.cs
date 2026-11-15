@@ -796,8 +796,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Reportes
             }
             catch (Exception ex)
             {
-                _mensajes.MensajeError(
-                    $"No se pudieron cargar los clientes: {ex.Message}");
+                _mensajes.MensajeError(ex, "No se pudieron cargar los clientes para el reporte. Inténtelo nuevamente.");
             }
 
             _cmbVentasCliente.SelectedIndex = 0;
@@ -825,8 +824,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Reportes
             }
             catch (Exception ex)
             {
-                _mensajes.MensajeError(
-                    $"No se pudieron cargar los galpones: {ex.Message}");
+                _mensajes.MensajeError(ex, "No se pudieron cargar los galpones para el reporte. Inténtelo nuevamente.");
             }
 
             _cmbProduccionGalpon.SelectedIndex = 0;
@@ -854,8 +852,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Reportes
             }
             catch (Exception ex)
             {
-                _mensajes.MensajeError(
-                    $"No se pudieron cargar los proveedores: {ex.Message}");
+                _mensajes.MensajeError(ex, "No se pudieron cargar los proveedores para el reporte. Inténtelo nuevamente.");
             }
 
             _cmbComprasProveedor.SelectedIndex = 0;
@@ -944,8 +941,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Reportes
             }
             catch (Exception ex)
             {
-                _mensajes.MensajeError(
-                    $"No se pudo generar el reporte de ventas: {ex.Message}");
+                _mensajes.MensajeError(ex, "No se pudo generar el reporte de ventas. Compruebe los filtros e inténtelo nuevamente.");
             }
         }
 
@@ -966,8 +962,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Reportes
             }
             catch (Exception ex)
             {
-                _mensajes.MensajeError(
-                    $"No se pudo generar el reporte de producción: {ex.Message}");
+                _mensajes.MensajeError(ex, "No se pudo generar el reporte de producción. Compruebe los filtros e inténtelo nuevamente.");
             }
         }
 
@@ -987,8 +982,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Reportes
             }
             catch (Exception ex)
             {
-                _mensajes.MensajeError(
-                    $"No se pudo generar el reporte de compras: {ex.Message}");
+                _mensajes.MensajeError(ex, "No se pudo generar el reporte de compras. Compruebe los filtros e inténtelo nuevamente.");
             }
         }
 

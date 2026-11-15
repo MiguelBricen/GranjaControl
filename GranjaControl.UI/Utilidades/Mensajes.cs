@@ -1,5 +1,6 @@
 ﻿
 using GranjaControl.UI.Formularios;
+using System.Diagnostics;
 
 namespace GranjaControl.UI.Utilidades
 {
@@ -12,6 +13,24 @@ namespace GranjaControl.UI.Utilidades
                 new FrmMensajes(mensaje, "error");
 
             frm.Show();
+        }
+
+        public void MensajeError(
+            Exception error,
+            string mensajeGenerico)
+        {
+            Trace.TraceError(
+                "Error en GranjaControl: {0}",
+                error);
+
+            bool mensajeSeguro =
+                error.Data["MensajeUsuario"] is true ||
+                (error is ArgumentException && error is not ArgumentNullException);
+
+            MensajeError(
+                mensajeSeguro
+                    ? error.Message
+                    : mensajeGenerico);
         }
 
         // Mostrar mensaje de éxito.

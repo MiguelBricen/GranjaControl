@@ -9,7 +9,36 @@ namespace GranjaControl.DAL.Common
     {
         public static Exception TraducirError(SqlException ex)
         {
-            return ex.Number switch
+            if (ex.Number is 52037 or 52064 or 52069 or 52071)
+                return ErrorUsuario(ex.Message);
+
+            if (ex.Number == 52070)
+                return ErrorUsuario(
+                    "La cantidad inicial no puede ser menor que los pollitos ya vendidos o fallecidos.");
+
+            if (ex.Number == 2812)
+                return ErrorUsuario(
+                    "La base de datos requiere una actualización para completar esta operación. Contacte al administrador.");
+
+            if (ex.Number is 2 or 26 or 53 or -2 or 233 or 258 or 18456 or 10053 or 10054 or 10060 or 10061 or 11001 or 4060)
+            {
+                return ErrorUsuario(
+                    "No fue posible conectar con la base de datos. Compruebe la conexión e inténtelo nuevamente.");
+            }
+
+            if (ex.Number is 2601 or 2627)
+            {
+                if (ex.Message.Contains("UQ_tblLotes_codigoLote", StringComparison.OrdinalIgnoreCase))
+                    return ErrorUsuario("Ya existe un lote registrado con ese código. Ingrese un código diferente.");
+
+                if (ex.Message.Contains("UQ_tblGalpones_nombreGalpon", StringComparison.OrdinalIgnoreCase))
+                    return ErrorUsuario("Ya existe un galpón con ese nombre. Ingrese un nombre diferente.");
+
+                return ErrorUsuario(
+                    "Este registro ya existe y no puede guardarse nuevamente. Ingrese un valor diferente.");
+            }
+
+            Exception error = ex.Number switch
             {
                 // Roles
                 50001 => new Exception("El rol ya existe."),
@@ -36,13 +65,18 @@ namespace GranjaControl.DAL.Common
                 52011 => new Exception("El proveedor no existe."),
 
                 // Lotes
-                52012 => new Exception("El código del lote ya existe."),
-                52013 => new Exception("El galpón seleccionado no existe o está inactivo."),
-                52014 => new Exception("El proveedor seleccionado no puede suministrar pollitos o está inactivo."),
+                52012 => new Exception("Ya existe un lote registrado con ese código. Ingrese un código diferente."),
+                52013 => new Exception("El galpón seleccionado ya no está disponible. Seleccione un galpón activo."),
+                52014 => new Exception("Seleccione un proveedor activo que suministre pollitos."),
                 52015 => new Exception("La cantidad inicial de pollitos debe ser mayor que cero."),
                 52016 => new Exception("El costo por pollito no puede ser negativo."),
                 52017 => new Exception("El lote no existe."),
                 52018 => new Exception("El estado del lote no es válido."),
+
+                // Galpones
+                52006 => new Exception("Ya existe un galpón con ese nombre. Ingrese un nombre diferente."),
+                52007 => new Exception("La capacidad del galpón debe ser mayor que cero."),
+                52008 => new Exception("No se encontró el galpón solicitado."),
 
                 // Alimentos
                 52019 => new Exception("El alimento ya existe."),
@@ -125,9 +159,21 @@ namespace GranjaControl.DAL.Common
                 55001 => new Exception("El archivo adjunto no existe."),
 
                 _ => new Exception(
-                    "Ocurrió un error inesperado.",
+                    "No se pudo completar la operación. No se realizaron cambios. Inténtelo nuevamente.",
                     ex)
             };
+
+            if (error.InnerException is null)
+                error.Data["MensajeUsuario"] = true;
+
+            return error;
+        }
+
+        private static Exception ErrorUsuario(string mensaje)
+        {
+            Exception error = new(mensaje);
+            error.Data["MensajeUsuario"] = true;
+            return error;
         }
     }
 }

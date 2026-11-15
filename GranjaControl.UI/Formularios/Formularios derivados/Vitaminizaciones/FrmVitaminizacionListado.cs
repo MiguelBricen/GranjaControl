@@ -94,7 +94,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Vitaminizaciones
             {
                 _cargandoFiltro = false;
 
-                mensajes.MensajeError($"No se pudieron cargar los lotes: {ex.Message}");
+                mensajes.MensajeError(ex, "No se pudieron cargar los lotes disponibles. Inténtelo nuevamente.");
             }
         }
 
@@ -138,7 +138,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Vitaminizaciones
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError($"Error al mostrar las vitaminizaciones: {ex.Message}");
+                mensajes.MensajeError(ex, "No se pudieron mostrar las aplicaciones de vitaminas. Inténtelo nuevamente.");
             }
         }
 

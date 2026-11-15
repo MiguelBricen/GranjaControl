@@ -83,7 +83,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Clientes
             catch (Exception ex)
             {
                 mensajes.MensajeError(
-                    $"Error al cargar los datos: {ex.Message}");
+                    ex,
+                    "No se pudieron cargar los datos del cliente. Inténtelo nuevamente.");
             }
         }
 
@@ -210,7 +211,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Clientes
                 btnGuardar.Enabled = true;
 
                 mensajes.MensajeError(
-                    $"No se pudo guardar el cliente: {ex.Message}");
+                    ex,
+                    "No se pudo guardar el cliente. No se realizaron cambios. Inténtelo nuevamente.");
             }
         }
 

@@ -110,7 +110,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Mortalidades
             catch (Exception ex)
             {
                 mensajes.MensajeError(
-                    $"Error al cargar los datos: {ex.Message}");
+                    ex,
+                    "No se pudieron cargar los datos de mortalidad. Inténtelo nuevamente.");
             }
         }
 
@@ -185,7 +186,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Mortalidades
                 btnGuardar.Enabled = false;
 
                 mensajes.MensajeError(
-                    $"No se pudieron cargar los datos del formulario: {ex.Message}");
+                    ex,
+                    "No se pudieron cargar los datos del formulario. Compruebe la conexión e inténtelo nuevamente.");
             }
         }
 
@@ -229,7 +231,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Mortalidades
                 btnGuardar.Enabled = true;
 
                 mensajes.MensajeError(
-                    $"No se pudo guardar la mortalidad: {ex.Message}");
+                    ex,
+                    "No se pudo guardar la mortalidad. No se realizaron cambios. Inténtelo nuevamente.");
             }
         }
 

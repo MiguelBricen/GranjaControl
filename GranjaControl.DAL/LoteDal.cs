@@ -145,12 +145,39 @@ namespace GranjaControl.DAL
             }
         }
 
+        public async Task<int?> ObtenerCapacidadDisponibleGalponAsync(
+            int idGalpon)
+        {
+            try
+            {
+                using SqlConnection cn = Conexion.ObtenerConexion();
+                using SqlCommand cmd = new(
+                    "dbo.sp_ObtenerCapacidadDisponibleGalpon",
+                    cn);
+
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@idGalpon", idGalpon);
+
+                await cn.OpenAsync();
+
+                object? resultado = await cmd.ExecuteScalarAsync();
+
+                return resultado is null || resultado == DBNull.Value
+                    ? null
+                    : Convert.ToInt32(resultado);
+            }
+            catch (SqlException ex)
+            {
+                throw SqlErrorHelper.TraducirError(ex);
+            }
+        }
+
         public async Task AgregarAsync(LoteEntity lote, string usuarioApp)
         {
             try
             {
                 using SqlConnection cn = Conexion.ObtenerConexion();
-                using SqlCommand cmd = new("sp_AgregarLote", cn);
+                using SqlCommand cmd = new("dbo.sp_AgregarLote", cn);
 
                 cmd.CommandType = CommandType.StoredProcedure;
 

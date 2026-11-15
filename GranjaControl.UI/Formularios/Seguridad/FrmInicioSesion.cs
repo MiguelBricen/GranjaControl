@@ -115,7 +115,7 @@ namespace GranjaControl.UI.Formularios.Seguridad
             catch (Exception ex)
             {
                 UsuarioSesion.CerrarSesion();
-                _mensajes.MensajeError(ex.Message);
+                _mensajes.MensajeError(ex, "No se pudo iniciar sesión. Compruebe sus datos e inténtelo nuevamente.");
 
                 if (!Visible)
                 {

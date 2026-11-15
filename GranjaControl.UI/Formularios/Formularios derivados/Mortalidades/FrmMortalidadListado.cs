@@ -92,7 +92,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Mortalidades
             {
                 _cargandoFiltro = false;
 
-                mensajes.MensajeError($"No se pudieron cargar los lotes: {ex.Message}");
+                mensajes.MensajeError(ex, "No se pudieron cargar los lotes disponibles. Inténtelo nuevamente.");
             }
         }
 
@@ -136,7 +136,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Mortalidades
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError($"Error al mostrar las mortalidades: {ex.Message}");
+                mensajes.MensajeError(ex, "No se pudieron mostrar los registros de mortalidad. Inténtelo nuevamente.");
             }
         }
 

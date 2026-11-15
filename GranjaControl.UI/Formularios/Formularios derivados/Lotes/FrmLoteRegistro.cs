@@ -131,7 +131,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Lotes
             catch (Exception ex)
             {
                 mensajes.MensajeError(
-                    $"Error al cargar los datos: {ex.Message}");
+                    ex,
+                    "No se pudieron cargar los datos del lote. Inténtelo nuevamente.");
             }
         }
 
@@ -222,7 +223,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Lotes
                 btnGuardar.Enabled = false;
 
                 mensajes.MensajeError(
-                    $"No se pudieron cargar los datos del formulario: {ex.Message}");
+                    ex,
+                    "No se pudieron cargar los datos del formulario. Compruebe la conexión e inténtelo nuevamente.");
             }
         }
 
@@ -241,6 +243,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Lotes
 
                 if (!EsEdicion)
                 {
+                    await _loteBLL.ValidarCapacidadDisponibleAsync(lote);
+
                     await _loteBLL.AgregarAsync(
                         lote,
                         UsuarioSesion.NombreUsuario);
@@ -266,7 +270,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Lotes
                 btnGuardar.Enabled = true;
 
                 mensajes.MensajeError(
-                    $"No se pudo guardar el lote: {ex.Message}");
+                    ex,
+                    "No se pudo guardar el lote. No se realizaron cambios. Inténtelo nuevamente.");
             }
         }
 

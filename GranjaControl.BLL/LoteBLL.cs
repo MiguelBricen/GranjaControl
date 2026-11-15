@@ -61,7 +61,26 @@ namespace GranjaControl.BLL
         {
             Validar(lote, usuarioApp);
 
+            await ValidarCapacidadDisponibleAsync(lote);
+
             await _loteDal.AgregarAsync(lote, usuarioApp);
+        }
+
+        public async Task ValidarCapacidadDisponibleAsync(LoteEntity lote)
+        {
+            ArgumentNullException.ThrowIfNull(lote);
+
+            int? capacidadDisponible =
+                await _loteDal.ObtenerCapacidadDisponibleGalponAsync(
+                    lote.IdGalpon);
+
+            if (!capacidadDisponible.HasValue)
+                throw ErrorDeNegocio(
+                    "El galpón seleccionado ya no está disponible. Seleccione un galpón activo e inténtelo nuevamente.");
+
+            if (lote.CantidadInicial > capacidadDisponible.Value)
+                throw ErrorDeNegocio(
+                    $"El lote contiene {lote.CantidadInicial:N0} pollitos, pero el galpón solamente tiene capacidad disponible para {capacidadDisponible.Value:N0}.");
         }
 
         public async Task ActualizarAsync(
@@ -130,6 +149,14 @@ namespace GranjaControl.BLL
             if (string.IsNullOrWhiteSpace(usuarioApp))
                 throw new ArgumentException(
                     "No se pudo identificar el usuario de la sesión.");
+        }
+
+        private static InvalidOperationException ErrorDeNegocio(
+            string mensaje)
+        {
+            InvalidOperationException error = new(mensaje);
+            error.Data["MensajeUsuario"] = true;
+            return error;
         }
     }
 }

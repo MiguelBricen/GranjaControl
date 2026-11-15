@@ -22,7 +22,7 @@ namespace GranjaControl.DAL
             }
             catch (SqlException ex)
             {
-                throw new Exception(ex.Message);
+                throw SqlErrorHelper.TraducirError(ex);
             }
         }
     }

@@ -42,7 +42,7 @@ namespace GranjaControl.UI.Formularios_derivados
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError($"Error al mostrar los galpones: {ex.Message}");
+                mensajes.MensajeError(ex, "No se pudieron mostrar los galpones. Inténtelo nuevamente.");
              
             }
         }
@@ -184,7 +184,7 @@ namespace GranjaControl.UI.Formularios_derivados
             catch (Exception ex)
             {
        
-                mensajes.MensajeError(ex.Message);
+                mensajes.MensajeError(ex, "No se pudo cambiar el estado del galpón. No se realizaron cambios.");
             }
         }
 

@@ -57,7 +57,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError($"Error al mostrar las ventas: {ex.Message}");
+                mensajes.MensajeError(ex, "No se pudieron mostrar las ventas. Inténtelo nuevamente.");
             }
         }
 
@@ -240,7 +240,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError($"No se pudo anular la venta: {ex.Message}");
+                mensajes.MensajeError(ex, "No se pudo anular la venta. No se realizaron cambios.");
             }
         }
     }

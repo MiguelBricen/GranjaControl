@@ -54,7 +54,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Compras
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError($"Error al mostrar las compras: {ex.Message}");
+                mensajes.MensajeError(ex, "No se pudieron mostrar las compras de alimento. Inténtelo nuevamente.");
             }
         }
 

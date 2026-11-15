@@ -79,7 +79,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Proveedores
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError($"Error al cargar los datos: {ex.Message}");
+                mensajes.MensajeError(ex, "No se pudieron cargar los datos del proveedor. Inténtelo nuevamente.");
             }
         }
 
@@ -183,7 +183,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Proveedores
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError($"No se pudo guardar el proveedor: {ex.Message}");
+                mensajes.MensajeError(ex, "No se pudo guardar el proveedor. No se realizaron cambios. Inténtelo nuevamente.");
             }
         }
 

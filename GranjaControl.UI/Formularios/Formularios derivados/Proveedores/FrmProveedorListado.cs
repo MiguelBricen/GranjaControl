@@ -41,7 +41,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Proveedores
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError($"Error al mostrar los proveedores: {ex.Message}");
+                mensajes.MensajeError(ex, "No se pudieron mostrar los proveedores. Inténtelo nuevamente.");
             }
         }
 
@@ -184,7 +184,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Proveedores
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError($"No se pudo cambiar el estado: {ex.Message}");
+                mensajes.MensajeError(ex, "No se pudo cambiar el estado del proveedor. No se realizaron cambios.");
             }
         }
     }

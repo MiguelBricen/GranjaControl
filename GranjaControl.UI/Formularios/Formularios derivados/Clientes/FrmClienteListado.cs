@@ -41,7 +41,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Clientes
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError($"Error al mostrar los clientes: {ex.Message}");
+                mensajes.MensajeError(ex, "No se pudieron mostrar los clientes. Inténtelo nuevamente.");
             }
         }
 
@@ -181,7 +181,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Clientes
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError($"No se pudo cambiar el estado: {ex.Message}");
+                mensajes.MensajeError(ex, "No se pudo cambiar el estado del cliente. No se realizaron cambios.");
             }
         }
     }

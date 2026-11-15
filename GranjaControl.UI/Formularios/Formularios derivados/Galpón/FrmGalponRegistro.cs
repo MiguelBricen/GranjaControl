@@ -73,7 +73,7 @@ namespace GranjaControl.UI
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError($"Error al cargar los datos: {ex.Message}");
+                mensajes.MensajeError(ex, "No se pudieron cargar los datos del galpón. Inténtelo nuevamente.");
             }
         }
 
@@ -171,8 +171,7 @@ namespace GranjaControl.UI
             }
             catch (Exception ex)
             {
-                Exception errorReal = ex.GetBaseException();
-                mensajes.MensajeError($"Ocurrió un error al guardar el galpón:\n\n{errorReal.Message}");
+                mensajes.MensajeError(ex, "No se pudo guardar el galpón. No se realizaron cambios. Inténtelo nuevamente.");
             }
         }
 

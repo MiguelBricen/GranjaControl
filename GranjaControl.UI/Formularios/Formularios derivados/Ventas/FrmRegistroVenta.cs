@@ -562,7 +562,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
                 catch (Exception ex)
                 {
                     mensajes.MensajeError(
-                        $"No se pudo comprobar la disponibilidad del lote: {ex.Message}");
+                        ex,
+                        "No se pudo comprobar la disponibilidad del lote. Inténtelo nuevamente.");
 
                     return false;
                 }
@@ -852,7 +853,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
                 btnGuardar.Enabled = false;
 
                 mensajes.MensajeError(
-                    $"No se pudieron cargar los datos del formulario: {ex.Message}");
+                    ex,
+                    "No se pudieron cargar los datos de la venta. Compruebe la conexión e inténtelo nuevamente.");
             }
             finally
             {
@@ -898,7 +900,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Ventas
                 btnCancelar.Enabled = true;
 
                 mensajes.MensajeError(
-                    $"No se pudo guardar la venta: {ex.Message}");
+                    ex,
+                    "No se pudo guardar la venta. No se realizaron cambios. Inténtelo nuevamente.");
             }
         }
 

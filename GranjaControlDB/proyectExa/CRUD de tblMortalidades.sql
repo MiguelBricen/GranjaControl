@@ -93,7 +93,9 @@ BEGIN
     DECLARE
         @cantidadInicial INT,
         @totalMortalidades INT,
-        @totalVendidos INT;
+        @totalVendidos INT,
+        @cantidadDisponible INT,
+        @mensajeDisponibilidad NVARCHAR(2048);
 
     SET @causa = TRIM(@causa);
     SET @observacion = TRIM(@observacion);
@@ -126,8 +128,17 @@ BEGIN
             WHERE d.idLote = @idLote
               AND v.estado = 'Registrada';
 
-            IF @cantidadInicial < @totalMortalidades + @totalVendidos + @cantidad
-                THROW 52037, 'La cantidad de mortalidad supera la cantidad disponible del lote', 1;
+            SET @cantidadDisponible = @cantidadInicial - @totalMortalidades - @totalVendidos;
+
+            IF @cantidad > @cantidadDisponible
+            BEGIN
+                SET @mensajeDisponibilidad = CONCAT(
+                    'No se puede registrar la mortalidad de ', @cantidad,
+                    ' pollitos porque el lote solamente tiene ',
+                    CASE WHEN @cantidadDisponible > 0 THEN @cantidadDisponible ELSE 0 END,
+                    ' disponibles.');
+                THROW 52037, @mensajeDisponibilidad, 1;
+            END;
 
             INSERT INTO tblMortalidades
             (
@@ -190,7 +201,9 @@ BEGIN
     DECLARE
         @cantidadInicial INT,
         @totalMortalidades INT,
-        @totalVendidos INT;
+        @totalVendidos INT,
+        @cantidadDisponible INT,
+        @mensajeDisponibilidad NVARCHAR(2048);
 
     SET @causa = TRIM(@causa);
     SET @observacion = TRIM(@observacion);
@@ -232,8 +245,17 @@ BEGIN
             WHERE d.idLote = @idLote
               AND v.estado = 'Registrada';
 
-            IF @cantidadInicial < @totalMortalidades + @totalVendidos + @cantidad
-                THROW 52037, 'La cantidad de mortalidad supera la cantidad disponible del lote', 1;
+            SET @cantidadDisponible = @cantidadInicial - @totalMortalidades - @totalVendidos;
+
+            IF @cantidad > @cantidadDisponible
+            BEGIN
+                SET @mensajeDisponibilidad = CONCAT(
+                    'No se puede registrar la mortalidad de ', @cantidad,
+                    ' pollitos porque el lote solamente tiene ',
+                    CASE WHEN @cantidadDisponible > 0 THEN @cantidadDisponible ELSE 0 END,
+                    ' disponibles.');
+                THROW 52037, @mensajeDisponibilidad, 1;
+            END;
 
             UPDATE tblMortalidades
             SET

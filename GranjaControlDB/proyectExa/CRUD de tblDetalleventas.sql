@@ -163,7 +163,11 @@ BEGIN
 
         IF @cantidadPollos > @disponibles
         BEGIN
-            THROW 52064, 'La cantidad de pollos supera la disponibilidad del lote.', 1;
+            SET @mensajeError = CONCAT(
+                'No se puede registrar la venta porque el lote solamente tiene ',
+                CASE WHEN @disponibles > 0 THEN @disponibles ELSE 0 END,
+                ' pollitos disponibles.');
+            THROW 52064, @mensajeError, 1;
         END;
 
         SELECT TOP 1
@@ -348,7 +352,11 @@ BEGIN
 
         IF @cantidadPollos > @disponibles
         BEGIN
-            THROW 52064, 'La cantidad de pollos supera la disponibilidad del lote.', 1;
+            SET @mensajeError = CONCAT(
+                'No se puede registrar la venta porque el lote solamente tiene ',
+                CASE WHEN @disponibles > 0 THEN @disponibles ELSE 0 END,
+                ' pollitos disponibles.');
+            THROW 52064, @mensajeError, 1;
         END;
 
         SELECT TOP 1

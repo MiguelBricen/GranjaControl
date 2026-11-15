@@ -146,7 +146,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Reportes
             catch (Exception ex)
             {
                 _mensajes.MensajeError(
-                    $"No se pudo cargar el panel de control: {ex.Message}");
+                    ex,
+                    "No se pudo cargar el panel de control. Compruebe la conexión e inténtelo nuevamente.");
             }
             finally
             {

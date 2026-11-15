@@ -73,7 +73,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Vitaminas
             catch (Exception ex)
             {
                 mensajes.MensajeError(
-                    $"Error al cargar los datos: {ex.Message}");
+                    ex,
+                    "No se pudieron cargar los datos de la vitamina. Inténtelo nuevamente.");
             }
         }
 
@@ -178,7 +179,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Vitaminas
                 btnGuardar.Enabled = true;
 
                 mensajes.MensajeError(
-                    $"No se pudo guardar la vitamina: {ex.Message}");
+                    ex,
+                    "No se pudo guardar la vitamina. No se realizaron cambios. Inténtelo nuevamente.");
             }
         }
 

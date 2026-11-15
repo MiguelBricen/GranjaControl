@@ -73,7 +73,7 @@ namespace GranjaControl.BLL
 
                 if (lote is null)
                 {
-                    throw new InvalidOperationException(
+                    throw ErrorDeNegocio(
                         "El lote ya no está listo para la venta o no tiene pollos disponibles.");
                 }
 
@@ -81,14 +81,14 @@ namespace GranjaControl.BLL
                         "Listo para venta",
                         StringComparison.OrdinalIgnoreCase))
                 {
-                    throw new InvalidOperationException(
+                    throw ErrorDeNegocio(
                         $"El lote {lote.CodigoLote} ya no está listo para la venta.");
                 }
 
                 if (detalle.CantidadPollos > lote.CantidadDisponible)
                 {
-                    throw new InvalidOperationException(
-                        $"La disponibilidad actual del lote {lote.CodigoLote} es de {lote.CantidadDisponible:N0} pollos.");
+                    throw ErrorDeNegocio(
+                        $"No se puede registrar la venta de {detalle.CantidadPollos:N0} pollitos porque el lote {lote.CodigoLote} solamente tiene {lote.CantidadDisponible:N0} disponibles.");
                 }
             }
 
@@ -229,6 +229,14 @@ namespace GranjaControl.BLL
                 throw new ArgumentException(
                     "Uno de los detalles no pertenece a la venta seleccionada.");
             }
+        }
+
+        private static InvalidOperationException ErrorDeNegocio(
+            string mensaje)
+        {
+            InvalidOperationException error = new(mensaje);
+            error.Data["MensajeUsuario"] = true;
+            return error;
         }
     }
 }

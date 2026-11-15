@@ -100,7 +100,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Usuarios
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError(ex.Message);
+                mensajes.MensajeError(ex, "No se pudieron cargar los datos del usuario. Inténtelo nuevamente.");
             }
         }
 
@@ -246,7 +246,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Usuarios
             catch (Exception ex)
             {
                 mensajes.MensajeError(
-                    $"No se pudo guardar el usuario: {ex.Message}");
+                    ex,
+                    "No se pudo guardar el usuario. No se realizaron cambios. Inténtelo nuevamente.");
             }
         }
 

@@ -41,7 +41,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Alimentos
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError($"Error al mostrar los alimentos: {ex.Message}");
+                mensajes.MensajeError(ex, "No se pudieron mostrar los alimentos. Inténtelo nuevamente.");
             }
         }
 
@@ -180,7 +180,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Alimentos
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError($"No se pudo cambiar el estado: {ex.Message}");
+                mensajes.MensajeError(ex, "No se pudo cambiar el estado del alimento. No se realizaron cambios.");
             }
         }
     }

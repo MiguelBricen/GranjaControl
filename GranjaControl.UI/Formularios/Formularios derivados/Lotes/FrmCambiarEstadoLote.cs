@@ -91,7 +91,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Lotes
                 btnGuardar.Enabled = true;
 
                 mensajes.MensajeError(
-                    $"No se pudo cambiar el estado del lote: {ex.Message}");
+                    ex,
+                    "No se pudo cambiar el estado del lote. No se realizaron cambios.");
             }
         }
 

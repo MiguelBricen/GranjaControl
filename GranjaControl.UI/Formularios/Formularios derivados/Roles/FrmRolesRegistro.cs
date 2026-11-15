@@ -59,7 +59,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Roles
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError(ex.Message);
+                mensajes.MensajeError(ex, "No se pudieron cargar los datos del rol. Inténtelo nuevamente.");
             }
         }
 
@@ -121,7 +121,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Roles
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError(ex.Message);
+                mensajes.MensajeError(ex, "No se pudo guardar el rol. No se realizaron cambios. Inténtelo nuevamente.");
             }
         }
 

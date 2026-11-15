@@ -45,7 +45,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Lotes
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError($"Error al mostrar los lotes: {ex.Message}");
+                mensajes.MensajeError(ex, "No se pudieron mostrar los lotes. Inténtelo nuevamente.");
             }
         }
 

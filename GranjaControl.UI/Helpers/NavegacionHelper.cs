@@ -202,7 +202,7 @@ namespace GranjaControl.UI.Helpers
             catch (Exception ex)
             {
                 Mensajes mensajes = new();
-                mensajes.MensajeError($"Error inesperado: {ex.Message}");
+                mensajes.MensajeError(ex, "No se pudo abrir la pantalla solicitada. Inténtelo nuevamente.");
             }
         }
 

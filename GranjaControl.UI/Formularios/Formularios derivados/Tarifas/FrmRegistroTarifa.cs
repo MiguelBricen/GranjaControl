@@ -89,7 +89,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Tarifas
                 btnGuardar.Enabled = false;
 
                 mensajes.MensajeError(
-                    $"Error al cargar los datos: {ex.Message}");
+                    ex,
+                    "No se pudieron cargar los datos de la tarifa. Inténtelo nuevamente.");
             }
         }
 
@@ -194,7 +195,8 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Tarifas
                 btnCancelar.Enabled = true;
 
                 mensajes.MensajeError(
-                    $"No se pudo guardar la tarifa: {ex.Message}");
+                    ex,
+                    "No se pudo guardar la tarifa. No se realizaron cambios. Inténtelo nuevamente.");
             }
         }
 

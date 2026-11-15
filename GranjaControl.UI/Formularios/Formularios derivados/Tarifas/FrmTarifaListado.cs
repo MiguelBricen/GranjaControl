@@ -49,7 +49,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Tarifas
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError($"Error al mostrar las tarifas: {ex.Message}");
+                mensajes.MensajeError(ex, "No se pudieron mostrar las tarifas. Inténtelo nuevamente.");
             }
         }
 
@@ -231,7 +231,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Tarifas
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError($"No se pudo cambiar el estado: {ex.Message}");
+                mensajes.MensajeError(ex, "No se pudo cambiar el estado de la tarifa. No se realizaron cambios.");
             }
         }
     }

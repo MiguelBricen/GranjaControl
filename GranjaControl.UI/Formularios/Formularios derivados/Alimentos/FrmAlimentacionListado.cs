@@ -99,7 +99,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Alimentos
             {
                 _cargandoFiltro = false;
 
-                mensajes.MensajeError($"No se pudieron cargar los lotes: {ex.Message}");
+                mensajes.MensajeError(ex, "No se pudieron cargar los lotes disponibles. Inténtelo nuevamente.");
             }
         }
 
@@ -143,7 +143,7 @@ namespace GranjaControl.UI.Formularios.Formularios_derivados.Alimentos
             }
             catch (Exception ex)
             {
-                mensajes.MensajeError($"Error al mostrar las alimentaciones: {ex.Message}");
+                mensajes.MensajeError(ex, "No se pudieron mostrar los registros de alimentación. Inténtelo nuevamente.");
             }
         }
 

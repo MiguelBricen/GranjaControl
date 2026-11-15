@@ -234,6 +234,68 @@ BEGIN
 END
 GO
 
+--> OBTENER CAPACIDAD DISPONIBLE DE UN GALPÓN
+CREATE OR ALTER PROC sp_ObtenerCapacidadDisponibleGalpon
+    @idGalpon INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    ;WITH Mortalidad AS
+    (
+        SELECT idLote, SUM(cantidad) AS cantidad
+        FROM tblMortalidades
+        GROUP BY idLote
+    ),
+    Vendidos AS
+    (
+        SELECT d.idLote, SUM(d.cantidadPollos) AS cantidad
+        FROM tblDetalleVentas d
+        INNER JOIN tblVentas v ON v.id = d.idVenta
+        WHERE v.estado = 'Registrada'
+        GROUP BY d.idLote
+    ),
+    Ocupacion AS
+    (
+        SELECT
+            l.idGalpon,
+            SUM
+            (
+                CASE
+                    WHEN l.estado IN ('En producción', 'Listo para venta')
+                    THEN CASE
+                        WHEN l.cantidadInicial
+                            - ISNULL(m.cantidad, 0)
+                            - ISNULL(v.cantidad, 0) > 0
+                        THEN l.cantidadInicial
+                            - ISNULL(m.cantidad, 0)
+                            - ISNULL(v.cantidad, 0)
+                        ELSE 0
+                    END
+                    ELSE 0
+                END
+            ) AS cantidadOcupada
+        FROM tblLotes l
+        LEFT JOIN Mortalidad m ON m.idLote = l.id
+        LEFT JOIN Vendidos v ON v.idLote = l.id
+        WHERE l.idGalpon = @idGalpon
+        GROUP BY l.idGalpon
+    )
+    SELECT
+        CASE
+            WHEN g.capacidad - ISNULL(o.cantidadOcupada, 0) > 0
+            THEN g.capacidad - ISNULL(o.cantidadOcupada, 0)
+            ELSE 0
+        END AS capacidadDisponible,
+        g.capacidad,
+        ISNULL(o.cantidadOcupada, 0) AS cantidadOcupada
+    FROM tblGalpones g
+    LEFT JOIN Ocupacion o ON o.idGalpon = g.id
+    WHERE g.id = @idGalpon
+      AND g.activo = 1;
+END
+GO
+
 
 --> AGREGAR LOTE
 CREATE OR ALTER PROC sp_AgregarLote
@@ -250,6 +312,12 @@ CREATE OR ALTER PROC sp_AgregarLote
 AS
 BEGIN
     SET NOCOUNT ON;
+
+    DECLARE
+        @capacidadGalpon INT,
+        @ocupacionActual INT,
+        @capacidadDisponible INT,
+        @mensajeCapacidad NVARCHAR(2048);
 
     SET @codigoLote = TRIM(@codigoLote);
     SET @observacion = TRIM(@observacion);
@@ -269,15 +337,61 @@ BEGIN
 
 
             -- VALIDAR GALPÓN
-            IF NOT EXISTS
-            (
-                SELECT 1
-                FROM tblGalpones
-                WHERE id = @idGalpon
-                  AND activo = 1
-            )
+            SELECT @capacidadGalpon = capacidad
+            FROM tblGalpones WITH (UPDLOCK, HOLDLOCK)
+            WHERE id = @idGalpon
+              AND activo = 1;
+
+            IF @capacidadGalpon IS NULL
                 THROW 52013, 'El galpón seleccionado no existe o está inactivo', 1;
 
+            /* El bloqueo de la fila del galpón serializa las altas concurrentes. */
+            ;WITH Mortalidad AS
+            (
+                SELECT idLote, SUM(cantidad) AS cantidad
+                FROM tblMortalidades
+                GROUP BY idLote
+            ),
+            Vendidos AS
+            (
+                SELECT d.idLote, SUM(d.cantidadPollos) AS cantidad
+                FROM tblDetalleVentas d
+                INNER JOIN tblVentas v ON v.id = d.idVenta
+                WHERE v.estado = 'Registrada'
+                GROUP BY d.idLote
+            )
+            SELECT @ocupacionActual = ISNULL(SUM
+            (
+                CASE
+                    WHEN l.estado IN ('En producción', 'Listo para venta')
+                    THEN CASE
+                        WHEN l.cantidadInicial
+                            - ISNULL(m.cantidad, 0)
+                            - ISNULL(v.cantidad, 0) > 0
+                        THEN l.cantidadInicial
+                            - ISNULL(m.cantidad, 0)
+                            - ISNULL(v.cantidad, 0)
+                        ELSE 0
+                    END
+                    ELSE 0
+                END
+            ), 0)
+            FROM tblLotes l
+            LEFT JOIN Mortalidad m ON m.idLote = l.id
+            LEFT JOIN Vendidos v ON v.idLote = l.id
+            WHERE l.idGalpon = @idGalpon;
+
+            SET @capacidadDisponible = @capacidadGalpon - @ocupacionActual;
+
+            IF @cantidadInicial > @capacidadDisponible
+            BEGIN
+                SET @mensajeCapacidad = CONCAT(
+                    'El lote contiene ', @cantidadInicial,
+                    ' pollitos, pero el galpón solamente tiene capacidad disponible para ',
+                    CASE WHEN @capacidadDisponible > 0 THEN @capacidadDisponible ELSE 0 END,
+                    '.');
+                THROW 52069, @mensajeCapacidad, 1;
+            END;
 
             -- VALIDAR PROVEEDOR
             IF NOT EXISTS
@@ -369,6 +483,16 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
+    DECLARE
+        @estadoActual NVARCHAR(25),
+        @capacidadGalpon INT,
+        @ocupacionOtrosLotes INT,
+        @mortalidadesLote INT,
+        @pollitosVendidos INT,
+        @cantidadActualizada INT,
+        @capacidadDisponible INT,
+        @mensajeCapacidad NVARCHAR(2048);
+
     SET @codigoLote = TRIM(@codigoLote);
     SET @observacion = TRIM(@observacion);
     SET @usuarioApp = TRIM(@usuarioApp);
@@ -429,6 +553,85 @@ BEGIN
             IF @costoPorPollito < 0
                 THROW 52016, 'El costo por pollito no puede ser negativo', 1;
 
+            SELECT @estadoActual = estado
+            FROM tblLotes WITH (UPDLOCK, HOLDLOCK)
+            WHERE id = @Id;
+
+            SELECT @capacidadGalpon = capacidad
+            FROM tblGalpones WITH (UPDLOCK, HOLDLOCK)
+            WHERE id = @idGalpon
+              AND activo = 1;
+
+            IF @capacidadGalpon IS NULL
+                THROW 52013, 'El galpón seleccionado no existe o está inactivo', 1;
+
+            IF @estadoActual IN ('En producción', 'Listo para venta')
+            BEGIN
+                SELECT @mortalidadesLote = ISNULL(SUM(cantidad), 0)
+                FROM tblMortalidades
+                WHERE idLote = @Id;
+
+                SELECT @pollitosVendidos = ISNULL(SUM(d.cantidadPollos), 0)
+                FROM tblDetalleVentas d
+                INNER JOIN tblVentas v ON v.id = d.idVenta
+                WHERE d.idLote = @Id
+                  AND v.estado = 'Registrada';
+
+                IF @cantidadInicial < @mortalidadesLote + @pollitosVendidos
+                    THROW 52070, 'La cantidad inicial no puede ser menor que los pollitos ya vendidos o fallecidos', 1;
+
+                SET @cantidadActualizada =
+                    @cantidadInicial - @mortalidadesLote - @pollitosVendidos;
+
+                ;WITH Mortalidad AS
+                (
+                    SELECT idLote, SUM(cantidad) AS cantidad
+                    FROM tblMortalidades
+                    GROUP BY idLote
+                ),
+                Vendidos AS
+                (
+                    SELECT d.idLote, SUM(d.cantidadPollos) AS cantidad
+                    FROM tblDetalleVentas d
+                    INNER JOIN tblVentas v ON v.id = d.idVenta
+                    WHERE v.estado = 'Registrada'
+                    GROUP BY d.idLote
+                )
+                SELECT @ocupacionOtrosLotes = ISNULL(SUM
+                (
+                    CASE
+                        WHEN l.estado IN ('En producción', 'Listo para venta')
+                        THEN CASE
+                            WHEN l.cantidadInicial
+                                - ISNULL(m.cantidad, 0)
+                                - ISNULL(v.cantidad, 0) > 0
+                            THEN l.cantidadInicial
+                                - ISNULL(m.cantidad, 0)
+                                - ISNULL(v.cantidad, 0)
+                            ELSE 0
+                        END
+                        ELSE 0
+                    END
+                ), 0)
+                FROM tblLotes l
+                LEFT JOIN Mortalidad m ON m.idLote = l.id
+                LEFT JOIN Vendidos v ON v.idLote = l.id
+                WHERE l.idGalpon = @idGalpon
+                  AND l.id <> @Id;
+
+                SET @capacidadDisponible = @capacidadGalpon - @ocupacionOtrosLotes;
+
+                IF @cantidadActualizada > @capacidadDisponible
+                BEGIN
+                    SET @mensajeCapacidad = CONCAT(
+                        'El lote contiene ', @cantidadActualizada,
+                        ' pollitos disponibles, pero el galpón solamente tiene capacidad disponible para ',
+                        CASE WHEN @capacidadDisponible > 0 THEN @capacidadDisponible ELSE 0 END,
+                        '.');
+                    THROW 52069, @mensajeCapacidad, 1;
+                END;
+            END;
+
 
             -- ACTUALIZAR LOTE 
             UPDATE tblLotes
@@ -480,6 +683,17 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
+    DECLARE
+        @idGalpon INT,
+        @estadoActual NVARCHAR(25),
+        @cantidadInicial INT,
+        @capacidadGalpon INT,
+        @ocupacionOtrosLotes INT,
+        @mortalidadesLote INT,
+        @pollitosVendidos INT,
+        @capacidadDisponible INT,
+        @mensajeCapacidad NVARCHAR(2048);
+
     SET @estado = TRIM(@estado);
     SET @usuarioApp = TRIM(@usuarioApp);
 
@@ -487,12 +701,14 @@ BEGIN
         BEGIN TRANSACTION;
 
             -- VALIDAR EXISTENCIA DEL LOTE 
-            IF NOT EXISTS
-            (
-                SELECT 1
-                FROM tblLotes
-                WHERE id = @Id
-            )
+            SELECT
+                @idGalpon = idGalpon,
+                @estadoActual = estado,
+                @cantidadInicial = cantidadInicial
+            FROM tblLotes WITH (UPDLOCK, HOLDLOCK)
+            WHERE id = @Id;
+
+            IF @idGalpon IS NULL
                 THROW 52017, 'El lote no existe', 1;
 
 
@@ -505,6 +721,79 @@ BEGIN
                 'Cancelado'
             )
                 THROW 52018, 'El estado del lote no es válido', 1;
+
+            IF @estado IN ('En producción', 'Listo para venta')
+               AND @estadoActual NOT IN ('En producción', 'Listo para venta')
+            BEGIN
+                SELECT @capacidadGalpon = capacidad
+                FROM tblGalpones WITH (UPDLOCK, HOLDLOCK)
+                WHERE id = @idGalpon
+                  AND activo = 1;
+
+                IF @capacidadGalpon IS NULL
+                    THROW 52013, 'El galpón seleccionado no existe o está inactivo', 1;
+
+                SELECT @mortalidadesLote = ISNULL(SUM(cantidad), 0)
+                FROM tblMortalidades
+                WHERE idLote = @Id;
+
+                SELECT @pollitosVendidos = ISNULL(SUM(d.cantidadPollos), 0)
+                FROM tblDetalleVentas d
+                INNER JOIN tblVentas v ON v.id = d.idVenta
+                WHERE d.idLote = @Id
+                  AND v.estado = 'Registrada';
+
+                SET @cantidadInicial =
+                    @cantidadInicial - @mortalidadesLote - @pollitosVendidos;
+
+                ;WITH Mortalidad AS
+                (
+                    SELECT idLote, SUM(cantidad) AS cantidad
+                    FROM tblMortalidades
+                    GROUP BY idLote
+                ),
+                Vendidos AS
+                (
+                    SELECT d.idLote, SUM(d.cantidadPollos) AS cantidad
+                    FROM tblDetalleVentas d
+                    INNER JOIN tblVentas v ON v.id = d.idVenta
+                    WHERE v.estado = 'Registrada'
+                    GROUP BY d.idLote
+                )
+                SELECT @ocupacionOtrosLotes = ISNULL(SUM
+                (
+                    CASE
+                        WHEN l.estado IN ('En producción', 'Listo para venta')
+                        THEN CASE
+                            WHEN l.cantidadInicial
+                                - ISNULL(m.cantidad, 0)
+                                - ISNULL(v.cantidad, 0) > 0
+                            THEN l.cantidadInicial
+                                - ISNULL(m.cantidad, 0)
+                                - ISNULL(v.cantidad, 0)
+                            ELSE 0
+                        END
+                        ELSE 0
+                    END
+                ), 0)
+                FROM tblLotes l
+                LEFT JOIN Mortalidad m ON m.idLote = l.id
+                LEFT JOIN Vendidos v ON v.idLote = l.id
+                WHERE l.idGalpon = @idGalpon
+                  AND l.id <> @Id;
+
+                SET @capacidadDisponible = @capacidadGalpon - @ocupacionOtrosLotes;
+
+                IF @cantidadInicial > @capacidadDisponible
+                BEGIN
+                    SET @mensajeCapacidad = CONCAT(
+                        'El lote contiene ', @cantidadInicial,
+                        ' pollitos disponibles, pero el galpón solamente tiene capacidad disponible para ',
+                        CASE WHEN @capacidadDisponible > 0 THEN @capacidadDisponible ELSE 0 END,
+                        '.');
+                    THROW 52069, @mensajeCapacidad, 1;
+                END;
+            END;
 
 
             -- ACTUALIZAR ESTADO 
